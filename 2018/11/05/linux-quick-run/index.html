@@ -118,7 +118,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/1.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/2.png">
-<meta property="og:updated_time" content="2018-11-06T04:47:10.443Z">
+<meta property="og:updated_time" content="2018-11-06T13:43:50.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu系统下，使用systemd配置开机启动的方法">
 <meta name="twitter:description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
@@ -351,7 +351,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-06 12:47:10" itemprop="dateModified" datetime="2018-11-06T12:47:10+08:00">2018-11-06</time>
+                <time title="修改时间：2018-11-06 21:43:50" itemprop="dateModified" datetime="2018-11-06T21:43:50+08:00">2018-11-06</time>
               
             
           </span>
@@ -387,8 +387,8 @@
 
       
         <p>从Ubuntu16.04开始，不再使用initd来管理系统，而改用systemd。</p>
-<h3 id="systemd介绍"><a href="#systemd介绍" class="headerlink" title="systemd介绍"></a>systemd介绍</h3><p>systemd默认会读取/etc/systemd/system目录下的配置文件，而该目录下的文件又会链接到/lib/systemd/system目录下的文件。</p>
-<p>下面<strong>以Ubuntu18.04为例</strong>，配置开机启动。为了与之前的Ubuntu开机启动的方式保持一致，我们希望仍然在/etc/rc.local 文件中配置开机启动程序。具体操作如下：</p>
+<h2 id="systemd介绍"><a href="#systemd介绍" class="headerlink" title="systemd介绍"></a>systemd介绍</h2><p>systemd默认会读取/etc/systemd/system目录下的配置文件，而该目录下的文件又会链接到/lib/systemd/system目录下的文件。</p>
+<h2 id="使用systemd配置开机启动"><a href="#使用systemd配置开机启动" class="headerlink" title="使用systemd配置开机启动"></a>使用systemd配置开机启动</h2><p>下面<strong>以Ubuntu18.04为例</strong>，配置开机启动。为了与之前的Ubuntu开机启动的方式保持一致，我们希望仍然在/etc/rc.local 文件中配置开机启动程序。具体操作如下：</p>
 <h3 id="1-配置rc-local-service文件"><a href="#1-配置rc-local-service文件" class="headerlink" title="1. 配置rc-local.service文件"></a>1. 配置rc-local.service文件</h3><p>一般系统安装完之后，/lib/systemd/system目录下会有rc-local.service文件，即我们所需要的配置文件。</p>
 <p>打开 rc-local.service文件，可以看到类似以下内容：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  SPDX-License-Identifier: LGPL-2.1+</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This unit gets pulled automatically into multi-user.target by</span></span><br><span class="line"><span class="comment"># systemd-rc-local-generator if /etc/rc.local is executable.</span></span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=/etc/rc.local Compatibility</span><br><span class="line"><span class="attr">Documentation</span>=man:systemd-rc-local-generator(<span class="number">8</span>)</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/etc/rc.local</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/etc/rc.local start</span><br><span class="line"><span class="attr">TimeoutSec</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">RemainAfterExit</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">GuessMainPID</span>=<span class="literal">no</span></span><br></pre></td></tr></table></figure>
@@ -660,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#systemd介绍"><span class="nav-number">1.</span> <span class="nav-text">systemd介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置rc-local-service文件"><span class="nav-number">2.</span> <span class="nav-text">1. 配置rc-local.service文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置rc-local文件"><span class="nav-number">3.</span> <span class="nav-text">2. 配置rc.local文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-为rc-local-service创建软链接"><span class="nav-number">4.</span> <span class="nav-text">3. 为rc.local.service创建软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重启系统，验证测试脚本"><span class="nav-number">5.</span> <span class="nav-text">4. 重启系统，验证测试脚本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd介绍"><span class="nav-number">1.</span> <span class="nav-text">systemd介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用systemd配置开机启动"><span class="nav-number">2.</span> <span class="nav-text">使用systemd配置开机启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置rc-local-service文件"><span class="nav-number">2.1.</span> <span class="nav-text">1. 配置rc-local.service文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置rc-local文件"><span class="nav-number">2.2.</span> <span class="nav-text">2. 配置rc.local文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-为rc-local-service创建软链接"><span class="nav-number">2.3.</span> <span class="nav-text">3. 为rc.local.service创建软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重启系统，验证测试脚本"><span class="nav-number">2.4.</span> <span class="nav-text">4. 重启系统，验证测试脚本</span></a></li></ol></li></ol></div>
             
 
           </div>
