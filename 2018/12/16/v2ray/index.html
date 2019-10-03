@@ -116,6 +116,7 @@
 <meta property="og:site_name" content="WingTsun Cat">
 <meta property="og:description" content="解释为何使用v2ray客户端替代Shadowsocks客户端；部署v2ray服务和安装v2ray客户端的方法。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/8.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/1.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/2.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/3.png">
@@ -123,11 +124,11 @@
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/5.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/6.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/12/16/v2ray/7.jpg">
-<meta property="og:updated_time" content="2019-01-04T08:51:36.614Z">
+<meta property="og:updated_time" content="2019-10-03T15:14:46.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代">
 <meta name="twitter:description" content="解释为何使用v2ray客户端替代Shadowsocks客户端；部署v2ray服务和安装v2ray客户端的方法。">
-<meta name="twitter:image" content="http://yoursite.com/2018/12/16/v2ray/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/16/v2ray/8.png">
 
 
 
@@ -366,7 +367,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-04 16:51:36" itemprop="dateModified" datetime="2019-01-04T16:51:36+08:00">2019-01-04</time>
+                <time title="修改时间：2019-10-03 23:14:46" itemprop="dateModified" datetime="2019-10-03T23:14:46+08:00">2019-10-03</time>
               
             
           </span>
@@ -401,7 +402,8 @@
       
 
       
-        <h2 id="为何放弃使用Shadowsocks客户端"><a href="#为何放弃使用Shadowsocks客户端" class="headerlink" title="为何放弃使用Shadowsocks客户端"></a>为何放弃使用Shadowsocks客户端</h2><p>其实我最开始接触的翻墙软件是Shadowsocks。一开始从官网下载了Windows 4.1.2客户端版本，用着也挺不错，但后来发现，每次运行Shadowsocks客户端的时候，只要使用Foxmail发邮件，Foxmail必崩。这就让我无法在Windows上同时使用Shadowsocks和Foxmail，但v2ray的及时出现，挽救了这一切~~~</p>
+        <h2 id="信息更新：2019-10-03"><a href="#信息更新：2019-10-03" class="headerlink" title="信息更新：2019-10-03"></a>信息更新：2019-10-03</h2><p>前两天突然发现不能科学上网了，怀疑是shadowsocks的服务（用的是cfb的加密方式）被封禁了，后来网上查了一下，确实如此。所以换成了v2ray的方式，v2ray是目前比较稳定的使用方式，虽然速度不是很快，但能满足基本的需求。就像一个博客上写的，虽然有很多加速的方式，但建议大家不要折腾，<strong>能用</strong>总比<strong>加速之后被封</strong>好得多。</p>
+<h2 id="为何放弃使用Shadowsocks客户端"><a href="#为何放弃使用Shadowsocks客户端" class="headerlink" title="为何放弃使用Shadowsocks客户端"></a>为何放弃使用Shadowsocks客户端</h2><p>其实我最开始接触的翻墙软件是Shadowsocks。一开始从官网下载了Windows 4.1.2客户端版本，用着也挺不错，但后来发现，每次运行Shadowsocks客户端的时候，只要使用Foxmail发邮件，Foxmail必崩。这就让我无法在Windows上同时使用Shadowsocks和Foxmail，但v2ray的及时出现，挽救了这一切~~~</p>
 <h2 id="什么是v2ray"><a href="#什么是v2ray" class="headerlink" title="什么是v2ray"></a>什么是v2ray</h2><p>在介绍v2ray之前，先说说ProjectV，Project V 是一个工具集合，它可以帮助你打造专属的基础通信网络。Project V 的核心工具称为<code>v2ray</code>，其主要负责网络协议和功能的实现，与其它 Project V 通信。v2ray 可以单独运行，也可以和其它工具配合，以提供简便的操作流程。更多细节请点击 <a href="https://www.v2ray.com/" target="_blank" rel="noopener">v2ray官网</a> 查阅。</p>
 <h2 id="v2ray-和-Shadowsocks的区别"><a href="#v2ray-和-Shadowsocks的区别" class="headerlink" title="v2ray 和 Shadowsocks的区别"></a>v2ray 和 Shadowsocks的区别</h2><p>v2ray 更像是一个集成工具，它集合了多种多样的协议（包括 Socks、HTTP、Shadowsocks、VMess 等）和功能，对个人用户而言像是一个工具箱，可以使用各种各样的工具组合。对开发者而言像是一个脚手架，可以在此基础上开发扩充自己需要的功能而节省开发时间。</p>
 <p>v2ray的主要特性有：</p>
@@ -422,13 +424,31 @@
 <h2 id="安装和使用v2ray"><a href="#安装和使用v2ray" class="headerlink" title="安装和使用v2ray"></a>安装和使用v2ray</h2><blockquote>
 <p> <em>这方面的材料比较多，在此推荐一篇v2ray的安装和使用教程：<a href="https://yuan.ga/v2ray-complete-tutorial/" target="_blank" rel="noopener">https://yuan.ga/v2ray-complete-tutorial/</a> ，请自行查阅。如果您已经搭建好科学上网的服务端，只是单纯想安装和使用v2ray客户端进行科学上网的话，请参阅下一章节的简易教程：<strong>基于v2ray搭建客户端代理</strong></em></p>
 </blockquote>
-<p>其中Android客户端推荐使用<strong>BifrostV</strong>，可从Google Play商店中下载。BifrostV的整体布局设计模仿了安卓版Shadowsocks，当你使用过安卓版Shadowsocks，再使用这个软件时就不存在太多障碍了。BifrostV支持 VMess、Shadowsocks、SOCKS 等协议，也就是说上述协议的连接只要一个客户端就可以搞定了。BifrostV中有少量广告（设置中有关闭广告选项，但需要Google Play的支持），希望用户可以理解开发者的劳动成果，包容那点广告或选择捐赠支持开发者。</p>
+<p>为防止上述v2ray的教程被封，下面简单说明下v2ray的服务端搭建方法（基于CentOS 7 64位系统）：</p>
+<p>V2Ray 官方维护并提供了适用于大多数主流系统的自动安装脚本，只需一行命令即可完成安装，当你想要更新V2Ray 的时候同样只需要运行下面一行命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -L -s https://install.direct/go.sh)</span><br><span class="line"><span class="comment"># 上列命令会自动安装 V2Ray，然后执行下面命令运行V2Ray</span></span><br><span class="line">systemctl start v2ray</span><br></pre></td></tr></table></figure>
+<p><img src="8.png" alt=""></p>
+<blockquote>
+<p>当你使用脚本自动安装结束后，此时服务端的部署已经完成了，脚本不仅安装了 V2Ray，还在配置中随机生成了一个 5 位数端口以及 UUID 供我们直接使用，所以我们无需进一步配置服务端，这时已经获得了三个必要的信息：IP、端口（Port）、id（UUID）。</p>
+</blockquote>
+<p>安装完成后会新增下列文件：</p>
+<ul>
+<li><p>/usr/bin/v2ray/v2ctl：V2Ray 工具，用于给程序自身调用</p>
+</li>
+<li><p>/usr/bin/v2ray/v2ray：V2Ray 核心程序</p>
+</li>
+<li>/etc/v2ray/config.json：配置文件</li>
+<li>/usr/bin/v2ray/geoip.dat：IP 数据文件，V2Ray 路由功能时有用，下同</li>
+<li>/usr/bin/v2ray/geosite.dat：域名数据文件</li>
+</ul>
+<p>之后就可以使用 systemctl start|restart|stop|status v2ray 查看和控制 V2Ray 的运行。</p>
+<h2 id="在Android上安装和使用v2ray客户端"><a href="#在Android上安装和使用v2ray客户端" class="headerlink" title="在Android上安装和使用v2ray客户端"></a>在Android上安装和使用v2ray客户端</h2><p>Android上的客户端推荐使用<strong>BifrostV</strong>，可从Google Play商店中下载。BifrostV的整体布局设计模仿了安卓版Shadowsocks，当你使用过安卓版Shadowsocks，再使用这个软件时就不存在太多障碍了。BifrostV支持 VMess、Shadowsocks、SOCKS 等协议，也就是说上述协议的连接只要一个客户端就可以搞定了。BifrostV中有少量广告（设置中有关闭广告选项，但需要Google Play的支持），希望用户可以理解开发者的劳动成果，包容那点广告或选择捐赠支持开发者。</p>
 <p>在使用BifrostV时，有个功能比较实用：首页-&gt;点击“+”号-&gt;手动设置，在配置页面的最下面有个<code>分应用模式</code>。</p>
 <p><img src="1.png" alt=""></p>
 <p>开启<code>分应用模式</code>后，可以选择哪些APP走VPN，哪些APP不走VPN。如下图所示，Twitter需要走VPN，那么就把该APP选中；WPS Office不需要走VPN，那么就不用勾选它。</p>
 <p><img src="2.png" alt=""></p>
 <p>可惜的是，v2ray在iPhone和iPad等iOS设备上，目前还没有官方客户端。不过还是一些第三方APP可以使用的，具体可参考该链接：<a href="https://ssr.tools/295" target="_blank" rel="noopener">https://ssr.tools/295</a> 。</p>
-<h2 id="基于v2ray搭建客户端代理"><a href="#基于v2ray搭建客户端代理" class="headerlink" title="基于v2ray搭建客户端代理"></a>基于v2ray搭建客户端代理</h2><p>此处以Windows10系统为例，讲述如何通过v2ray搭建客户端代理，并使用chrome浏览器科学上网。</p>
+<h2 id="在Windows上搭建v2ray客户端代理"><a href="#在Windows上搭建v2ray客户端代理" class="headerlink" title="在Windows上搭建v2ray客户端代理"></a>在Windows上搭建v2ray客户端代理</h2><p>此处以Windows10系统为例，讲述如何通过v2ray搭建客户端代理，并使用chrome浏览器科学上网。</p>
 <h3 id="安装v2ray客户端"><a href="#安装v2ray客户端" class="headerlink" title="安装v2ray客户端"></a>安装v2ray客户端</h3><ol>
 <li>通过Github下载v2ray客户端，打开链接：<a href="https://github.com/v2ray/v2ray-core/releases" target="_blank" rel="noopener">https://github.com/v2ray/v2ray-core/releases</a> ，往下浏览可找到Windows平台的v2ray客户端。如果您的系统是32位的，请选择并下载v2ray-windows-32.zip；如果您的系统是64位的，请选择并下载v2ray-windows-64.zip。</li>
 <li>下载完毕后，将zip包解压到任意目录下，然后打开解压后的目录，找到config.json文件并打开。</li>
@@ -737,7 +757,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为何放弃使用Shadowsocks客户端"><span class="nav-number">1.</span> <span class="nav-text">为何放弃使用Shadowsocks客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是v2ray"><span class="nav-number">2.</span> <span class="nav-text">什么是v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v2ray-和-Shadowsocks的区别"><span class="nav-number">3.</span> <span class="nav-text">v2ray 和 Shadowsocks的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和使用v2ray"><span class="nav-number">4.</span> <span class="nav-text">安装和使用v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于v2ray搭建客户端代理"><span class="nav-number">5.</span> <span class="nav-text">基于v2ray搭建客户端代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装v2ray客户端"><span class="nav-number">5.1.</span> <span class="nav-text">安装v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置config-json"><span class="nav-number">5.2.</span> <span class="nav-text">配置config.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行v2ray客户端"><span class="nav-number">5.3.</span> <span class="nav-text">运行v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置v2ray客户端开机自启动"><span class="nav-number">5.4.</span> <span class="nav-text">设置v2ray客户端开机自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Proxy-SwitchyOmega插件"><span class="nav-number">5.5.</span> <span class="nav-text">安装Proxy SwitchyOmega插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Chrome浏览器代理模式"><span class="nav-number">5.6.</span> <span class="nav-text">配置Chrome浏览器代理模式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息更新：2019-10-03"><span class="nav-number">1.</span> <span class="nav-text">信息更新：2019-10-03</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为何放弃使用Shadowsocks客户端"><span class="nav-number">2.</span> <span class="nav-text">为何放弃使用Shadowsocks客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是v2ray"><span class="nav-number">3.</span> <span class="nav-text">什么是v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v2ray-和-Shadowsocks的区别"><span class="nav-number">4.</span> <span class="nav-text">v2ray 和 Shadowsocks的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和使用v2ray"><span class="nav-number">5.</span> <span class="nav-text">安装和使用v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Android上安装和使用v2ray客户端"><span class="nav-number">6.</span> <span class="nav-text">在Android上安装和使用v2ray客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Windows上搭建v2ray客户端代理"><span class="nav-number">7.</span> <span class="nav-text">在Windows上搭建v2ray客户端代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装v2ray客户端"><span class="nav-number">7.1.</span> <span class="nav-text">安装v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置config-json"><span class="nav-number">7.2.</span> <span class="nav-text">配置config.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行v2ray客户端"><span class="nav-number">7.3.</span> <span class="nav-text">运行v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置v2ray客户端开机自启动"><span class="nav-number">7.4.</span> <span class="nav-text">设置v2ray客户端开机自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Proxy-SwitchyOmega插件"><span class="nav-number">7.5.</span> <span class="nav-text">安装Proxy SwitchyOmega插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Chrome浏览器代理模式"><span class="nav-number">7.6.</span> <span class="nav-text">配置Chrome浏览器代理模式</span></a></li></ol></li></ol></div>
             
 
           </div>
