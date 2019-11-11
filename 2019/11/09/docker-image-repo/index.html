@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="私有镜像仓库可以方便企业或个人开发者共享内部镜像而不会泄漏私有代码，而且可以加速镜像的拉取。能更加方便得集成到容器化的 CI/CD 中去。也可建立自己的公共镜像仓库。">
+<meta name="keywords" content="docker,私有化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建私有化docker镜像仓库">
+<meta property="og:url" content="http://yoursite.com/2019/11/09/docker-image-repo/index.html">
+<meta property="og:site_name" content="WingTsun Cat">
+<meta property="og:description" content="私有镜像仓库可以方便企业或个人开发者共享内部镜像而不会泄漏私有代码，而且可以加速镜像的拉取。能更加方便得集成到容器化的 CI/CD 中去。也可建立自己的公共镜像仓库。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/11/09/docker-image-repo/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/09/docker-image-repo/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/09/docker-image-repo/3.jpg">
+<meta property="og:updated_time" content="2019-11-11T07:17:08.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建私有化docker镜像仓库">
+<meta name="twitter:description" content="私有镜像仓库可以方便企业或个人开发者共享内部镜像而不会泄漏私有代码，而且可以加速镜像的拉取。能更加方便得集成到容器化的 CI/CD 中去。也可建立自己的公共镜像仓库。">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/09/docker-image-repo/1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WingTsun Cat" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/09/docker-image-repo/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>搭建私有化docker镜像仓库 | WingTsun Cat</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7777c9b943c9708d23416af82661701a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WingTsun Cat</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Reading & Thinking & Writing</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/09/docker-image-repo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Pan">
+      <meta itemprop="description" content="沉淀下来的，才是精华！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WingTsun Cat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建私有化docker镜像仓库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-09 23:13:31" itemprop="dateCreated datePublished" datetime="2019-11-09T23:13:31+08:00">2019-11-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-11 15:17:08" itemprop="dateModified" datetime="2019-11-11T15:17:08+08:00">2019-11-11</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">私有镜像仓库可以方便企业或个人开发者共享内部镜像而不会泄漏私有代码，而且可以加速镜像的拉取。能更加方便得集成到容器化的 CI/CD 中去。也可建立自己的公共镜像仓库。</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ul>
+<li>公司或个人项目代码不能公开，如何共享镜像或快速发布？</li>
+<li>在国内直接拉取官方镜像非常缓慢。如何才能快速取官方基础镜像呢？</li>
+<li>国内的网络环境下，项目在 <code>CI/CD</code> 过程中拉取镜像可能会花费比较多的时间，如何能加快拉取镜像的速度？</li>
+</ul>
+<p>没错，搭建私有镜像仓库吧。</p>
+<h2 id="方案选择"><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h2><p>搭建私有镜像仓库有几种方式：</p>
+<p>1、官方 <code>registry</code> 方案，推荐使用 <code>registry:2</code> v2 版本的镜像</p>
+<p>2、<code>harbor</code> 方案， 则是在官方的基础上增加了权限控制、界面化等功能</p>
+<p>本次我们采用<span id="inline-blue">harbor方案</span>进行搭建，操作系统为<span id="inline-blue">Centos7.6 64位</span>。</p>
+<h2 id="系统环境及配置要求"><a href="#系统环境及配置要求" class="headerlink" title="系统环境及配置要求"></a>系统环境及配置要求</h2><table>
+<thead>
+<tr>
+<th>资源</th>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>2核 起步</td>
+<td>4核 更佳</td>
+</tr>
+<tr>
+<td>Mem</td>
+<td>4GB 起步</td>
+<td>8GB 更佳</td>
+</tr>
+<tr>
+<td>Disk</td>
+<td>40GB 起步</td>
+<td>160GB 更佳</td>
+</tr>
+</tbody>
+</table>
+<p>注：硬盘主要用于存储镜像，镜像量大可以考虑加大。</p>
+<p><strong>软件要求</strong></p>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>2.7 以上</td>
+<td>Linux 服务器基本都安装了 2.7 版本，可以输入命令 <code>python</code> 确认是否已安装</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>1.10 以上</td>
+<td>下面会介绍如何安装</td>
+</tr>
+<tr>
+<td>Docker Compose</td>
+<td>1.6.0 以上</td>
+<td>下面会介绍如何安装</td>
+</tr>
+<tr>
+<td>Openssl</td>
+<td>推荐用最高版本</td>
+<td>生成证书，自备证书的忽略</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：这里使用的是HTTP方式搭建，所以openssl暂时没有用到。</strong></p>
+<h2 id="安装Docker及Docker-Compose（如已安装，请跳过此步）"><a href="#安装Docker及Docker-Compose（如已安装，请跳过此步）" class="headerlink" title="安装Docker及Docker Compose（如已安装，请跳过此步）"></a>安装Docker及Docker Compose（如已安装，请跳过此步）</h2><p>1、安装之前，先清除之前安装的旧版本 docker，如果有的话</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-selinux \</span><br><span class="line">                  docker-engine-selinux \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<p>2、使用 repository 安装 docker ce</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils device-mapper-persistent-data lvm2  <span class="comment">## 安装基础依赖包</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo <span class="comment">## 使用阿里源，速度杠杠的</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce  <span class="comment">## 直接运行会默认安装最新版</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：如果想安装指定版本的docker-ce，可以先用命令查看版本号，然后再安装指定版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> $ sudo yum list docker-ce --showduplicates | sort -r <span class="comment">##查看版本号</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> $ sudo yum install docker-ce-&lt;VERSION STRING&gt; <span class="comment">##安装指定版本，</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment">## 例如：yum install docker-ce-18.06.3.ce</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>3、安装docker-compose</p>
+<p>docker-compose存放在github上，但由于国内访问github不太稳定，所以可从daocloud上进行下载。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl -L https://get.daocloud.io/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：你可以通过修改上述URL中的版本（如：1.24.1），可以自定义您需要的版本。</p>
+</blockquote>
+<p>4、启动docker（<strong>这一步很重要</strong>）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo systemctl start docker</span></span><br></pre></td></tr></table></figure>
+<h2 id="开始搭建镜像仓库"><a href="#开始搭建镜像仓库" class="headerlink" title="开始搭建镜像仓库"></a>开始搭建镜像仓库</h2><p>搭建步骤：</p>
+<ul>
+<li>下载<code>habor安装器</code></li>
+<li>修改配置文件 <code>harbor.cfg</code></li>
+<li>运行 <code>install.sh</code> 执行安装，此 shell 脚本内部会调用<code>./prepare</code>生成相关配置文件，再调用 <code>docker-compose</code> 来进行镜像拉取及启动。</li>
+</ul>
+<p><code>harbor</code> 有两种方式进行安装，分为离线和在线。如果网络环境不佳，可以选择离线安装。</p>
+<p>这里选择在线方式（拉取远程镜像）安装：</p>
+<h3 id="下载安装器"><a href="#下载安装器" class="headerlink" title="下载安装器"></a>下载安装器</h3><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://storage.googleapis.com/harbor-releases/release-<span class="number">1.6</span><span class="meta">.0</span>/harbor-online-installer-v1<span class="meta">.6</span><span class="meta">.3</span>.tgz</span><br></pre></td></tr></table></figure>
+<p>解压安装程序：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf harbor-offline-installer-v1<span class="number">.6</span><span class="number">.3</span>.tgz</span><br></pre></td></tr></table></figure>
+<h3 id="修改harbor-cfg文件"><a href="#修改harbor-cfg文件" class="headerlink" title="修改harbor.cfg文件"></a>修改harbor.cfg文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> harbor</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim harbor.cfg</span></span><br></pre></td></tr></table></figure>
+<p>修改以下部分：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hostname = 本机IP地址 ##修改为自己的本机IP地址，如果是想通过外网访问的话，这里的IP地址要写成本机公网IP地址。</span><br><span class="line">harbor_admin_password = 登录密码 ##修改harbor的admin用户的密码</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：如果当前使用的服务器是从阿里云或其它云上购买的云主机，应注意在实例安全组中开放80端口。</p>
+</blockquote>
+<p>为了方便后续管理，这里将harbor运行过程中产生的数据统一放在一个目录（/data/harbor）下面。</p>
+<p>创建/data/harbor目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p /data/harbor</span></span><br></pre></td></tr></table></figure>
+<p>打开harbor.cfg文件并修改：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">secretkey_path = /data/harbor ##因为下面会修改docker-compose.yml文件中的secretkey，这里是为了保持这两个文件中的secretkey路径一致</span><br></pre></td></tr></table></figure>
+<h3 id="修改docker-compose-yml文件"><a href="#修改docker-compose-yml文件" class="headerlink" title="修改docker-compose.yml文件"></a>修改docker-compose.yml文件</h3><p>将文件中的相关路径更改为/data/harbor，可直接使用如下配置：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  log:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/harbor-log:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">harbor-log</span> </span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/log/:/var/log/docker/:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/log/:/etc/logrotate.d/:z</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:1514:10514</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">  registry:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/registry-photon:v2.6.2-v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">registry</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/registry:/storage:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/registry/:/etc/registry/:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/custom-ca-bundle.crt:/harbor_cust_cert/custom-ca-bundle.crt:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">GODEBUG=netdns=cgo</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"registry"</span></span><br><span class="line"><span class="attr">  postgresql:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/harbor-db:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">harbor-db</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/database:/var/lib/postgresql/data:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    env_file:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/db/env</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"postgresql"</span></span><br><span class="line"><span class="attr">  adminserver:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/harbor-adminserver:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">harbor-adminserver</span></span><br><span class="line"><span class="attr">    env_file:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/adminserver/env</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/config/:/etc/adminserver/config/:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/secretkey:/etc/adminserver/key:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/:/data/:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"adminserver"</span></span><br><span class="line"><span class="attr">  ui:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/harbor-ui:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">harbor-ui</span></span><br><span class="line"><span class="attr">    env_file:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/ui/env</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/ui/app.conf:/etc/ui/app.conf:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/ui/private_key.pem:/etc/ui/private_key.pem:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/ui/certificates/:/etc/ui/certificates/:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/secretkey:/etc/ui/key:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/ca_download/:/etc/ui/ca/:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/psc/:/etc/ui/token/:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">adminserver</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">registry</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"ui"</span></span><br><span class="line"><span class="attr">  jobservice:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/harbor-jobservice:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">harbor-jobservice</span></span><br><span class="line"><span class="attr">    env_file:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/jobservice/env</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/job_logs:/var/log/jobs:z</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/jobservice/config.yml:/etc/jobservice/config.yml:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">redis</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">ui</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">adminserver</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"jobservice"</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/redis-photon:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/data/harbor/redis:/var/lib/redis</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"redis"</span></span><br><span class="line"><span class="attr">  proxy:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">goharbor/nginx-photon:v1.6.3</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">./common/config/nginx:/etc/nginx:z</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">harbor</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">80</span><span class="string">:80</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">443</span><span class="string">:443</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">4443</span><span class="string">:4443</span></span><br><span class="line"><span class="attr">    depends_on:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">postgresql</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">registry</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">ui</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">log</span></span><br><span class="line"><span class="attr">    logging:</span></span><br><span class="line"><span class="attr">      driver:</span> <span class="string">"syslog"</span></span><br><span class="line"><span class="attr">      options:</span>  </span><br><span class="line"><span class="attr">        syslog-address:</span> <span class="string">"tcp://127.0.0.1:1514"</span></span><br><span class="line"><span class="attr">        tag:</span> <span class="string">"proxy"</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  harbor:</span></span><br><span class="line"><span class="attr">    external:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h3 id="部署harbor"><a href="#部署harbor" class="headerlink" title="部署harbor"></a>部署harbor</h3><p>cd到harbor目录下执行，</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./install.sh ##安装Harbor</span><br></pre></td></tr></table></figure>
+<p>接下来会经历4个Step，最终会输出类似如下信息，则表示安装成功，此时可以在浏览器中输入网址访问了。</p>
+<p><img src="1.png" alt=""></p>
+<h2 id="访问Harbor"><a href="#访问Harbor" class="headerlink" title="访问Harbor"></a>访问Harbor</h2><p>在浏览器中输入网址，输入账号和密码，登录Harbor。</p>
+<p>账号是admin，密码是刚才在<code>harbor.cfg</code>文件中设置的 <code>harbor_admin_password</code> 值。</p>
+<h2 id="进行推送和拉取镜像测试"><a href="#进行推送和拉取镜像测试" class="headerlink" title="进行推送和拉取镜像测试"></a>进行推送和拉取镜像测试</h2><p>1、在Harbor上新建一个项目，比如：onlytest</p>
+<p><img src="2.jpg" alt=""></p>
+<p>2、因为 docker 默认不允许用非 <code>HTTPS</code> 方式推送镜像，所以如果你的镜像仓库是以HTTP方式访问，则需要修改下daemon.json文件并重启docker。</p>
+<p>打开<code>/etc/docker/daemon.json</code>（如果该文件不存在，就新建一个），修改以下内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"registry-mirror"</span>: [</span><br><span class="line">    <span class="string">"https://registry.docker-cn.com"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"insecure-registries"</span>: [</span><br><span class="line">    <span class="string">"你的镜像仓库IP:端口"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入 <code>systemctl restart docker</code> 重启docker。</p>
+<p>3、登录私有docker镜像仓库</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker login 仓库<span class="built_in">IP</span>:端口</span><br></pre></td></tr></table></figure>
+<p>输入Username 和 Password，完成登录操作。</p>
+<p>3、修改待推送的镜像名称</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker <span class="keyword">tag</span> <span class="title">镜像ID</span> 镜像名称:<span class="keyword">TAG</span>名称</span><br><span class="line">如：docker <span class="keyword">tag</span> <span class="title">ba5877dc9bec</span> <span class="number">192.168</span>.<span class="number">199.100</span>:<span class="number">5000</span>/onlytest/alpine:v0.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>4、将镜像推送到私有镜像仓库</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker <span class="keyword">push</span> 镜像名称:镜像TAG</span><br><span class="line">如：docker <span class="keyword">push</span> <span class="number">192.168</span><span class="meta">.199</span><span class="meta">.100</span>:<span class="number">5000</span>/onlytest/alpine:v0<span class="meta">.1</span></span><br></pre></td></tr></table></figure>
+<p>然后你会在刚才在Harbor上新建的项目中看到推送的镜像。</p>
+<p><img src="3.jpg" alt=""></p>
+<p>5、将刚才推送上去的镜像拉取到本地</p>
+<blockquote>
+<p>先删除刚才第4步中推送到仓库里的本地镜像，方便下面验证pull操作。</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi 镜像仓库<span class="string">IP:</span>端口<span class="regexp">/你在Harbor上建的项目/</span>镜像名称:TAG名称</span><br><span class="line">如：docker rmi <span class="number">192.168</span><span class="number">.199</span><span class="number">.100</span>:<span class="number">5000</span><span class="regexp">/onlytest/</span><span class="string">alpine:</span>v0<span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>拉取远程私有仓库镜像到本地</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull 镜像仓库<span class="string">IP:</span>端口<span class="regexp">/你在Harbor上建的项目/</span>镜像名称:TAG名称</span><br><span class="line">如：docker pull <span class="number">192.168</span><span class="number">.199</span><span class="number">.100</span>:<span class="number">5000</span><span class="regexp">/onlytest/</span><span class="string">alpine:</span>v0<span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>在本地用<code>docker images</code>查看拉取的镜像，会发现镜像已经拉取下来了。</p>
+<p><strong>注：如果需要登出私有镜像仓库，可使用 <code>docker logout</code>登出。</strong></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker logout 镜像仓库<span class="built_in">IP</span>:端口</span><br><span class="line">如：docker logout <span class="number">192.168</span><span class="meta">.199</span><span class="meta">.100</span>:<span class="number">5000</span></span><br></pre></td></tr></table></figure>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="修改了harbor-cfg中的hostname后，运行-install-sh-时报如下错误："><a href="#修改了harbor-cfg中的hostname后，运行-install-sh-时报如下错误：" class="headerlink" title="修改了harbor.cfg中的hostname后，运行 ./install.sh 时报如下错误："></a>修改了harbor.cfg中的hostname后，运行 ./install.sh 时报如下错误：</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Please <span class="builtin-name">set</span> hostname <span class="keyword">and</span> other necessary attributes <span class="keyword">in</span> harbor.cfg first. <span class="keyword">DO</span> <span class="keyword">NOT</span> use localhost <span class="keyword">or</span> 127.0.0.1 <span class="keyword">for</span> hostname, because Harbor needs <span class="keyword">to</span> be accessed by external clients.</span><br><span class="line">Please <span class="builtin-name">set</span> --with-notary <span class="keyword">if</span> needs <span class="builtin-name">enable</span> Notary <span class="keyword">in</span> Harbor, <span class="keyword">and</span> <span class="builtin-name">set</span> ui_url_protocol/ssl_cert/ssl_cert_key <span class="keyword">in</span> harbor.cfg bacause notary must <span class="builtin-name">run</span> under https.</span><br><span class="line">Please <span class="builtin-name">set</span> --with-clair <span class="keyword">if</span> needs <span class="builtin-name">enable</span> Clair <span class="keyword">in</span> Harbor</span><br></pre></td></tr></table></figure>
+<p>原因：是由于在修改hostname值的时候，将原先的hostname那行注释掉了，然后新增了一行hostname，如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">hostname = reg.mydomain.com</span></span><br><span class="line">hostname = 192.168.174.136</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解决方法：在原始的脚本基础上直接修改hostname值，<strong>不要再新增一行hostname</strong>。</p>
+</blockquote>
+<h3 id="每次修改harbor-cfg文件都需要重启harbor才会生效，操作方法如下："><a href="#每次修改harbor-cfg文件都需要重启harbor才会生效，操作方法如下：" class="headerlink" title="每次修改harbor.cfg文件都需要重启harbor才会生效，操作方法如下："></a>每次修改harbor.cfg文件都需要重启harbor才会生效，操作方法如下：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose down <span class="comment">##停止和移除所有harbor相关的容器</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./prepare <span class="comment">##重新配置harbor</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up -d <span class="comment">##创建容器并启动harbor</span></span></span><br></pre></td></tr></table></figure>
+<p>然后可以运行命令 <code>docker ps</code>看下容器状态。</p>
+<h3 id="在搭建过程中（比如在输入docker-compose-up命令时）遇到如下错误："><a href="#在搭建过程中（比如在输入docker-compose-up命令时）遇到如下错误：" class="headerlink" title="在搭建过程中（比如在输入docker-compose up命令时）遇到如下错误："></a>在搭建过程中（比如在输入<code>docker-compose up</code>命令时）遇到如下错误：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?</span><br><span class="line"></span><br><span class="line">If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.</span><br></pre></td></tr></table></figure>
+<p>导致这个问题的<strong>原因实在多</strong>，所以把可能的解决方法都列出来，我想总有一款适合您。</p>
+<ol>
+<li>docker服务没启动，那就启动</li>
+</ol>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span> sudo systemctl start docker     <span class="comment">// 或者 sudo service docker start</span></span><br><span class="line"><span class="symbol">$</span> docker-compose up</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>docker服务启动了，但是一些缓存影响了</li>
+</ol>
+<p><em>那就重启</em></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span> sudo systemctl restart docker   <span class="comment">// 或者 sudo service docker restart</span></span><br><span class="line"><span class="symbol">$</span> docker-compose up</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>当前用户不在docker用户组</li>
+</ol>
+<p><em>那就把自己加到docker用户组</em></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo gpasswd -a <span class="variable">$&#123;</span>USER&#125; docker</span><br><span class="line"><span class="variable">$ </span>docker-compose up</span><br></pre></td></tr></table></figure>
+<p><em>添加到<code>docker</code>用户组后要重新登录shell再<code>up</code></em></p>
+<ol start="4">
+<li>也许用sudo可能有效</li>
+</ol>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo docker-compose up</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>docker-compose版本太老了</li>
+</ol>
+<p><em>那就更新版本</em></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L <span class="symbol">https:</span>/<span class="regexp">/get.daocloud.io/docker</span><span class="regexp">/compose/releases</span><span class="regexp">/download/</span><span class="number">1.24</span>.<span class="number">1</span>/docker-compose-<span class="string">`uname -s`</span>-<span class="string">`uname -m`</span> &gt; <span class="regexp">/usr/local</span><span class="regexp">/bin/docker</span>-compose</span><br></pre></td></tr></table></figure>
+<p><em>点击查看<a href="https://docs.docker.com/compose/install/#install-compose" target="_blank" rel="noopener">docker-compose官方安装教程</a>（可能需要梯子）或 登录<a href="http://get.daocloud.io/#install-compose" target="_blank" rel="noopener">daocloud查看安装教程</a>（推荐）</em></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+          
+            <a href="/tags/私有化/" rel="tag"><i class="fa fa-tag"></i> 私有化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/16/docker-usage/" rel="next" title="docker基本用法">
+                <i class="fa fa-chevron-left"></i> docker基本用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+  <div>
+
+  <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+
+</div>
+
+  </div>
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Peter Pan</p>
+              <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/pgz100" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.zhihu.com/" title="知乎" target="_blank">知乎</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/" title="简书" target="_blank">简书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案选择"><span class="nav-number">2.</span> <span class="nav-text">方案选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境及配置要求"><span class="nav-number">3.</span> <span class="nav-text">系统环境及配置要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Docker及Docker-Compose（如已安装，请跳过此步）"><span class="nav-number">4.</span> <span class="nav-text">安装Docker及Docker Compose（如已安装，请跳过此步）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始搭建镜像仓库"><span class="nav-number">5.</span> <span class="nav-text">开始搭建镜像仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装器"><span class="nav-number">5.1.</span> <span class="nav-text">下载安装器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改harbor-cfg文件"><span class="nav-number">5.2.</span> <span class="nav-text">修改harbor.cfg文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改docker-compose-yml文件"><span class="nav-number">5.3.</span> <span class="nav-text">修改docker-compose.yml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署harbor"><span class="nav-number">5.4.</span> <span class="nav-text">部署harbor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问Harbor"><span class="nav-number">6.</span> <span class="nav-text">访问Harbor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进行推送和拉取镜像测试"><span class="nav-number">7.</span> <span class="nav-text">进行推送和拉取镜像测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">8.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改了harbor-cfg中的hostname后，运行-install-sh-时报如下错误："><span class="nav-number">8.1.</span> <span class="nav-text">修改了harbor.cfg中的hostname后，运行 ./install.sh 时报如下错误：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#每次修改harbor-cfg文件都需要重启harbor才会生效，操作方法如下："><span class="nav-number">8.2.</span> <span class="nav-text">每次修改harbor.cfg文件都需要重启harbor才会生效，操作方法如下：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在搭建过程中（比如在输入docker-compose-up命令时）遇到如下错误："><span class="nav-number">8.3.</span> <span class="nav-text">在搭建过程中（比如在输入docker-compose up命令时）遇到如下错误：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Pan</span>
+
+  
+
+  
+</div>
+
+
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.5.0</div>
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
