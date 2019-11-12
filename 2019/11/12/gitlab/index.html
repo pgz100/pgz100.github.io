@@ -108,21 +108,21 @@
 
 
 
-  <meta name="description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
-<meta name="keywords" content="ubuntu16.04,开机自启,systemd">
+  <meta name="description" content="在centos7系统上搭建gitlab服务，以及创建和配置git项目。">
+<meta name="keywords" content="centos7,gitlab">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu系统下，使用systemd配置开机启动的方法">
-<meta property="og:url" content="http://yoursite.com/2018/11/05/linux-quick-run/index.html">
+<meta property="og:title" content="基于centos7.6搭建Gitlab服务">
+<meta property="og:url" content="http://yoursite.com/2019/11/12/gitlab/index.html">
 <meta property="og:site_name" content="WingTsun Cat">
-<meta property="og:description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
+<meta property="og:description" content="在centos7系统上搭建gitlab服务，以及创建和配置git项目。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/1.png">
-<meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/2.png">
-<meta property="og:updated_time" content="2018-11-06T13:43:50.439Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/12/gitlab/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/12/gitlab/3.png">
+<meta property="og:updated_time" content="2019-11-12T16:10:09.229Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu系统下，使用systemd配置开机启动的方法">
-<meta name="twitter:description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
-<meta name="twitter:image" content="http://yoursite.com/2018/11/05/linux-quick-run/1.png">
+<meta name="twitter:title" content="基于centos7.6搭建Gitlab服务">
+<meta name="twitter:description" content="在centos7系统上搭建gitlab服务，以及创建和配置git项目。">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/12/gitlab/2.png">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/05/linux-quick-run/">
+  <link rel="canonical" href="http://yoursite.com/2019/11/12/gitlab/">
 
 
 
@@ -141,7 +141,7 @@
   };
 </script>
 
-  <title>Ubuntu系统下，使用systemd配置开机启动的方法 | WingTsun Cat</title>
+  <title>基于centos7.6搭建Gitlab服务 | WingTsun Cat</title>
   
 
 
@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/05/linux-quick-run/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/12/gitlab/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
@@ -319,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ubuntu系统下，使用systemd配置开机启动的方法
+          <h1 class="post-title" itemprop="name headline">基于centos7.6搭建Gitlab服务
               
             
           </h1>
@@ -344,7 +344,7 @@
                 
               
 
-              <time title="创建时间：2018-11-05 22:37:09" itemprop="dateCreated datePublished" datetime="2018-11-05T22:37:09+08:00">2018-11-05</time>
+              <time title="创建时间：2019-11-12 23:09:42" itemprop="dateCreated datePublished" datetime="2019-11-12T23:09:42+08:00">2019-11-12</time>
             
 
             
@@ -361,7 +361,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-06 21:43:50" itemprop="dateModified" datetime="2018-11-06T21:43:50+08:00">2018-11-06</time>
+                <time title="修改时间：2019-11-13 00:10:09" itemprop="dateModified" datetime="2019-11-13T00:10:09+08:00">2019-11-13</time>
               
             
           </span>
@@ -380,7 +380,7 @@
           
 
           
-              <div class="post-description">Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。</div>
+              <div class="post-description">在centos7系统上搭建gitlab服务，以及创建和配置git项目。</div>
           
 
         </div>
@@ -396,33 +396,51 @@
       
 
       
-        <p>从Ubuntu16.04开始，不再使用initd来管理系统，而改用systemd。</p>
-<h2 id="systemd介绍"><a href="#systemd介绍" class="headerlink" title="systemd介绍"></a>systemd介绍</h2><p>systemd默认会读取/etc/systemd/system目录下的配置文件，而该目录下的文件又会链接到/lib/systemd/system目录下的文件。</p>
-<h2 id="使用systemd配置开机启动"><a href="#使用systemd配置开机启动" class="headerlink" title="使用systemd配置开机启动"></a>使用systemd配置开机启动</h2><p>下面<strong>以Ubuntu18.04为例</strong>，配置开机启动。为了与之前的Ubuntu开机启动的方式保持一致，我们希望仍然在/etc/rc.local 文件中配置开机启动程序。具体操作如下：</p>
-<h3 id="1-配置rc-local-service文件"><a href="#1-配置rc-local-service文件" class="headerlink" title="1. 配置rc-local.service文件"></a>1. 配置rc-local.service文件</h3><p>一般系统安装完之后，/lib/systemd/system目录下会有rc-local.service文件，即我们所需要的配置文件。</p>
-<p>打开 rc-local.service文件，可以看到类似以下内容：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  SPDX-License-Identifier: LGPL-2.1+</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This unit gets pulled automatically into multi-user.target by</span></span><br><span class="line"><span class="comment"># systemd-rc-local-generator if /etc/rc.local is executable.</span></span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=/etc/rc.local Compatibility</span><br><span class="line"><span class="attr">Documentation</span>=man:systemd-rc-local-generator(<span class="number">8</span>)</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/etc/rc.local</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/etc/rc.local start</span><br><span class="line"><span class="attr">TimeoutSec</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">RemainAfterExit</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">GuessMainPID</span>=<span class="literal">no</span></span><br></pre></td></tr></table></figure>
-<p><strong>一般来说，正常的启动文件主要分成三部分</strong></p>
+        <h3 id="特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务"><a href="#特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务" class="headerlink" title="特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务"></a>特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务</h3><h2 id="安装Gitlab"><a href="#安装Gitlab" class="headerlink" title="安装Gitlab"></a>安装Gitlab</h2><h3 id="安装相关依赖"><a href="#安装相关依赖" class="headerlink" title="安装相关依赖"></a>安装相关依赖</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> policycoreutils openssh-<span class="keyword">server</span> openssh-clients postfix</span><br></pre></td></tr></table></figure>
+<h3 id="启动postfix，并设置为开机自启"><a href="#启动postfix，并设置为开机自启" class="headerlink" title="启动postfix，并设置为开机自启"></a>启动postfix，并设置为开机自启</h3><p><em>目的：支持gitlab邮件发送功能</em></p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable <span class="built_in">postfix</span> &amp;&amp; systemctl start <span class="built_in">postfix</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>[Unit] 段：启动顺序与依赖关系<br>[Service] 段：启动行为,如何启动，启动类型<br>[Install] 段：定义如何安装这个配置文件，即怎样做到开机启动</p>
+<p>若此时出现如下报错信息：</p>
+<p><img src="" alt=""></p>
+<p><strong>解决方法：</strong></p>
+<p>打开 <strong>/etc/postfix/main.cf</strong> 文件，并修改内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_interfaces = all</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_protocols = ipv4</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
 </blockquote>
-<p>可以看出，/etc/rc.local 的启动顺序是在network后面，但是显然它少了 [Install] 段，也就是，没有定义如何做开机启动，所以我们需要在后面加上 [Install] 段：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Install]</span>  </span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target  </span><br><span class="line"><span class="attr">Alias</span>=rc-local.service</span><br></pre></td></tr></table></figure>
-<p>配置好之后，文件内容是这样的：</p>
-<p><img src="1.png" alt=""></p>
-<p>然后保存退出。</p>
-<h3 id="2-配置rc-local文件"><a href="#2-配置rc-local文件" class="headerlink" title="2. 配置rc.local文件"></a>2. 配置rc.local文件</h3><p>因为Ubuntu18.04系统默认是没有 /etc/rc.local 文件的，所以需要我们手动创建，并赋予其可执行权限：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo touch /etc/rc.<span class="keyword">local</span></span><br><span class="line">$ sudo chmod <span class="number">755</span> /etc/rc.<span class="keyword">local</span></span><br></pre></td></tr></table></figure>
-<p>打开rc.local文件，添加以下内容：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>接着就可以在里面添加我们所需要的开机启动程序命令，可以直接写命令，也可以执行Shell脚本文件sh。</p>
-<p>这里我们先写一个测试命令<code>echo &quot;this just a test&quot; &gt; /usr/local/text.log</code>，以验证脚本是否生效，注意命令一定要写在<code>exit 0</code>之前。</p>
-<p>测试命令添加完之后，文件内容是这样的：</p>
+<blockquote>
+<p>重新输入<code>systemctl enable postfix &amp;&amp; systemctl start postfix</code>，会发现不再报错。</p>
+</blockquote>
+<h2 id="下载和安装gitlab社区版rpm包"><a href="#下载和安装gitlab社区版rpm包" class="headerlink" title="下载和安装gitlab社区版rpm包"></a>下载和安装gitlab社区版rpm包</h2><p>下载路径：<a href="https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/7/gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm" target="_blank" rel="noopener">gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm</a></p>
+<p><em>注意：根据自己的linux系统选择合适的包</em></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EL是Red Hat Enterprise Linux的简写 </span><br><span class="line">- EL6软件包用于在Red Hat <span class="number">6</span><span class="selector-class">.x</span>, CentOS <span class="number">6</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">6</span>.x进行安装 </span><br><span class="line">- EL5软件包用于在Red Hat <span class="number">5</span><span class="selector-class">.x</span>, CentOS <span class="number">5</span><span class="selector-class">.x</span>, CloudLinux <span class="number">5</span>.x的安装 </span><br><span class="line">- EL7 软件包用于在Red Hat <span class="number">7</span><span class="selector-class">.x</span>, CentOS <span class="number">7</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">7</span>.x的安装</span><br></pre></td></tr></table></figure>
+<p>下载好之后，输入命令 <code>rpm -ivh gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm</code> 进行安装。</p>
+<h2 id="修改访问Gitlab的URL"><a href="#修改访问Gitlab的URL" class="headerlink" title="修改访问Gitlab的URL"></a>修改访问Gitlab的URL</h2><p>打开 <code>/etc/gitlab/gitlab.rb</code> 文件，修改 <code>external_url</code> 的值，可以使用自定义域名，也可以是IP地址+端口号。如： <code>external_url &#39;http://105.13.44.103:1028&#39;</code>，修改完之后，保存即可。</p>
+<h2 id="重置并启动Gitlab"><a href="#重置并启动Gitlab" class="headerlink" title="重置并启动Gitlab"></a>重置并启动Gitlab</h2><blockquote>
+<p><strong>重置命令：</strong><code>gitlab-ctl reconfigure</code></p>
+</blockquote>
+<p><em>注：第一次预计需要几分钟</em></p>
 <p><img src="2.png" alt=""></p>
-<h3 id="3-为rc-local-service创建软链接"><a href="#3-为rc-local-service创建软链接" class="headerlink" title="3. 为rc.local.service创建软链接"></a>3. 为rc.local.service创建软链接</h3><p>通过<code>ls</code>命令可以看到，<code>/lib/systemd/system/rc.local.service</code>是一个软链接，链接到<code>/lib/systemd/system/rc-local.service</code>，而且 systemd 是默认读取 /etc/systemd/system 下的配置文件,，所以我们还需要在 /etc/systemd/system 目录下创建一个软链接，链接到<code>/lib/systemd/system/rc.local.service</code>，如下：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">rc</span>.<span class="title">local</span>.<span class="title">service</span> /<span class="title">etc</span>/<span class="title">systemd</span>/<span class="title">system</span>/</span></span><br></pre></td></tr></table></figure>
-<p>此时在/etc/systemd/system目录下会看到生成了一个软链接 rc.local.service。</p>
-<h3 id="4-重启系统，验证测试脚本"><a href="#4-重启系统，验证测试脚本" class="headerlink" title="4. 重启系统，验证测试脚本"></a>4. 重启系统，验证测试脚本</h3><p>执行<code>reboot</code>命令重启系统，查看/usr/local目录，会发现生成了一个text.log，说明开机启动已配置成功。</p>
+<blockquote>
+<p><strong>启动：</strong> <code>gitlab-ctl restart</code></p>
+</blockquote>
+<h2 id="浏览器访问Gitlab"><a href="#浏览器访问Gitlab" class="headerlink" title="浏览器访问Gitlab"></a>浏览器访问Gitlab</h2><p>在浏览器中输入刚才在<code>gitlab.rb</code>文件中配置的URL，访问Gitlab。</p>
+<p>第一次登陆时，系统会要求你输入密码（此时用户名默认为root）。</p>
+<p><span id="inline-blue">至此，Gitlab的搭建就完成了，下面看一下如何在Gitlab里创建和配置项目。</span></p>
+<h2 id="在Gitlab里创建和配置项目"><a href="#在Gitlab里创建和配置项目" class="headerlink" title="在Gitlab里创建和配置项目"></a>在Gitlab里创建和配置项目</h2><h3 id="配置Gitlab用户邮箱"><a href="#配置Gitlab用户邮箱" class="headerlink" title="配置Gitlab用户邮箱"></a>配置Gitlab用户邮箱</h3><p>首先注册一个gitlab账号，在注册过程中填上自己的邮箱地址。</p>
+<h3 id="添加用户侧电脑的key到Gitlab上"><a href="#添加用户侧电脑的key到Gitlab上" class="headerlink" title="添加用户侧电脑的key到Gitlab上"></a>添加用户侧电脑的key到Gitlab上</h3><p>先确保你的电脑上已安装Git，打开Git Bash，在bash中输入：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “yourEmail<span class="symbol">@example</span>.com”  <span class="meta">## 后面那个是输入自己的邮箱</span></span><br></pre></td></tr></table></figure>
+<p>再在 ~/.ssh/id_rsa.pub中复制其中的内容，在<em>User Settings</em> - <em>SSH Keys</em>中添加刚才复制的内容。</p>
+<p><img src="3.png" alt=""></p>
+<h3 id="将用户侧电脑上已存在的项目上传到Gitlab上"><a href="#将用户侧电脑上已存在的项目上传到Gitlab上" class="headerlink" title="将用户侧电脑上已存在的项目上传到Gitlab上"></a>将用户侧电脑上已存在的项目上传到Gitlab上</h3><p>1、先在Gitlab上创建一个空项目，如：test</p>
+<p>2、打开本地Git Bash，cd到你需要上传的项目目录下，配置局部的用户名和邮箱地址（为了防止对全局的用户名和邮箱造成影响）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/your project                       </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.name  <span class="string">"username"</span>      </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.email <span class="string">"email"</span></span></span><br></pre></td></tr></table></figure>
+<p>3、执行git命令，将本地项目上传到Gitlab上</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote <span class="keyword">add</span> origin git@<span class="number">10.3</span><span class="meta">.1</span><span class="meta">.12</span>:zhepan/<span class="keyword">test</span>.git</span><br><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit -m <span class="string">"gitlab-test"</span></span><br><span class="line">git <span class="keyword">push</span> -u origin master</span><br></pre></td></tr></table></figure>
+<p>至此，可以到浏览器刷新test项目，发现已经上传成功。 </p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="在执行-git-push-u-origin-master-时可能会报如下错误："><a href="#在执行-git-push-u-origin-master-时可能会报如下错误：" class="headerlink" title="在执行 git push -u origin master 时可能会报如下错误："></a>在执行 <code>git push -u origin master</code> 时可能会报如下错误：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">Permission denied, please try again.</span></span><br><span class="line"><span class="string">git@xxx'</span>s password:</span><br><span class="line">Permission denied, please try again.</span><br><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">git@xxx: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).</span></span><br><span class="line"><span class="string">fatal: Could not read from remote repository.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please make sure you have the correct access rights</span></span><br><span class="line"><span class="string">and the repository exists.</span></span><br></pre></td></tr></table></figure>
+<p>但此时我确实已经在本地生成了公私钥文件，而且密码输入的也是正确的。为什么还会报<code>Permission denied</code>呢？</p>
+<blockquote>
+<p>这是因为我在生成公钥时使用了自定义的名称（如：gitlab_id_rsa、gitlab_id_rsa.pub）而不是 id_rsa 和 id_rsa.pub，于是我将生成的密钥文件进行改名，再执行git push操作，就可以了。</p>
+</blockquote>
 
       
     </div>
@@ -443,11 +461,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ubuntu16-04/" rel="tag"><i class="fa fa-tag"></i> ubuntu16.04</a>
+            <a href="/tags/centos7/" rel="tag"><i class="fa fa-tag"></i> centos7</a>
           
-            <a href="/tags/开机自启/" rel="tag"><i class="fa fa-tag"></i> 开机自启</a>
-          
-            <a href="/tags/systemd/" rel="tag"><i class="fa fa-tag"></i> systemd</a>
+            <a href="/tags/gitlab/" rel="tag"><i class="fa fa-tag"></i> gitlab</a>
           
         </div>
       
@@ -460,8 +476,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/05/ss-bbr-vps/" rel="next" title="搬瓦工搭建Shadowsocks过程中的常见注意事项">
-                <i class="fa fa-chevron-left"></i> 搬瓦工搭建Shadowsocks过程中的常见注意事项
+              <a href="/2019/11/09/docker-image-repo/" rel="next" title="搭建私有化docker镜像仓库">
+                <i class="fa fa-chevron-left"></i> 搭建私有化docker镜像仓库
               </a>
             
           </div>
@@ -469,10 +485,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/16/v2ray/" rel="prev" title="Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代">
-                Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -690,7 +702,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd介绍"><span class="nav-number">1.</span> <span class="nav-text">systemd介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用systemd配置开机启动"><span class="nav-number">2.</span> <span class="nav-text">使用systemd配置开机启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置rc-local-service文件"><span class="nav-number">2.1.</span> <span class="nav-text">1. 配置rc-local.service文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置rc-local文件"><span class="nav-number">2.2.</span> <span class="nav-text">2. 配置rc.local文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-为rc-local-service创建软链接"><span class="nav-number">2.3.</span> <span class="nav-text">3. 为rc.local.service创建软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重启系统，验证测试脚本"><span class="nav-number">2.4.</span> <span class="nav-text">4. 重启系统，验证测试脚本</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务"><span class="nav-number">1.</span> <span class="nav-text">特别说明：我是在服务器防火墙关闭状态下搭建的gitlab服务</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Gitlab"><span class="nav-number"></span> <span class="nav-text">安装Gitlab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装相关依赖"><span class="nav-number">1.</span> <span class="nav-text">安装相关依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动postfix，并设置为开机自启"><span class="nav-number">2.</span> <span class="nav-text">启动postfix，并设置为开机自启</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载和安装gitlab社区版rpm包"><span class="nav-number"></span> <span class="nav-text">下载和安装gitlab社区版rpm包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改访问Gitlab的URL"><span class="nav-number"></span> <span class="nav-text">修改访问Gitlab的URL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重置并启动Gitlab"><span class="nav-number"></span> <span class="nav-text">重置并启动Gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器访问Gitlab"><span class="nav-number"></span> <span class="nav-text">浏览器访问Gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Gitlab里创建和配置项目"><span class="nav-number"></span> <span class="nav-text">在Gitlab里创建和配置项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Gitlab用户邮箱"><span class="nav-number">1.</span> <span class="nav-text">配置Gitlab用户邮箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户侧电脑的key到Gitlab上"><span class="nav-number">2.</span> <span class="nav-text">添加用户侧电脑的key到Gitlab上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将用户侧电脑上已存在的项目上传到Gitlab上"><span class="nav-number">3.</span> <span class="nav-text">将用户侧电脑上已存在的项目上传到Gitlab上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number"></span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在执行-git-push-u-origin-master-时可能会报如下错误："><span class="nav-number">1.</span> <span class="nav-text">在执行 git push -u origin master 时可能会报如下错误：</span></a></li></ol></li></div>
             
 
           </div>
