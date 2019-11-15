@@ -108,22 +108,21 @@
 
 
 
-  <meta name="description" content="本次搭建私有仓库用的是阿里云服务器，系统为Centos7.6 64位。">
-<meta name="keywords" content="centos,maven,nexus">
+  <meta name="description" content="介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。">
+<meta name="keywords" content="ubuntu,微信,wine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于Centos7搭建Maven私有仓库">
-<meta property="og:url" content="http://yoursite.com/2019/11/14/maven-nexus/index.html">
+<meta property="og:title" content="在ubuntu18.04上安装微信">
+<meta property="og:url" content="http://yoursite.com/2019/11/15/wechat-wine/index.html">
 <meta property="og:site_name" content="WingTsun Cat">
-<meta property="og:description" content="本次搭建私有仓库用的是阿里云服务器，系统为Centos7.6 64位。">
+<meta property="og:description" content="介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/1.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/2.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/3.png">
-<meta property="og:updated_time" content="2019-11-14T14:58:17.459Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/15/wechat-wine/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/15/wechat-wine/2.png">
+<meta property="og:updated_time" content="2019-11-15T08:29:08.751Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于Centos7搭建Maven私有仓库">
-<meta name="twitter:description" content="本次搭建私有仓库用的是阿里云服务器，系统为Centos7.6 64位。">
-<meta name="twitter:image" content="http://yoursite.com/2019/11/14/maven-nexus/1.png">
+<meta name="twitter:title" content="在ubuntu18.04上安装微信">
+<meta name="twitter:description" content="介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/15/wechat-wine/1.png">
 
 
 
@@ -132,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/11/14/maven-nexus/">
+  <link rel="canonical" href="http://yoursite.com/2019/11/15/wechat-wine/">
 
 
 
@@ -142,7 +141,7 @@
   };
 </script>
 
-  <title>基于Centos7搭建Maven私有仓库 | WingTsun Cat</title>
+  <title>在ubuntu18.04上安装微信 | WingTsun Cat</title>
   
 
 
@@ -303,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/14/maven-nexus/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/15/wechat-wine/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
@@ -320,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">基于Centos7搭建Maven私有仓库
+          <h1 class="post-title" itemprop="name headline">在ubuntu18.04上安装微信
               
             
           </h1>
@@ -345,7 +344,7 @@
                 
               
 
-              <time title="创建时间：2019-11-14 21:20:22 / 修改时间：22:58:17" itemprop="dateCreated datePublished" datetime="2019-11-14T21:20:22+08:00">2019-11-14</time>
+              <time title="创建时间：2019-11-15 16:03:28 / 修改时间：16:29:08" itemprop="dateCreated datePublished" datetime="2019-11-15T16:03:28+08:00">2019-11-15</time>
             
 
             
@@ -369,7 +368,7 @@
           
 
           
-              <div class="post-description">本次搭建私有仓库用的是阿里云服务器，系统为Centos7.6 64位。</div>
+              <div class="post-description">介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。</div>
           
 
         </div>
@@ -385,78 +384,45 @@
       
 
       
-        <h2 id="为什么要搭建Maven私服"><a href="#为什么要搭建Maven私服" class="headerlink" title="为什么要搭建Maven私服"></a>为什么要搭建Maven私服</h2><p>我们知道Maven仓库分为本地仓库和远程仓库，那么远程仓库又可以分为中央仓库、私服、其他远程仓库。在远程仓库中，默认的是中央仓库，中央仓库是Maven核心自带的远程仓库。</p>
-<p>当Maven根据pom中指定坐标寻找构件时，它首先会查看本地仓库。</p>
-<ul>
-<li>如果本地仓库存在此构件，则直接使用；</li>
-<li>如果本地仓库不存在此构件，Maven会去远程仓库查找，在发现需要的构件之后，下载到本地仓库再使用。</li>
-</ul>
-<p>那么既然有了中央仓库，为什么还要搭建私服呢？</p>
-<ul>
-<li>如果没有私服，我们所需的所有构件都需要通过maven的中央仓库和第三方的Maven仓库下载到本地，而一个团队中的所有人都重复的从maven仓库下载构件，那么无疑加大了仓库的负载和浪费了外网带宽，如果网速慢的话，还会影响项目的整体进程。</li>
-<li>我们知道，很多情况下，项目的开发都是在内网进行的。如果没有私服，项目连接不到maven远程仓库怎么办？开发的公共构件怎么让其它的项目使用？</li>
-</ul>
-<p>所以为了节省带宽和时间以及让公共构件能够在多个项目上使用，需要在局域网内架设一个私有的仓库服务器，用其代理所有外部的远程仓库。</p>
+        <p>一提到在linux系统上使用微信，大家可能第一反应就是用微信网页版。我刚开始也是这么想的，但现实是残酷的。当我尝试使用微信网页版登录时，发现已无法正常登录。在网上搜了下，得知微信网页版后续将会关闭。</p>
+<p>下面是我从网上搜到的<strong>关于微信网页版受限</strong>的资料，仅供参考。</p>
+<blockquote>
+<p><strong>一、第一次开始限制</strong></p>
+<p>在2017年9月份开始，腾讯已经 开始限制新注册的微信号禁止登录网页版微信，老的微信号则不受影响，可以自行验证。用新注册的微信号登录微信网页版，会提示：</p>
+</blockquote>
 <p><img src="1.png" alt=""></p>
-<p>从上图我们得知，nexus是Maven私服的一种，也是常用的Maven私服，nexus目前被超过10万个开发团队所使用。</p>
-<p><span id="inline-blue">下面我们就开始搭建一个Nexus私服。</span></p>
-<h2 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h2><p><code>Nexus</code> 需要 <code>jdk</code>环境。在安装前需要确认你的 <code>centos</code> 机器上是否已经安装了 <code>jdk</code> ， 如果没有安装，则可以执行以下命令安装：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> <span class="keyword">java</span></span><br></pre></td></tr></table></figure>
-<p>安装完成后，可以使用如下命令查看 <code>jdk</code> 的版本号</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -<span class="built_in">version</span></span><br></pre></td></tr></table></figure>
-<h2 id="下载Nexus"><a href="#下载Nexus" class="headerlink" title="下载Nexus"></a>下载Nexus</h2><p>可以到<a href="https://www.sonatype.com/nexus-repository-oss" target="_blank" rel="noopener">Nexus官网</a>去下载，命令如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="regexp">//</span>download.sonatype.com<span class="regexp">/nexus/</span><span class="number">3</span><span class="regexp">/nexus-3.13.0-01-unix.tar.gz</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>但由于网速问题，一般下载的比较慢。当时我也是遇到了这种问题，后来通过其它渠道下载到了nexus安装包，并放到了网盘上，供大家下载。</p>
+<p><strong>二、第二次完全屏蔽与限制</strong><br>而从2019年7月份开始，腾讯疑似彻底关闭了网页版微信登录入口，通过<a href="https://wx.qq.com" target="_blank" rel="noopener">https://wx.qq.com</a>  或 <a href="https://wx2.qq.com" target="_blank" rel="noopener">https://wx2.qq.com</a>  登录网页版的微信都会有如下类似提示信息，不管是新注册的微信号，还是老的微信号都是如此。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="symbol">&lt;error&gt;</span><span class="symbol">&lt;ret&gt;</span><span class="number">1203</span>&lt;/<span class="keyword">ret</span>&gt;<span class="symbol">&lt;message&gt;</span>为了你的帐号安全，此微信号不能登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。Windows微信下载地址：http<span class="variable">s:</span>//<span class="keyword">pc</span>.weixin.qq.<span class="keyword">com</span>  Mac微信下载地址：http<span class="variable">s:</span>//mac.weixin.qq.<span class="keyword">com</span>&lt;/message&gt;&lt;/error&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接：https:<span class="regexp">//</span>pan.baidu.com<span class="regexp">/s/</span><span class="number">1</span>jCVySPgZIKPRJjIP6j_RlQ </span><br><span class="line">提取码：<span class="number">9</span>wae</span><br></pre></td></tr></table></figure>
-<p>nexus安装包下载好之后，解压到指定位置，比如解压到<code>/opt</code>目录下：</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf nexus<span class="number">-3.13</span><span class="number">.0</span><span class="number">-01</span>-unix.tar.gz -C /opt</span><br></pre></td></tr></table></figure>
-<h2 id="配置nexus环境变量"><a href="#配置nexus环境变量" class="headerlink" title="配置nexus环境变量"></a>配置nexus环境变量</h2><p>打开<code>/etc/profile</code>文件，在文件末尾添加nexus环境变量，内容如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> maven nexus</span></span><br><span class="line">export MAVEN_HOME=/opt/nexus-3.13.0-01</span><br><span class="line">export PATH=$PATH:$MAVEN_HOME/bin</span><br></pre></td></tr></table></figure>
-<p>保存退出，重新加载配置文件，让配置生效：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
-<h2 id="启动Nexus"><a href="#启动Nexus" class="headerlink" title="启动Nexus"></a>启动Nexus</h2><p>由于刚才配置了nexus环境变量，所以此时可以在任意目录下，输入以下命令来启动nexus：</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nexus <span class="literal">start</span></span><br></pre></td></tr></table></figure>
-<p>启动之后的效果如下：</p>
+<p>既然微信网页版这条路不通，那我们就再尝试其它的路子吧。</p>
+<p>于是紧接着想到了用<a href="https://github.com/geeeeeeeeek/electronic-wechat/releases" target="_blank" rel="noopener">electronic-wechat</a>，<code>electronic-wechat</code>是托管在 github 中的一款第三方开源微信客户端，但它也是基于微信网页版API封装的一个客户端。既然现在微信网页版已经不能用了，那么<code>electronic-wechat</code>也就不能再正常使用了。</p>
+<p>至此，上述两条路都不通，那么还有没有其它的路呢？</p>
+<p><span id="inline-blue">这时候想到了Wine。</span> <strong>那什么是Wine？</strong></p>
+<h2 id="关于Wine"><a href="#关于Wine" class="headerlink" title="关于Wine"></a>关于Wine</h2><p><strong>Wine</strong>是一个在x86、x86-64的类UNIX系统下运行微软Windows程序的”兼容层”。Wine可以运行在Linux、Mac、FreeBSD和Solaris上，在Wine中运行的Windows程序，就如同运行原生Linux程序一样，不会有模拟器那样的性能问题。<strong>Wine</strong>是”Wine Is Not an Emulator”的递归缩写，所以<strong>它并不是模拟器</strong>，而是用兼容模式调用DLLs以运行Windows程序。</p>
+<p>接下来我们就开始安装和使用它吧。</p>
+<h2 id="安装Wine"><a href="#安装Wine" class="headerlink" title="安装Wine"></a>安装Wine</h2><p>1、创建一个Wine目录，如：放在<code>/opt</code>目录下，并给予777权限。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /opt</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo mkdir Wine</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo chmod 777 Wine</span></span><br></pre></td></tr></table></figure>
+<p>2、进入Wine目录，clone项目<code>deepin-wine</code>到本地。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:<span class="regexp">//gi</span>tee.com<span class="regexp">/wszqkzqk/</span>deepin-wine-<span class="keyword">for</span>-ubuntu.git</span><br></pre></td></tr></table></figure>
+<p>3、安装Wine</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>cd deepin-wine-<span class="keyword">for</span>-ubuntu</span><br><span class="line"><span class="variable">$ </span>sudo ./install.sh</span><br></pre></td></tr></table></figure>
+<p>至此，我们完成了Wine的安装，接下来安装微信。</p>
+<h2 id="安装微信"><a href="#安装微信" class="headerlink" title="安装微信"></a>安装微信</h2><h3 id="下载deepin发布的微信软件包"><a href="#下载deepin发布的微信软件包" class="headerlink" title="下载deepin发布的微信软件包"></a>下载deepin发布的微信软件包</h3><p>这里有两种下载方式：</p>
+<p>1、从gitee上下载，可能需要登录gitee后才能下载：<a href="https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat_2.6.8.65deepin0_i386.deb" target="_blank" rel="noopener">https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat_2.6.8.65deepin0_i386.deb</a></p>
+<p>2、从网盘上下载，我已经把微信安装包上传到了我的网盘中：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接：https:<span class="regexp">//</span>pan.baidu.com<span class="regexp">/s/</span><span class="number">15</span>FtAPH4P8JQagLTDMcEGdw </span><br><span class="line">提取码：<span class="number">9</span>mzx</span><br></pre></td></tr></table></figure>
+<h3 id="用dpkg安装微信软件包"><a href="#用dpkg安装微信软件包" class="headerlink" title="用dpkg安装微信软件包"></a>用dpkg安装微信软件包</h3><p>将上面下载到的wechat安装包（<code>deepin.com.wechat_2.6.8.65deepin0_i386.deb</code>）copy到刚才创建的Wine目录下，然后执行如下命令：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sudo</span> <span class="selector-tag">dpkg</span> <span class="selector-tag">-i</span> <span class="selector-tag">deepin</span><span class="selector-class">.com</span><span class="selector-class">.wechat_2</span><span class="selector-class">.6</span><span class="selector-class">.8</span><span class="selector-class">.65deepin0_i386</span><span class="selector-class">.deb</span></span><br></pre></td></tr></table></figure>
+<p><span id="inline-blue">至此，微信安装完成。</span> 此时可以在系统应用列表中看到<strong>微信图标</strong>，单击运行即可。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="系统是非中文语言环境，会出现微信登录后显示乱码"><a href="#系统是非中文语言环境，会出现微信登录后显示乱码" class="headerlink" title="系统是非中文语言环境，会出现微信登录后显示乱码"></a>系统是非中文语言环境，会出现微信登录后显示乱码</h3><p><strong>解决方法：</strong>在<code>/opt/deepinwine/tools/run.sh</code>中添加LC_ALL=”zh_CN.UTF-8”，重启微信。由于我的ubuntu系统语言是中文的，所以在安装时没有遇到这种问题。</p>
+<h3 id="微信中无法输入中文"><a href="#微信中无法输入中文" class="headerlink" title="微信中无法输入中文"></a>微信中无法输入中文</h3><p>当时我安装完微信后，满怀欣喜登录微信，结果发现不能输入中文，但我明明已经装了<strong>搜狗输入法</strong>。于是从网上搜索一番，找到了解决方案：</p>
+<p>搜狗输入法属于Fcitx框架，我们只需重启Fcitx服务就可以了，如下图所示：</p>
 <p><img src="2.png" alt=""></p>
-<p>此时nexus服务就启动了，nexus的默认端口是8081。此时我们可以在浏览器中访问一下：</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//你的服务器IP:8081</span></span><br></pre></td></tr></table></figure>
-<p>如果你使用的是阿里云，那么你需要在阿里云安全组中配置开启8081端口，否则在浏览器中会访问失败。</p>
-<p>如果你配置开启8081端口后，仍然启动nexus服务失败，则有可能你的8081端口被其它进程占用了。此时你可以使用以下命令来查看当前哪些端口被占用：</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -tulnp ## 查看系统端口占用情况</span><br><span class="line">netstat -tulnp | grep <span class="number">8081</span> ## 查看<span class="number">8081</span>端口的占用情况</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>netstat命令各个参数说明如下：</p>
-<p>-t : 指明显示TCP端口 </p>
-<p>-u : 指明显示UDP端口 </p>
-<p>-l : 仅显示监听套接字(所谓套接字就是使应用程序能够读写与收发通讯协议(protocol)与资料的程序) </p>
-<p>-n : 不进行DNS轮询，显示IP(可以加速操作) </p>
-<p>-p : 显示进程标识符和程序名称，每一个套接字/端口都属于一个程序</p>
-</blockquote>
-<p>如果发现8081端口已被占用，则需要重新为 <code>nexus</code> 指定端口。端口的配置文件是 <code>nexus-default.properties</code> ，在<code>nexus</code>目录下的 <code>etc</code> 目录，如下所示：</p>
-<p><img src="3.png" alt=""></p>
-<p>打开<code>nexus-default.properties</code>文件，修改如下内容：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">application-port=未被占用的端口</span><br><span class="line">如：application-port=8084</span><br></pre></td></tr></table></figure>
-<p>重启Nexus服务：</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nexus restart</span></span><br></pre></td></tr></table></figure>
-<p>至此，nexus端口的修改就完成了。</p>
-<h2 id="Nexus常用命令"><a href="#Nexus常用命令" class="headerlink" title="Nexus常用命令"></a>Nexus常用命令</h2><blockquote>
-<p>启动Nexus</p>
-</blockquote>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nexus <span class="literal">start</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>停止Nexus</p>
-</blockquote>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nexus <span class="built_in">stop</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>重启Nexus</p>
-</blockquote>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nexus restart</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>查看Nexus状态</p>
-</blockquote>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nexus status</span></span><br></pre></td></tr></table></figure>
-<p>最后说一下，nexus服务比较耗CPU，我的一个双核4G的阿里云服务器，启动nexus之后，cpu直接飙升到95%，内存占用600多MB，所以建议大家在搭建nexus服务时，使用性能好一点的服务器。</p>
+<p>如果重启Fcitx服务后，发现仍然无法输入中文，就重启下系统，然后再登录微信，会发现可以正常输入中文了。</p>
+<p><strong>参考链接：</strong></p>
+<p><a href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu" target="_blank" rel="noopener">https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/73033900" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/73033900</a></p>
 
       
     </div>
@@ -477,11 +443,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/centos/" rel="tag"><i class="fa fa-tag"></i> centos</a>
+            <a href="/tags/ubuntu/" rel="tag"><i class="fa fa-tag"></i> ubuntu</a>
           
-            <a href="/tags/maven/" rel="tag"><i class="fa fa-tag"></i> maven</a>
+            <a href="/tags/微信/" rel="tag"><i class="fa fa-tag"></i> 微信</a>
           
-            <a href="/tags/nexus/" rel="tag"><i class="fa fa-tag"></i> nexus</a>
+            <a href="/tags/wine/" rel="tag"><i class="fa fa-tag"></i> wine</a>
           
         </div>
       
@@ -494,8 +460,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/12/gitlab/" rel="next" title="基于centos7.6搭建Gitlab服务">
-                <i class="fa fa-chevron-left"></i> 基于centos7.6搭建Gitlab服务
+              <a href="/2019/11/14/maven-nexus/" rel="next" title="基于Centos7搭建Maven私有仓库">
+                <i class="fa fa-chevron-left"></i> 基于Centos7搭建Maven私有仓库
               </a>
             
           </div>
@@ -503,10 +469,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/11/15/wechat-wine/" rel="prev" title="在ubuntu18.04上安装微信">
-                在ubuntu18.04上安装微信 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -736,7 +698,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要搭建Maven私服"><span class="nav-number">1.</span> <span class="nav-text">为什么要搭建Maven私服</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jdk"><span class="nav-number">2.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载Nexus"><span class="nav-number">3.</span> <span class="nav-text">下载Nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nexus环境变量"><span class="nav-number">4.</span> <span class="nav-text">配置nexus环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Nexus"><span class="nav-number">5.</span> <span class="nav-text">启动Nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nexus常用命令"><span class="nav-number">6.</span> <span class="nav-text">Nexus常用命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Wine"><span class="nav-number">1.</span> <span class="nav-text">关于Wine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Wine"><span class="nav-number">2.</span> <span class="nav-text">安装Wine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装微信"><span class="nav-number">3.</span> <span class="nav-text">安装微信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载deepin发布的微信软件包"><span class="nav-number">3.1.</span> <span class="nav-text">下载deepin发布的微信软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用dpkg安装微信软件包"><span class="nav-number">3.2.</span> <span class="nav-text">用dpkg安装微信软件包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统是非中文语言环境，会出现微信登录后显示乱码"><span class="nav-number">4.1.</span> <span class="nav-text">系统是非中文语言环境，会出现微信登录后显示乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信中无法输入中文"><span class="nav-number">4.2.</span> <span class="nav-text">微信中无法输入中文</span></a></li></ol></li></ol></div>
             
 
           </div>
