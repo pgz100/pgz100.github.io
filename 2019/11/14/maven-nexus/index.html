@@ -119,7 +119,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/11/14/maven-nexus/3.png">
-<meta property="og:updated_time" content="2019-11-14T14:58:17.459Z">
+<meta property="og:updated_time" content="2019-11-16T08:16:04.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Centos7搭建Maven私有仓库">
 <meta name="twitter:description" content="本次搭建私有仓库用的是阿里云服务器，系统为Centos7.6 64位。">
@@ -345,12 +345,24 @@
                 
               
 
-              <time title="创建时间：2019-11-14 21:20:22 / 修改时间：22:58:17" itemprop="dateCreated datePublished" datetime="2019-11-14T21:20:22+08:00">2019-11-14</time>
+              <time title="创建时间：2019-11-14 21:20:22" itemprop="dateCreated datePublished" datetime="2019-11-14T21:20:22+08:00">2019-11-14</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-16 16:16:04" itemprop="dateModified" datetime="2019-11-16T16:16:04+08:00">2019-11-16</time>
               
             
           </span>
@@ -404,12 +416,12 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install</span> <span class="keyword">java</span></span><br></pre></td></tr></table></figure>
 <p>安装完成后，可以使用如下命令查看 <code>jdk</code> 的版本号</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -<span class="built_in">version</span></span><br></pre></td></tr></table></figure>
-<h2 id="下载Nexus"><a href="#下载Nexus" class="headerlink" title="下载Nexus"></a>下载Nexus</h2><p>可以到<a href="https://www.sonatype.com/nexus-repository-oss" target="_blank" rel="noopener">Nexus官网</a>去下载，命令如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="regexp">//</span>download.sonatype.com<span class="regexp">/nexus/</span><span class="number">3</span><span class="regexp">/nexus-3.13.0-01-unix.tar.gz</span></span><br></pre></td></tr></table></figure>
+<h2 id="下载Nexus"><a href="#下载Nexus" class="headerlink" title="下载Nexus"></a>下载Nexus</h2><p>可以到<a href="https://www.sonatype.com/nexus-repository-oss" target="_blank" rel="noopener">Nexus官网</a>去下载，或直接输入如下命令：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:<span class="regexp">//</span>sonatype-download.global.ssl.fastly.net<span class="regexp">/nexus/</span><span class="number">3</span><span class="regexp">/nexus-3.16.1-02-unix.tar.gz</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>但由于网速问题，一般下载的比较慢。当时我也是遇到了这种问题，后来通过其它渠道下载到了nexus安装包，并放到了网盘上，供大家下载。</p>
+<p>但由于网络问题，一般下载的比较慢。当时我也是遇到了这种问题，后来通过其它渠道下载到了nexus安装包，并放到了网盘上，供大家下载。</p>
 </blockquote>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接：https:<span class="regexp">//</span>pan.baidu.com<span class="regexp">/s/</span><span class="number">1</span>jCVySPgZIKPRJjIP6j_RlQ </span><br><span class="line">提取码：<span class="number">9</span>wae</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接: https:<span class="regexp">//</span>pan.baidu.com<span class="regexp">/s/</span><span class="number">1</span>KpQGcFkESiey1ouOAHP3OA </span><br><span class="line">提取码: <span class="number">5</span>yxy</span><br></pre></td></tr></table></figure>
 <p>nexus安装包下载好之后，解压到指定位置，比如解压到<code>/opt</code>目录下：</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf nexus<span class="number">-3.13</span><span class="number">.0</span><span class="number">-01</span>-unix.tar.gz -C /opt</span><br></pre></td></tr></table></figure>
 <h2 id="配置nexus环境变量"><a href="#配置nexus环境变量" class="headerlink" title="配置nexus环境变量"></a>配置nexus环境变量</h2><p>打开<code>/etc/profile</code>文件，在文件末尾添加nexus环境变量，内容如下：</p>
@@ -456,7 +468,7 @@
 <p>查看Nexus状态</p>
 </blockquote>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nexus status</span></span><br></pre></td></tr></table></figure>
-<p>最后说一下，nexus服务比较耗CPU，我的一个双核4G的阿里云服务器，启动nexus之后，cpu直接飙升到95%，内存占用600多MB，所以建议大家在搭建nexus服务时，使用性能好一点的服务器。</p>
+<p>最后分享下我遇到的一个坑：Nexus服务在刚开始启动时，比较耗CPU，一个双核4G的阿里云服务器，在刚启动Nexus服务时，CPU最高飙升到85%，持续10秒左右在50%以上，大概1分钟之后，CPU恢复正常，在1%左右的水平，内存占用在1.2G左右。</p>
 
       
     </div>
