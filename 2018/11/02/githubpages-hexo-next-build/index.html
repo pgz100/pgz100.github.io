@@ -420,7 +420,7 @@
 <p><strong>Git入门教程：</strong> <a href="http://git.oschina.net/progit/" target="_blank" rel="noopener">Pro Git（中文版）</a></p>
 <h2 id="安装和体验Hexo"><a href="#安装和体验Hexo" class="headerlink" title="安装和体验Hexo"></a>安装和体验Hexo</h2><p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
 <h3 id="1-安装Hexo"><a href="#1-安装Hexo" class="headerlink" title="1. 安装Hexo"></a>1. 安装Hexo</h3><p>在Windows桌面，右键鼠标，点击”Git Bash Here”，打开Git Bash，输入npm命令即可安装。</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-<span class="keyword">cli</span> -g</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-cli -g</span></span><br></pre></td></tr></table></figure>
 <p>在安装过程中，控制台可能会出现一些Warning，可以不用过于在意。</p>
 <p>安装完毕后，输入：<code>hexo -v</code>，可能会报错：<code>bash: hexo: command not found</code>。</p>
 <p>这是因为没有配置hexo的环境变量导致。</p>
@@ -428,7 +428,7 @@
 <p><img src="hexo_path.jpg" alt=""></p>
 <p>配置完环境变量后，再输入<code>hexo -v</code>，会发现控制台上打印出一些hexo的版本信息，说明Hexo安装成功了。</p>
 <h3 id="2-Hexo初始化配置"><a href="#2-Hexo初始化配置" class="headerlink" title="2.  Hexo初始化配置"></a>2.  Hexo初始化配置</h3><h4 id="创建Hexo博客项目文件夹"><a href="#创建Hexo博客项目文件夹" class="headerlink" title="创建Hexo博客项目文件夹"></a>创建Hexo博客项目文件夹</h4><p>根据自己的喜好新建目录（如F:\Blog\Hexo），进入到F:\Blog\Hexo文件夹下，右键鼠标，点击Git Bash Here，进入Git命令框，执行以下操作。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo init</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo init</span></span><br></pre></td></tr></table></figure>
 <p>这个命令会从Github上的官方Hexo项目拉取用于项目初始化的代码，其中包含名为package.json的描述性文件。初始化完毕后，可以看到Hexo文件夹下的目录如下：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">|- node_modules</span></span><br><span class="line"><span class="string">|- scaffolds</span></span><br><span class="line"><span class="string">|- source</span></span><br><span class="line"><span class="string">|- themes</span></span><br><span class="line"><span class="string">|- .gitignore</span></span><br><span class="line"><span class="string">|- _config.yml</span></span><br><span class="line"><span class="string">|- package.json</span></span><br></pre></td></tr></table></figure>
 <p>其中_config.yml为Hexo的配置描述文件，source目录用于存放博客内容（ source/_posts目录下默认会生成一个hello-world.md文件），themes目录用于存放主题的样式（默认会生成一个landscaple主题目录）。</p>
@@ -473,9 +473,9 @@
 </li>
 <li><p>在Hexo目录下右键打开Git Bash Here，输入以下命令，将你的博客部署到你的Github上。</p>
 <p>注：hexo g 是 hexo generate的简写， hexo d 是 hexo deploy 的简写。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo d</span></span><br></pre></td></tr></table></figure>
 <p>或直接执行</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo g -d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g -d</span></span><br></pre></td></tr></table></figure>
 <p>如果此时报错：ERROR Deployer not found: git，则说明deployer没有安装成功，需要执行如下命令再安装一次：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
 <p>然后再执行 <code>hexo g -d</code>，你的博客就成功部署到你的Github上了。</p>
@@ -498,10 +498,10 @@
 </ul>
 </blockquote>
 <p>右键鼠标，选择Git Bash Here，打开Git Bash，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean  （最好每次本地预览或更新主题到github前都clean下，防止因为缓存问题，导致更新不及时）</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean  （最好每次本地预览或更新主题到github前都clean下，防止因为缓存问题，导致更新不及时）</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s</span></span><br></pre></td></tr></table></figure>
 <p>打开浏览器，输入 <code>localhost:4000</code> 预览主题效果。</p>
 <p>如果觉得效果满意，可以执行以下命令，将它部署到你的Github上。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g -d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g -d</span></span><br></pre></td></tr></table></figure>
 <h3 id="4-主题的其它相关配置"><a href="#4-主题的其它相关配置" class="headerlink" title="4. 主题的其它相关配置"></a>4. 主题的其它相关配置</h3><p>在Hexo/themes/next目录下，我们会发现也有一个<code>_config.yml</code>文件，这个文件是由主题作者提供，用于配置主题相关的选项，这里我们把它叫做<span id="inline-purple"> 主题配置文件 </span>。</p>
 <p>其实，NexT官网有个专业的说明文档，里面详细介绍了NexT的使用和配置方法。更多的NexT主题配置，请进入Next官网，<a href="https://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">查看Next使用文档</a>。再次提醒一下，在配置主题时，要注意我们的NexT主题是从 <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> 里面下载的，还是从 <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">https://github.com/theme-next/hexo-theme-next</a> 里面下载的，截止到<code>2018年11月2号</code>，NexT官网的使用文档是根据<code>iissnan/hexo-theme-next</code>版本来编写的。</p>
 <h2 id="在Hexo博客上写文章"><a href="#在Hexo博客上写文章" class="headerlink" title="在Hexo博客上写文章"></a>在Hexo博客上写文章</h2><h3 id="1-用hexo创建文章"><a href="#1-用hexo创建文章" class="headerlink" title="1. 用hexo创建文章"></a>1. 用hexo创建文章</h3><p>我们在写文章时，有些情况下，需要在文章中插入一些图片，此时可以采用本地引用的方法，将图片放在文章自己的目录中。具体方法如下：</p>
@@ -510,7 +510,7 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在本地Hexo目录下（如F:\Blog\Hexo），右键鼠标，打开Git Bash，执行命令</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> my_article</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo new my_article</span></span><br></pre></td></tr></table></figure>
 <p>此时会在source/_posts/目录下生成my_article.md 和 同名文件夹my_article。</p>
 </li>
 <li><p>将需要使用的图片资源放在my_article目录下，在文章中就可以使用相对路径来引用图片资源了，例如：</p>
