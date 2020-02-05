@@ -120,7 +120,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/2.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/3.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/4.jpg">
-<meta property="og:updated_time" content="2020-02-05T12:26:23.118Z">
+<meta property="og:updated_time" content="2020-02-05T12:31:41.720Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智能家居物联网平台环境搭建">
 <meta name="twitter:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。">
@@ -346,7 +346,7 @@
                 
               
 
-              <time title="创建时间：2020-02-05 11:22:59 / 修改时间：20:26:23" itemprop="dateCreated datePublished" datetime="2020-02-05T11:22:59+08:00">2020-02-05</time>
+              <time title="创建时间：2020-02-05 11:22:59 / 修改时间：20:31:41" itemprop="dateCreated datePublished" datetime="2020-02-05T11:22:59+08:00">2020-02-05</time>
             
 
             
@@ -427,15 +427,15 @@
 <p>至此，两个用户创建成功，用户信息都保存在 pwfile.example 文件中。</p>
 <p><img src="2.png" alt=""></p>
 <p><strong>mosquitto_passwd命令的基本用法：</strong></p>
-<p>1、mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</p>
+<p>mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</p>
 <blockquote>
 <p>用法：mosquitto_passwd -c passwordfile username</p>
 </blockquote>
-<p>2、mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</p>
+<p>mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</p>
 <blockquote>
 <p>用法：mosquitto_passwd -b passwordfile username password</p>
 </blockquote>
-<p>3、mosquitto_passwd -D：删除一个用户。</p>
+<p>mosquitto_passwd -D：删除一个用户。</p>
 <blockquote>
 <p>用法：mosquitto_passwd -D passwordfile username</p>
 </blockquote>
