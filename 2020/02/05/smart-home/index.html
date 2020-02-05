@@ -120,7 +120,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/2.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/3.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/4.jpg">
-<meta property="og:updated_time" content="2020-02-05T12:17:44.564Z">
+<meta property="og:updated_time" content="2020-02-05T12:26:23.118Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智能家居物联网平台环境搭建">
 <meta name="twitter:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。">
@@ -346,7 +346,7 @@
                 
               
 
-              <time title="创建时间：2020-02-05 11:22:59 / 修改时间：20:17:44" itemprop="dateCreated datePublished" datetime="2020-02-05T11:22:59+08:00">2020-02-05</time>
+              <time title="创建时间：2020-02-05 11:22:59 / 修改时间：20:26:23" itemprop="dateCreated datePublished" datetime="2020-02-05T11:22:59+08:00">2020-02-05</time>
             
 
             
@@ -426,27 +426,18 @@
 <p><strong>注意第二次创建mosquitto_test用户时不用加 -c 。如果加了 -c，则会把第一次创建的admin用户给覆盖掉。</strong></p>
 <p>至此，两个用户创建成功，用户信息都保存在 pwfile.example 文件中。</p>
 <p><img src="2.png" alt=""></p>
+<p><strong>mosquitto_passwd命令的基本用法：</strong></p>
+<p>1、mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</p>
 <blockquote>
-<p>mosquitto_passwd命令的基本用法：</p>
-<ul>
-<li><p>mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">   用法：mosquitto_passwd -c passwordfile username</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<p>用法：mosquitto_passwd -c passwordfile username</p>
 </blockquote>
+<p>2、mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</p>
 <blockquote>
-<ul>
-<li><p>mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">   用法：mosquitto_passwd -b passwordfile username password</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<p>用法：mosquitto_passwd -b passwordfile username password</p>
 </blockquote>
+<p>3、mosquitto_passwd -D：删除一个用户。</p>
 <blockquote>
-<ul>
-<li><p>mosquitto_passwd -D：删除一个用户。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">   用法：mosquitto_passwd -D passwordfile username</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<p>用法：mosquitto_passwd -D passwordfile username</p>
 </blockquote>
 <p>此时所有客户端连接 mosquitto 服务都需要输入用户名和密码。</p>
 <h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><p>Mosquitto 权限是根据 topic 控制的，类似目录管理。你可以设定每个用户的订阅/发布权限，也可以设定每个用户可访问的topic范围，从而达到权限控制的目的。</p>
@@ -489,10 +480,10 @@
 <p><a href="https://github.com/domoticz/domoticz/tree/3.8153" target="_blank" rel="noopener">https://github.com/domoticz/domoticz/tree/3.8153</a></p>
 <h3 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
 <h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>cmake -DCMAKE_BUILD_TYPE=Release .</span><br><span class="line"><span class="variable">$ </span>make</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
 <p><strong>说明：</strong>在低配电脑上进行编译可能需要10-15分钟。如果你的电脑拥有多核CPU，可以通过给<code>make</code>命令增加’-j’标识来使用更多核心，这样会快很多。四核CPU可以使用<code>make -j4</code>代替<code>make</code>。</p>
 <h3 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>./domoticz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./domoticz</span></span><br></pre></td></tr></table></figure>
 <p>然后在浏览器中输入IP:8080即可访问domoticz的Web控制界面，会发现Web前端的版本号是v3.5876，而本次下载的domoticz源码版本号是v3.8153，注意不要把这两者弄混淆了。</p>
 <p><img src="4.jpg" alt=""></p>
 <p><strong>说明：</strong>domoticz默认使用的端口是8080，如果需要更改端口号，可在启动domoticz时，使用参数 <code>-www</code> 来指定端口号，如：<code>./domoticz -www 8090</code></p>
@@ -505,7 +496,7 @@
 <li><a href="https://www.domoticz.cn/wiki/Install.txt" target="_blank" rel="noopener">https://www.domoticz.cn/wiki/Install.txt</a></li>
 </ul>
 <h1 id="可能用到的工具"><a href="#可能用到的工具" class="headerlink" title="可能用到的工具"></a>可能用到的工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install net-tools ##安装netstat</span><br><span class="line">$ netstat -nultp            ##查看所有tcp、udp的端口使用情况</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>各参数说明：</p>
 <ul>
@@ -517,7 +508,7 @@
 </ul>
 </blockquote>
 <p>例如查看 8000 端口的情况，使用以下命令：</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netstat -nultp <span class="string">| grep 8000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
