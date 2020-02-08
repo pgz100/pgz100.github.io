@@ -109,14 +109,14 @@
 
 
   <meta name="description" content="介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。">
-<meta name="keywords" content="docker">
+<meta name="keywords" content="docker,docker-compose">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker基本用法">
 <meta property="og:url" content="http://yoursite.com/2019/07/16/docker-usage/index.html">
 <meta property="og:site_name" content="WingTsun Cat">
 <meta property="og:description" content="介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-06T08:34:20.928Z">
+<meta property="og:updated_time" content="2020-02-08T04:04:43.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker基本用法">
 <meta name="twitter:description" content="介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。">
@@ -366,7 +366,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-06 16:34:20" itemprop="dateModified" datetime="2020-02-06T16:34:20+08:00">2020-02-06</time>
+                <time title="修改时间：2020-02-08 12:04:43" itemprop="dateModified" datetime="2020-02-08T12:04:43+08:00">2020-02-08</time>
               
             
           </span>
@@ -518,6 +518,181 @@
 <blockquote>
 <p>如果是临时测试，可以在运行容器时加上<code>--rm</code>参数，这样在退出容器以后，容器就被自动删除了。如果不加<code>--rm</code> ，则退出容器后，容器只是停止运行，而数据依然被保留。</p>
 </blockquote>
+<h3 id="Docker-Compose基本用法"><a href="#Docker-Compose基本用法" class="headerlink" title="Docker Compose基本用法"></a>Docker Compose基本用法</h3><p>Docker Compose是一个定义和运行多容器应用的单机编排工具。通过Docker Compose你可以使用一个单一的YAML文件来配置多个应用服务，通过一条命令，就可以将所有配置的服务全部启动起来。</p>
+<p>在介绍docker compose之前，我们先简单了解下YAML文件：</p>
+<p><strong>YAML（Yet Another Markup Language）</strong>（发音 /ˈjæməl/ ）是一种基于Unicode容易阅读，容易和脚本语言交互的，用来表达资料序列的编程语言。</p>
+<h4 id="yml的基本语法"><a href="#yml的基本语法" class="headerlink" title="yml的基本语法"></a>yml的基本语法</h4><p>1、yml文件以缩进代表层级关系</p>
+<p>2、缩进不允许使用tab，只能使用空格</p>
+<p>3、空格的个数不重要，只要相同层级的元素左对齐即可</p>
+<p>4、大小写敏感</p>
+<p>5、数据格式为，名称:(空格)值</p>
+<p>6、‘#’表示注释，且只能单行注释，注释内容是从#开始处到行尾</p>
+<p>7、破折号后面跟一个空格（a dash and space）表示列表。</p>
+<h4 id="yml支持的数据格式"><a href="#yml支持的数据格式" class="headerlink" title="yml支持的数据格式"></a>yml支持的数据格式</h4><p>1、对象：键值对的集合(key:value)</p>
+<ul>
+<li>字符串不用使用双引号或单引号圈起来</li>
+<li>双引号圈住时不会转义字符串中的特殊字符</li>
+<li>单引号圈住时会转义字符串中的特殊字符</li>
+</ul>
+<p>2、数组：一组按顺序排列的值</p>
+<blockquote>
+<p>多行写法</p>
+</blockquote>
+<p>数组名:</p>
+<p>​       - 元素1</p>
+<p>​       - 元素2</p>
+<p>​       - 元素3</p>
+<blockquote>
+<p>单行写法：</p>
+</blockquote>
+<p>数组名: [元素1,元素2,元素3]</p>
+<p>3、字面量：单个的、不可再分的值（数字、字符串、布尔值）</p>
+<blockquote>
+<p>以上内容的参考链接：</p>
+</blockquote>
+<ul>
+<li><a href="https://blog.csdn.net/wingsb/article/details/85270529" target="_blank" rel="noopener">https://blog.csdn.net/wingsb/article/details/85270529</a></li>
+<li><a href="https://blog.csdn.net/zyp1376308302/article/details/81223890" target="_blank" rel="noopener">https://blog.csdn.net/zyp1376308302/article/details/81223890</a></li>
+<li><a href="https://www.cnblogs.com/hellxz/p/11039514.html" target="_blank" rel="noopener">https://www.cnblogs.com/hellxz/p/11039514.html</a></li>
+</ul>
+<p>关于docker compose的用法，在网上有很多的介绍，具体可以参考这个：<a href="https://www.cnblogs.com/breezey/p/9426085.html" target="_blank" rel="noopener">https://www.cnblogs.com/breezey/p/9426085.html</a></p>
+<p>这里只简单介绍下常用的一些命令以及我自己在使用过程中的一些经验。</p>
+<h4 id="docker-compose-常用命令"><a href="#docker-compose-常用命令" class="headerlink" title="docker-compose 常用命令"></a>docker-compose 常用命令</h4><p>说明：<strong>docker-compose命令必须运行在，docker-compose.yml文件所在的目录才有效</strong></p>
+<blockquote>
+<p>有两种方式可以有效运行docker-compose命令</p>
+</blockquote>
+<p>1、在docker-compose.yml文件所在目录下执行docker-compose命令：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up    ##前台运行</span><br><span class="line">或</span><br><span class="line">docker-compose up -d ##后台运行</span><br></pre></td></tr></table></figure>
+<p>2、使用 <code>-f</code> 参数指定compose文件，例如：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f <span class="regexp">/opt/</span>test-compose.yml up    <span class="comment">##前台运行</span></span><br><span class="line">或</span><br><span class="line">docker-compose -f <span class="regexp">/opt/</span>test-compose.yml up -d <span class="comment">##后台运行</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-compose up -d</td>
+<td>构建并启动所有容器</td>
+</tr>
+<tr>
+<td>docker-compose up -d –build</td>
+<td>在dockerfile更新后，会自动更新image</td>
+</tr>
+<tr>
+<td>docker-compose up -d nginx</td>
+<td>构建并启动nignx容器</td>
+</tr>
+<tr>
+<td>docker-compose exec nginx bash</td>
+<td>登录到nginx容器中</td>
+</tr>
+<tr>
+<td>docker-compose down</td>
+<td>删除所有容器,镜像</td>
+</tr>
+<tr>
+<td>docker-compose ps</td>
+<td>显示所有容器</td>
+</tr>
+<tr>
+<td>docker-compose restart nginx</td>
+<td>重启nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose run nginx ping <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a></td>
+<td>在nginx容器上执行ping命令</td>
+</tr>
+<tr>
+<td>docker-compose build nginx</td>
+<td>构建nginx镜像</td>
+</tr>
+<tr>
+<td>docker-compose build –no-cache nginx</td>
+<td>构建nginx镜像过程中不使用缓存</td>
+</tr>
+<tr>
+<td>docker-compose logs nginx</td>
+<td>查看nginx容器的日志</td>
+</tr>
+<tr>
+<td>docker-compose logs -f nginx</td>
+<td>查看nginx容器的实时日志</td>
+</tr>
+<tr>
+<td>docker-compose config  -q</td>
+<td>验证（docker-compose.yml）文件配置。<br>配置正确时，不输出任何内容；<br>文件配置错误，输出错误信息。</td>
+</tr>
+<tr>
+<td>docker-compose pause nginx</td>
+<td>暂停nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose unpause nginx</td>
+<td>恢复nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose rm nginx</td>
+<td>删除容器（删除前必须关闭容器）</td>
+</tr>
+<tr>
+<td>docker-compose stop nginx</td>
+<td>停止nignx容器</td>
+</tr>
+<tr>
+<td>docker-compose start nginx</td>
+<td>启动nignx容器</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a href="https://www.cnblogs.com/minseo/p/11548177.html" target="_blank" rel="noopener">https://www.cnblogs.com/minseo/p/11548177.html</a></li>
+<li><p><a href="https://blog.csdn.net/weixin_30546933/article/details/96719086" target="_blank" rel="noopener">https://blog.csdn.net/weixin_30546933/article/details/96719086</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/yanxilou/article/details/99648359" target="_blank" rel="noopener">https://blog.csdn.net/yanxilou/article/details/99648359</a></p>
+</li>
+</ul>
+<h4 id="docker-compose-yml配置文件说明"><a href="#docker-compose-yml配置文件说明" class="headerlink" title="docker-compose.yml配置文件说明"></a>docker-compose.yml配置文件说明</h4><p>其实网上有很多关于配置文件的说明，这里就不再做详细介绍。这里介绍一下docker-compose如何通过文件来声明默认的docker容器环境变量。</p>
+<blockquote>
+<p>Docker Compose支持使用声明默认环境变量的<code>.env</code>文件启动，这个文件的位置需要与docker-compose.yml同级目录。我们只需要在同级目录下创建<code>.env</code>文件来指定默认的环境变量，这些变量可以部分或完整作为配置的内容，大大简化我们的配置，以及一处修改多处生效的目的。</p>
+</blockquote>
+<h5 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h5><ul>
+<li>.env文件中的每一行都是<code>KEY=VAL</code>格式</li>
+<li>以<code>#</code>开头的内容将被注释</li>
+<li>忽略空白行</li>
+<li><code>.env</code>中的KEY可以在<code>docker-compose.yml</code>中作为某个<code>VAL</code>的一部分</li>
+</ul>
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>这里拿个nginx做测试吧，我们最后使用<code>docker-compose config</code>进行查看当前环境生效的配置。</p>
+<p>1、新建并进入目录<code>test</code>，创建<code>docker-compose.yml</code>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir <span class="built_in">test</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> <span class="built_in">test</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim docker-compose.yml</span></span><br></pre></td></tr></table></figure>
+<p>2、往<code>docker-compose.yml</code>文件中写入如下内容：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="symbol">services:</span> </span><br><span class="line"><span class="symbol">    mynginx:</span> </span><br><span class="line"><span class="symbol">        image:</span> nginx:$&#123;TAG&#125;</span><br><span class="line"><span class="symbol">        ports:</span> </span><br><span class="line">            - <span class="number">80</span>:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>3、如果我们此时直接启动<code>docker-compose config</code> 我们会得到如下输出：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line"><span class="symbol">WARNING: </span>The TAG variable is not set. Defaulting to a blank string.</span><br><span class="line">services:</span><br><span class="line"><span class="code">  mynginx:</span></span><br><span class="line"><span class="code">    image: 'nginx:'</span></span><br><span class="line"><span class="code">    ports:</span></span><br><span class="line"><span class="code">    - 80:80/tcp</span></span><br><span class="line">version: <span class="emphasis">'3.0'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如你所见，由于引用的变量TAG不存在，而被当成空字符串进行赋值。</p>
+</blockquote>
+<p>4、创建<code>.env</code>文件并在文件中添加如下内容：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env the default environment config file</span></span><br><span class="line"><span class="attr">TAG</span>=<span class="number">1.7</span>.<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>5、再次启动<code>docker-compose config</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">$</span> <span class="string">docker-compose</span> <span class="string">config</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mynginx:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">nginx:1.7.9</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">80</span><span class="string">:80/tcp</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3.0'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此时会发现变量TAG被.env文件中的字符串赋值。</p>
+</blockquote>
+<p><strong>注意：</strong>这个默认的环境变量配置的优先级略低，如果是从docker-compose run命令中传入相同的KEY，则yml配置文件中的值会被覆盖。</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a href="https://www.cnblogs.com/breezey/p/9426085.html" target="_blank" rel="noopener">https://www.cnblogs.com/breezey/p/9426085.html</a></li>
+<li><a href="https://blog.csdn.net/qq_36148847/article/details/79427878" target="_blank" rel="noopener">https://blog.csdn.net/qq_36148847/article/details/79427878</a></li>
+<li><a href="https://www.cnblogs.com/hellxz/p/11039514.html" target="_blank" rel="noopener">https://www.cnblogs.com/hellxz/p/11039514.html</a></li>
+</ul>
 <h3 id="实战经验"><a href="#实战经验" class="headerlink" title="实战经验"></a>实战经验</h3><p>目前 Docker 官方已开始推荐使用 <code>Alpine</code> 替代之前的 <code>Ubuntu</code> 做为基础镜像环境。<code>Alpine</code> 操作系统是一个面向安全的轻型 <code>Linux</code> 发行版。<code>Alpine</code> 提供了自己的包管理工具 <code>apk</code>，可以通过 <code>https://pkgs.alpinelinux.org/packages</code> 网站上查询包信息，也可以直接通过 <code>apk</code> 命令直接查询和安装各种软件。</p>
 <p>Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker镜像，它的容量非常小，仅仅只有 5 MB 左右（对比 Ubuntu 系列镜像接近 200 MB），且拥有非常友好的包管理机制。</p>
 <h4 id="拉取Alpine基础镜像"><a href="#拉取Alpine基础镜像" class="headerlink" title="拉取Alpine基础镜像"></a>拉取Alpine基础镜像</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker pull alpine</span></span><br></pre></td></tr></table></figure>
@@ -549,6 +724,8 @@
         <div class="post-tags">
           
             <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+          
+            <a href="/tags/docker-compose/" rel="tag"><i class="fa fa-tag"></i> docker-compose</a>
           
         </div>
       
@@ -749,7 +926,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -828,7 +1007,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker基本操作"><span class="nav-number">1.</span> <span class="nav-text">docker基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker概要"><span class="nav-number">1.1.</span> <span class="nav-text">查看docker概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker帮助文档"><span class="nav-number">1.2.</span> <span class="nav-text">查看docker帮助文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker状态"><span class="nav-number">1.3.</span> <span class="nav-text">查看docker状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动docker"><span class="nav-number">1.4.</span> <span class="nav-text">启动docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭docker"><span class="nav-number">1.5.</span> <span class="nav-text">关闭docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启docker"><span class="nav-number">1.6.</span> <span class="nav-text">重启docker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker镜像操作"><span class="nav-number">2.</span> <span class="nav-text">docker镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看镜像列表"><span class="nav-number">2.1.</span> <span class="nav-text">查看镜像列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索镜像"><span class="nav-number">2.2.</span> <span class="nav-text">搜索镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置docker镜像加速器"><span class="nav-number">2.3.</span> <span class="nav-text">配置docker镜像加速器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker镜像拉取、删除"><span class="nav-number">2.4.</span> <span class="nav-text">docker镜像拉取、删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker容器操作"><span class="nav-number">3.</span> <span class="nav-text">docker容器操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看容器"><span class="nav-number">3.1.</span> <span class="nav-text">查看容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器创建"><span class="nav-number">3.2.</span> <span class="nav-text">容器创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器启动"><span class="nav-number">3.3.</span> <span class="nav-text">容器启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器停止"><span class="nav-number">3.4.</span> <span class="nav-text">容器停止</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器删除"><span class="nav-number">3.5.</span> <span class="nav-text">容器删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker部署操作"><span class="nav-number">4.</span> <span class="nav-text">docker部署操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker文件拷贝"><span class="nav-number">4.1.</span> <span class="nav-text">docker文件拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker目录挂载"><span class="nav-number">4.2.</span> <span class="nav-text">docker目录挂载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker备份"><span class="nav-number">4.3.</span> <span class="nav-text">docker备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像加载-部署"><span class="nav-number">4.4.</span> <span class="nav-text">镜像加载/部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送自己的镜像"><span class="nav-number">5.</span> <span class="nav-text">推送自己的镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile的基本用法"><span class="nav-number">6.</span> <span class="nav-text">Dockerfile的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile文件格式说明"><span class="nav-number">6.1.</span> <span class="nav-text">Dockerfile文件格式说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用Dockerfile构建镜像"><span class="nav-number">6.2.</span> <span class="nav-text">用Dockerfile构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行镜像"><span class="nav-number">6.3.</span> <span class="nav-text">运行镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战经验"><span class="nav-number">7.</span> <span class="nav-text">实战经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取Alpine基础镜像"><span class="nav-number">7.1.</span> <span class="nav-text">拉取Alpine基础镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进入Alpine-Docker容器"><span class="nav-number">7.2.</span> <span class="nav-text">进入Alpine Docker容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在Alpine中安装软件包"><span class="nav-number">7.3.</span> <span class="nav-text">在Alpine中安装软件包</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker基本操作"><span class="nav-number">1.</span> <span class="nav-text">docker基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker概要"><span class="nav-number">1.1.</span> <span class="nav-text">查看docker概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker帮助文档"><span class="nav-number">1.2.</span> <span class="nav-text">查看docker帮助文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看docker状态"><span class="nav-number">1.3.</span> <span class="nav-text">查看docker状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动docker"><span class="nav-number">1.4.</span> <span class="nav-text">启动docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭docker"><span class="nav-number">1.5.</span> <span class="nav-text">关闭docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启docker"><span class="nav-number">1.6.</span> <span class="nav-text">重启docker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker镜像操作"><span class="nav-number">2.</span> <span class="nav-text">docker镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看镜像列表"><span class="nav-number">2.1.</span> <span class="nav-text">查看镜像列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搜索镜像"><span class="nav-number">2.2.</span> <span class="nav-text">搜索镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置docker镜像加速器"><span class="nav-number">2.3.</span> <span class="nav-text">配置docker镜像加速器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker镜像拉取、删除"><span class="nav-number">2.4.</span> <span class="nav-text">docker镜像拉取、删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker容器操作"><span class="nav-number">3.</span> <span class="nav-text">docker容器操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看容器"><span class="nav-number">3.1.</span> <span class="nav-text">查看容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器创建"><span class="nav-number">3.2.</span> <span class="nav-text">容器创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器启动"><span class="nav-number">3.3.</span> <span class="nav-text">容器启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器停止"><span class="nav-number">3.4.</span> <span class="nav-text">容器停止</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#容器删除"><span class="nav-number">3.5.</span> <span class="nav-text">容器删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker部署操作"><span class="nav-number">4.</span> <span class="nav-text">docker部署操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker文件拷贝"><span class="nav-number">4.1.</span> <span class="nav-text">docker文件拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker目录挂载"><span class="nav-number">4.2.</span> <span class="nav-text">docker目录挂载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker备份"><span class="nav-number">4.3.</span> <span class="nav-text">docker备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜像加载-部署"><span class="nav-number">4.4.</span> <span class="nav-text">镜像加载/部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送自己的镜像"><span class="nav-number">5.</span> <span class="nav-text">推送自己的镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile的基本用法"><span class="nav-number">6.</span> <span class="nav-text">Dockerfile的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile文件格式说明"><span class="nav-number">6.1.</span> <span class="nav-text">Dockerfile文件格式说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用Dockerfile构建镜像"><span class="nav-number">6.2.</span> <span class="nav-text">用Dockerfile构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行镜像"><span class="nav-number">6.3.</span> <span class="nav-text">运行镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-Compose基本用法"><span class="nav-number">7.</span> <span class="nav-text">Docker Compose基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#yml的基本语法"><span class="nav-number">7.1.</span> <span class="nav-text">yml的基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yml支持的数据格式"><span class="nav-number">7.2.</span> <span class="nav-text">yml支持的数据格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-常用命令"><span class="nav-number">7.3.</span> <span class="nav-text">docker-compose 常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-yml配置文件说明"><span class="nav-number">7.4.</span> <span class="nav-text">docker-compose.yml配置文件说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#语法规则"><span class="nav-number">7.4.1.</span> <span class="nav-text">语法规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试"><span class="nav-number">7.4.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战经验"><span class="nav-number">8.</span> <span class="nav-text">实战经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取Alpine基础镜像"><span class="nav-number">8.1.</span> <span class="nav-text">拉取Alpine基础镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进入Alpine-Docker容器"><span class="nav-number">8.2.</span> <span class="nav-text">进入Alpine Docker容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在Alpine中安装软件包"><span class="nav-number">8.3.</span> <span class="nav-text">在Alpine中安装软件包</span></a></li></ol></li></ol></div>
             
 
           </div>
