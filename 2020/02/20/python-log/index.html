@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="WingTsun Cat">
 <meta property="og:description" content="主要介绍如何使用logging模块进行日志打印和按天生成日志文件。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-21T03:05:55.219Z">
+<meta property="og:updated_time" content="2020-02-21T16:08:13.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python logging模块使用">
 <meta name="twitter:description" content="主要介绍如何使用logging模块进行日志打印和按天生成日志文件。">
@@ -366,7 +366,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-21 11:05:55" itemprop="dateModified" datetime="2020-02-21T11:05:55+08:00">2020-02-21</time>
+                <time title="修改时间：2020-02-22 00:08:13" itemprop="dateModified" datetime="2020-02-22T00:08:13+08:00">2020-02-22</time>
               
             
           </span>
@@ -533,9 +533,9 @@
 <li><p>filename：日志文件名的前缀prefix。</p>
 </li>
 <li><p>when：是一个字符串，用于描述定时周期的基本单位，字符串的值及意义如下：</p>
-<p> ‘S’：秒<br> ’M‘：分钟<br> ’H‘：小时<br> ’D‘：天<br> ‘W0’-’W6‘：工作日(0=星期一)<br> ‘midnight’：凌晨</p>
+<p> ‘S’：秒<br> ‘M’：分钟<br> ‘H’：小时<br> ‘D’：天<br> ‘W0’-‘W6’：工作日(0=星期一)<br> ‘midnight’：凌晨</p>
 </li>
-<li><p>interval：设置间隔周期，单位由when参数指定，如：when=‘D’，interval=1，表示每天产生一个日志文件。</p>
+<li><p>interval：设置间隔周期，单位由when参数指定，如：when=’D’，interval=1，表示每天产生一个日志文件。</p>
 </li>
 <li>backupCount：表示日志文件的保留个数，超过数量就会丢弃掉老的日志文件；不写则全保存。</li>
 <li>utc：表示UTC时间，如果utc为true，则启用UTC时间，反之则使用本机时间。</li>
@@ -543,16 +543,16 @@
 <p>除了上述这些参数之外，TimedRotatingFileHandler还有一个比较重要的成员变量 <strong>suffix</strong> 。</p>
 <blockquote>
 <p>suffix是指日志文件名的后缀，suffix中通常带有格式化的时间字符串，filename和suffix由“.”连接构成文件名。</p>
-<p>例如：filename=“runtime”， suffix=“%Y-%m-%d.log”，那么生成的文件名就是 runtime.2020-02-20.log</p>
+<p>例如：filename=”runtime”， suffix=”%Y-%m-%d.log”，那么生成的文件名就是 runtime.2020-02-20.log</p>
 </blockquote>
 <h2 id="按天保存单独的日志文件"><a href="#按天保存单独的日志文件" class="headerlink" title="按天保存单独的日志文件"></a>按天保存单独的日志文件</h2><p>通常我们在运行中大型python程序时，日志最好是使用按天保存的方式，这样查看起来会很方便，也不会因为日志内容积累太多而不好打开。</p>
 <p>说到按周期保存文件，我们很容易会想到使用TimedRotatingFileHandler函数来实现。没错，就是它。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import <span class="built_in">os</span></span><br><span class="line">import logging</span><br><span class="line">from logging.handlers import TimedRotatingFileHandler</span><br><span class="line"></span><br><span class="line"># 当前文件所在目录（绝对路径）</span><br><span class="line">rootDir = <span class="built_in">os</span>.<span class="built_in">path</span>.split(<span class="built_in">os</span>.<span class="built_in">path</span>.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">formatter = logging.Formatter(<span class="string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>)</span><br><span class="line"></span><br><span class="line"># 在当前文件所在目录下，新建logs目录，用来存放<span class="built_in">log</span>文件</span><br><span class="line">log_path = <span class="built_in">os</span>.<span class="built_in">path</span>.join(rootDir,<span class="string">'logs'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">os</span>.<span class="built_in">path</span>.exists(log_path):</span><br><span class="line">	<span class="built_in">os</span>.makedirs(log_path)</span><br><span class="line">filename = <span class="built_in">os</span>.<span class="built_in">path</span>.join(log_path,<span class="string">'test'</span>)</span><br><span class="line">handler = TimedRotatingFileHandler(filename, when=<span class="string">'midnight'</span>, interval=<span class="number">1</span>)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">handler.suffix = <span class="string">"%Y-%m-%d_%H-%M-%S.log"</span></span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">logger.info(<span class="string">"Start print log"</span>)</span><br><span class="line">logger.<span class="built_in">debug</span>(<span class="string">"Do something"</span>)</span><br><span class="line">logger.warning(<span class="string">"Something maybe fail."</span>)</span><br><span class="line">logger.info(<span class="string">"Finish"</span>)</span><br></pre></td></tr></table></figure>
 <p>运行这段代码之后，会发现在该python文件所在目录下创建了一个logs目录，并在logs目录里面创建了一个log文件。</p>
 <p><strong>重要说明：</strong></p>
-<p>大家可能会发现上述代码，在调用TimedRotatingFileHandler时，传入的when参数值是’midnight’，那为什么不传 ‘D’呢？它不也可以表示按天为单位周期来生成日志吗？<strong>其实传 ‘D’ 也是可以的，但有个条件要满足</strong>：就是该python脚本会一直运行不会停止，比如长期在后台运行。</p>
+<p>大家可能会发现上述代码，在调用TimedRotatingFileHandler时，传入的when参数值是’midnight’，那为什么不传’D’呢？它不也可以表示按天为单位周期来生成日志吗？<strong>其实传’D’也是可以的，但有个条件要满足</strong>：就是该python脚本会一直运行不会停止，比如长期在后台运行。</p>
 <p>那为什么会有这么一个奇怪的要求呢？</p>
-<p>这个就要看看TimedRotatingFileHandler源码（<em>源码位于：Python37\Lib\logging\handlers.py</em>）在时间计算这块是怎么实现的了。</p>
+<p>这个就要看看TimedRotatingFileHandler源码（源码位于：Python37\Lib\logging\handlers.py）在时间计算这块是怎么实现的了。</p>
 <p>贴上TimedRotatingFileHandler类的 init 函数的部分代码：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.extMatch = re.compile(<span class="keyword">self</span>.extMatch, re.ASCII)</span><br><span class="line">    <span class="keyword">self</span>.interval = <span class="keyword">self</span>.interval * interval <span class="meta"># multiply by units requested</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(filename):</span><br><span class="line">        t = os.stat(filename)[ST_MTIME]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        t = <span class="keyword">int</span>(time.time())</span><br><span class="line">    <span class="keyword">self</span>.rolloverAt = <span class="keyword">self</span>.computeRollover(t) <span class="meta"># 计算何时分割日志</span></span><br></pre></td></tr></table></figure>
 <p>从上面代码可以发现，TimedRotatingFileHandler是根据当前文件的修改时间或当前时间戳来判断是否需要把日志分割开来，而每次初始化TimedRotatingFileHandler这个类，时间就会重新计算一次。</p>
