@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -249,9 +249,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -315,7 +331,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -434,26 +450,26 @@
 <h2 id="使用systemd配置开机启动"><a href="#使用systemd配置开机启动" class="headerlink" title="使用systemd配置开机启动"></a>使用systemd配置开机启动</h2><p>下面<strong>以Ubuntu18.04为例</strong>，配置开机启动。为了与之前的Ubuntu开机启动的方式保持一致，我们希望仍然在/etc/rc.local 文件中配置开机启动程序。具体操作如下：</p>
 <h3 id="1-配置rc-local-service文件"><a href="#1-配置rc-local-service文件" class="headerlink" title="1. 配置rc-local.service文件"></a>1. 配置rc-local.service文件</h3><p>一般系统安装完之后，/lib/systemd/system目录下会有rc-local.service文件，即我们所需要的配置文件。</p>
 <p>打开 rc-local.service文件，可以看到类似以下内容：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  SPDX-License-Identifier: LGPL-2.1+</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This unit gets pulled automatically into multi-user.target by</span></span><br><span class="line"><span class="comment"># systemd-rc-local-generator if /etc/rc.local is executable.</span></span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=/etc/rc.local Compatibility</span><br><span class="line"><span class="attr">Documentation</span>=man:systemd-rc-local-generator(<span class="number">8</span>)</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/etc/rc.local</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/etc/rc.local start</span><br><span class="line"><span class="attr">TimeoutSec</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">RemainAfterExit</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">GuessMainPID</span>=<span class="literal">no</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment">#  SPDX-License-Identifier: LGPL-2.1+</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This unit gets pulled automatically into multi-user.target by</span></span><br><span class="line"><span class="comment"># systemd-rc-local-generator if /etc/rc.local is executable.</span></span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=/etc/rc.local Compatibility</span><br><span class="line"><span class="attr">Documentation</span>=man:systemd-rc-local-generator(<span class="number">8</span>)</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/etc/rc.local</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/etc/rc.local start</span><br><span class="line"><span class="attr">TimeoutSec</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">RemainAfterExit</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">GuessMainPID</span>=<span class="literal">no</span></span><br></pre></td></tr></table></figure>
 <p><strong>一般来说，正常的启动文件主要分成三部分</strong></p>
 <blockquote>
 <p>[Unit] 段：启动顺序与依赖关系<br>[Service] 段：启动行为,如何启动，启动类型<br>[Install] 段：定义如何安装这个配置文件，即怎样做到开机启动</p>
 </blockquote>
 <p>可以看出，/etc/rc.local 的启动顺序是在network后面，但是显然它少了 [Install] 段，也就是，没有定义如何做开机启动，所以我们需要在后面加上 [Install] 段：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Install]</span>  </span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target  </span><br><span class="line"><span class="attr">Alias</span>=rc-local.service</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[Install]</span>  </span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target  </span><br><span class="line"><span class="attr">Alias</span>=rc-local.service</span><br></pre></td></tr></table></figure>
 <p>配置好之后，文件内容是这样的：</p>
 <p><img src="1.png" alt=""></p>
 <p>然后保存退出。</p>
 <h3 id="2-配置rc-local文件"><a href="#2-配置rc-local文件" class="headerlink" title="2. 配置rc.local文件"></a>2. 配置rc.local文件</h3><p>因为Ubuntu18.04系统默认是没有 /etc/rc.local 文件的，所以需要我们手动创建，并赋予其可执行权限：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo touch /etc/rc.local</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo chmod 755 /etc/rc.local</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo touch /etc/rc.local</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo chmod 755 /etc/rc.local</span></span><br></pre></td></tr></table></figure>
 <p>打开rc.local文件，添加以下内容：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>接着就可以在里面添加我们所需要的开机启动程序命令，可以直接写命令，也可以执行Shell脚本文件sh。</p>
 <p>这里我们先写一个测试命令<code>echo &quot;this just a test&quot; &gt; /usr/local/text.log</code>，以验证脚本是否生效，注意命令一定要写在<code>exit 0</code>之前。</p>
 <p>测试命令添加完之后，文件内容是这样的：</p>
 <p><img src="2.png" alt=""></p>
 <h3 id="3-为rc-local-service创建软链接"><a href="#3-为rc-local-service创建软链接" class="headerlink" title="3. 为rc.local.service创建软链接"></a>3. 为rc.local.service创建软链接</h3><p>通过<code>ls</code>命令可以看到，<code>/lib/systemd/system/rc.local.service</code>是一个软链接，链接到<code>/lib/systemd/system/rc-local.service</code>，而且 systemd 是默认读取 /etc/systemd/system 下的配置文件,，所以我们还需要在 /etc/systemd/system 目录下创建一个软链接，链接到<code>/lib/systemd/system/rc.local.service</code>，如下：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">rc</span>.<span class="title">local</span>.<span class="title">service</span> /<span class="title">etc</span>/<span class="title">systemd</span>/<span class="title">system</span>/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line">sudo ln -s /<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">rc</span>.<span class="title">local</span>.<span class="title">service</span> /<span class="title">etc</span>/<span class="title">systemd</span>/<span class="title">system</span>/</span></span><br></pre></td></tr></table></figure>
 <p>此时在/etc/systemd/system目录下会看到生成了一个软链接 rc.local.service。</p>
 <h3 id="4-重启系统，验证测试脚本"><a href="#4-重启系统，验证测试脚本" class="headerlink" title="4. 重启系统，验证测试脚本"></a>4. 重启系统，验证测试脚本</h3><p>执行<code>reboot</code>命令重启系统，查看/usr/local目录，会发现生成了一个text.log，说明开机启动已配置成功。</p>
 
@@ -523,7 +539,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -572,6 +588,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -581,7 +599,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -735,7 +753,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -796,6 +814,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -868,11 +893,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

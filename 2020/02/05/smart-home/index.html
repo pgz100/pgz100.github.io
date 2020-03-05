@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -251,9 +251,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -317,7 +333,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -436,9 +452,9 @@
 <h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><h2 id="更改ubuntu系统安装源"><a href="#更改ubuntu系统安装源" class="headerlink" title="更改ubuntu系统安装源"></a>更改ubuntu系统安装源</h2><p>ubuntu系统默认使用的是国外安装源，在下载安装包过程中速度可能会比较慢，建议将其更改为国内安装源。</p>
 <p>1、修改/etc/apt/sources.list文件，建议将现有的sources.list备份下。</p>
 <p>将sources.list文件内容替换如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 <p>2、更新软件包</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> update</span><br><span class="line">sudo apt-<span class="builtin-name">get</span> upgrade</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> update</span><br><span class="line">sudo apt-<span class="builtin-name">get</span> upgrade</span><br></pre></td></tr></table></figure>
 <h2 id="mosquitto环境搭建"><a href="#mosquitto环境搭建" class="headerlink" title="mosquitto环境搭建"></a>mosquitto环境搭建</h2><h3 id="下载和安装mosquitto"><a href="#下载和安装mosquitto" class="headerlink" title="下载和安装mosquitto"></a>下载和安装mosquitto</h3><p>1、如果你是在Linux系统上安装Mosquitto，建议大家使用源码安装，最新的源码可从<a href="http://mosquitto.org/files/source/" target="_blank" rel="noopener">http://mosquitto.org/files/source/</a> 获取。我这里下载的是当前最新版本：mosquitto-1.6.8。</p>
 <p>2、下载后解压出来。这里有个需要注意的地方：<strong>默认情况下Mosquitto的安装需要OpenSSL的支持；如果不需要SSL，则需要关闭config.mk里面的某些与SSL功能有关的选项（WITH_TLS、WITH_TLS_PSK）。</strong></p>
 <p>3、请确保已安装make、gcc、g++、openssl等依赖包。</p>
@@ -452,21 +468,21 @@
 <p>用户与权限配置需要修改3处地方：</p>
 <p>1、mosquitto中最最最重要的配置文件mosquitto.conf<br>2、pwfile.example (保存用户名与密码)<br>3、aclfile.example (保存权限配置)</p>
 <h4 id="用户配置"><a href="#用户配置" class="headerlink" title="用户配置"></a>用户配置</h4><p>cd到/etc/mosquitto目录下，找到mosquitto.conf.example文件，将其cp一份，名称设为<code>mosquitto.conf</code>，并打开该文件。</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">cd</span> /etc/mosquitto</span><br><span class="line">$ <span class="keyword">cp</span> mosquitto.<span class="keyword">conf</span>.example mosquitto.<span class="keyword">conf</span></span><br><span class="line">$ <span class="keyword">vim</span> mosquitto.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">cd</span> /etc/mosquitto</span><br><span class="line">$ <span class="keyword">cp</span> mosquitto.<span class="keyword">conf</span>.example mosquitto.<span class="keyword">conf</span></span><br><span class="line">$ <span class="keyword">vim</span> mosquitto.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
 <p>1、找到allow_anonymous字段，这个字段的作用是：是否开启匿名用户登录，默认为true。打开此项配置（将前面的 # 号去掉）之后将其值改为false。</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">allow_anonymous</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">allow_anonymous</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 <p>2、找到password_file字段，这个字段是告诉服务器你要配置的用户将存放在哪里。打开此配置并指定password_file的文件路径（注意是绝对路径）</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password_file /etc/mosquitto/pwfile<span class="selector-class">.example</span> （这里的路径根据自己文件实际路径填写）</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">password_file /etc/mosquitto/pwfile<span class="selector-class">.example</span> （这里的路径根据自己文件实际路径填写）</span><br></pre></td></tr></table></figure>
 <p>3、找到user字段，这个字段是指当前服务器的登录用户名称，这里我使用的登录用户是root，所以需要将它的值改为root，否则在后续启动mosquitto时会报错：<code>Error: Invalid user &#39;mosquitto&#39;.</code></p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">user</span> <span class="title">root</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="keyword">user</span> <span class="title">root</span></span><br></pre></td></tr></table></figure>
 <p>4、创建用户名和密码，此处我们来创建两个用户：admin 和 mosquitto_test。先创建admin用户，在命令行窗口输入以下命令：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mosquitto_passwd -c /etc/mosquitto/pwfile<span class="selector-class">.example</span> admin</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">$ mosquitto_passwd -c /etc/mosquitto/pwfile<span class="selector-class">.example</span> admin</span><br></pre></td></tr></table></figure>
 <p>会提示需连续输入两次密码，创建成功。</p>
 <blockquote>
 <p>命令解释： -c 是指创建一个用户，/etc/mosquitto/pwfile.example 是将用户创建到 pwfile.example 文件中，admin 是用户名。</p>
 </blockquote>
 <p>再创建mosquitto_test用户，输入以下命令：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mosquitto_passwd /etc/mosquitto/pwfile<span class="selector-class">.example</span> mosquitto_test</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">mosquitto_passwd /etc/mosquitto/pwfile<span class="selector-class">.example</span> mosquitto_test</span><br></pre></td></tr></table></figure>
 <p>同样会提示需连续输入两次密码。</p>
 <p><strong>注意第二次创建mosquitto_test用户时不用加 -c 。如果加了 -c，则会把第一次创建的admin用户给覆盖掉。</strong></p>
 <p>至此，两个用户创建成功，用户信息都保存在 pwfile.example 文件中。</p>
@@ -494,17 +510,17 @@
 <p>这样一来，由于他们的权限不同，如果用 admin 进行发布是不会成功的，反过来用 mosquitto_test 进行订阅同样不会接受到任何信息。</p>
 <p>2、设置权限配置文件</p>
 <p>打开mosquitto.conf文件，找到acl_file字段，这个字段是告诉服务器你要配置的权限将存放在哪里。打开此配置并指定acl_file的文件路径（注意是绝对路径）</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acl_file <span class="regexp">/etc/m</span>osquitto<span class="regexp">/aclfile.example（这里的路径根据自己文件实际路径填写）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">acl_file <span class="regexp">/etc/m</span>osquitto<span class="regexp">/aclfile.example（这里的路径根据自己文件实际路径填写）</span></span><br></pre></td></tr></table></figure>
 <p>3、增加权限配置（假设我们的权限配置文件是aclfile.example）</p>
 <p>打开配置文件 aclfile.example，并添加如下配置信息：</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">user</span> <span class="title">admin</span></span><br><span class="line">topic <span class="keyword">read</span> root/topic/<span class="comment">#</span></span><br><span class="line"><span class="keyword">user</span> <span class="title">mosquitto_test</span></span><br><span class="line">topic <span class="keyword">write</span> root/topic<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="keyword">user</span> <span class="title">admin</span></span><br><span class="line">topic <span class="keyword">read</span> root/topic/<span class="comment">#</span></span><br><span class="line"><span class="keyword">user</span> <span class="title">mosquitto_test</span></span><br><span class="line">topic <span class="keyword">write</span> root/topic<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 <p>说明：read – 订阅权限 、write – 发布权限。</p>
 <p>添加完毕后，保存退出。</p>
 <p>至此 admin 、 mosquitto_test 两个用户的权限已配置完成。</p>
 <h3 id="mosquitto启动和停止"><a href="#mosquitto启动和停止" class="headerlink" title="mosquitto启动和停止"></a>mosquitto启动和停止</h3><p>默认情况下，mosquitto使用的端口是1883。如果希望修改端口，则需修改mosquitto.conf文件中的 port 字段值。</p>
 <p><img src="3.jpg" alt=""></p>
 <p>一切准备就绪后，启动mosquitto：</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf    ##前台运行</span><br><span class="line">或</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d ##后台运行</span><br></pre></td></tr></table></figure>
+<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf    ##前台运行</span><br><span class="line">或</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d ##后台运行</span><br></pre></td></tr></table></figure>
 <p>停止mosquitto：使用kill命令强制终止即可。</p>
 <blockquote>
 <p>以上内容的参考链接：</p>
@@ -523,12 +539,12 @@
 </blockquote>
 <p>为保险起见，这里使用了某人推荐的v3.8153版本（v3.0系列的最后一个稳定版本），下载地址如下：</p>
 <p><a href="https://github.com/domoticz/domoticz/tree/3.8153" target="_blank" rel="noopener">https://github.com/domoticz/domoticz/tree/3.8153</a></p>
-<h3 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
 <h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
 <p><strong>说明：</strong>在低配电脑上进行编译可能需要10-15分钟。如果你的电脑拥有多核CPU，可以通过给<code>make</code>命令增加’-j’标识来使用更多核心，这样会快很多。四核CPU可以使用<code>make -j4</code>代替<code>make</code>。</p>
 <h3 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./domoticz</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./domoticz</span></span><br></pre></td></tr></table></figure>
 <p>然后在浏览器中输入IP:8080即可访问domoticz的Web控制界面，会发现Web前端的版本号是v3.5876，而本次下载的domoticz源码版本号是v3.8153，注意不要把这两者弄混淆了。</p>
 <p><img src="4.jpg" alt=""></p>
 <p><strong>说明：</strong>domoticz默认使用的端口是8080，如果需要更改端口号，可在启动domoticz时，使用参数 <code>-www</code> 来指定端口号，如：<code>./domoticz -www 8090</code></p>
@@ -541,7 +557,7 @@
 <li><a href="https://www.domoticz.cn/wiki/Install.txt" target="_blank" rel="noopener">https://www.domoticz.cn/wiki/Install.txt</a></li>
 </ul>
 <h1 id="可能用到的工具"><a href="#可能用到的工具" class="headerlink" title="可能用到的工具"></a>可能用到的工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>各参数说明：</p>
 <ul>
@@ -553,7 +569,7 @@
 </ul>
 </blockquote>
 <p>例如查看 8000 端口的情况，使用以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -621,7 +637,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -670,6 +686,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -679,7 +697,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -833,7 +851,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -894,6 +912,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -966,11 +991,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

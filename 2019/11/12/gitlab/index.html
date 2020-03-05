@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -249,9 +249,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -315,7 +331,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -435,23 +451,23 @@
 </blockquote>
 <p><strong>centos7版本对防火墙进行加强，启用firewalld，不再使用原来的iptables</strong></p>
 <p>可用<code>firewall-cmd</code> 或 <code>firewalld</code>命令查看当前服务器防火墙状态：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> firewall-cmd --state</span><br><span class="line">或</span><br><span class="line"><span class="meta">$</span> systemctl status firewalld</span><br></pre></td></tr></table></figure>
-<h2 id="安装Gitlab"><a href="#安装Gitlab" class="headerlink" title="安装Gitlab"></a>安装Gitlab</h2><h3 id="安装相关依赖"><a href="#安装相关依赖" class="headerlink" title="安装相关依赖"></a>安装相关依赖</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> policycoreutils openssh-<span class="keyword">server</span> openssh-clients postfix</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span> firewall-cmd --state</span><br><span class="line">或</span><br><span class="line"><span class="meta">$</span> systemctl status firewalld</span><br></pre></td></tr></table></figure>
+<h2 id="安装Gitlab"><a href="#安装Gitlab" class="headerlink" title="安装Gitlab"></a>安装Gitlab</h2><h3 id="安装相关依赖"><a href="#安装相关依赖" class="headerlink" title="安装相关依赖"></a>安装相关依赖</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> policycoreutils openssh-<span class="keyword">server</span> openssh-clients postfix</span><br></pre></td></tr></table></figure>
 <h3 id="启动postfix，并设置为开机自启"><a href="#启动postfix，并设置为开机自启" class="headerlink" title="启动postfix，并设置为开机自启"></a>启动postfix，并设置为开机自启</h3><p><em>目的：支持gitlab邮件发送功能</em></p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable <span class="built_in">postfix</span> &amp;&amp; systemctl start <span class="built_in">postfix</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><span class="line">systemctl enable <span class="built_in">postfix</span> &amp;&amp; systemctl start <span class="built_in">postfix</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>若此时出现如下报错信息：</p>
 <p><img src="" alt=""></p>
 <p><strong>解决方法：</strong></p>
 <p>打开 <strong>/etc/postfix/main.cf</strong> 文件，并修改内容如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_interfaces = all</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_protocols = ipv4</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_interfaces = all</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> inet_protocols = ipv4</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
 <p>重新输入<code>systemctl enable postfix &amp;&amp; systemctl start postfix</code>，会发现不再报错。</p>
 </blockquote>
 <h2 id="下载和安装gitlab社区版rpm包"><a href="#下载和安装gitlab社区版rpm包" class="headerlink" title="下载和安装gitlab社区版rpm包"></a>下载和安装gitlab社区版rpm包</h2><p>下载路径：<a href="https://packages.gitlab.com/gitlab/gitlab-ce/packages/el/7/gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm" target="_blank" rel="noopener">gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm</a></p>
 <p><em>注意：根据自己的linux系统选择合适的包</em></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EL是Red Hat Enterprise Linux的简写 </span><br><span class="line">- EL6软件包用于在Red Hat <span class="number">6</span><span class="selector-class">.x</span>, CentOS <span class="number">6</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">6</span>.x进行安装 </span><br><span class="line">- EL5软件包用于在Red Hat <span class="number">5</span><span class="selector-class">.x</span>, CentOS <span class="number">5</span><span class="selector-class">.x</span>, CloudLinux <span class="number">5</span>.x的安装 </span><br><span class="line">- EL7 软件包用于在Red Hat <span class="number">7</span><span class="selector-class">.x</span>, CentOS <span class="number">7</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">7</span>.x的安装</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">EL是Red Hat Enterprise Linux的简写 </span><br><span class="line">- EL6软件包用于在Red Hat <span class="number">6</span><span class="selector-class">.x</span>, CentOS <span class="number">6</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">6</span>.x进行安装 </span><br><span class="line">- EL5软件包用于在Red Hat <span class="number">5</span><span class="selector-class">.x</span>, CentOS <span class="number">5</span><span class="selector-class">.x</span>, CloudLinux <span class="number">5</span>.x的安装 </span><br><span class="line">- EL7 软件包用于在Red Hat <span class="number">7</span><span class="selector-class">.x</span>, CentOS <span class="number">7</span><span class="selector-class">.x</span>, and CloudLinux <span class="number">7</span>.x的安装</span><br></pre></td></tr></table></figure>
 <p>下载好之后，输入命令 <code>rpm -ivh gitlab-ce-10.5.2-ce.0.el7.x86_64.rpm</code> 进行安装。</p>
 <h2 id="修改访问Gitlab的URL"><a href="#修改访问Gitlab的URL" class="headerlink" title="修改访问Gitlab的URL"></a>修改访问Gitlab的URL</h2><p>打开 <code>/etc/gitlab/gitlab.rb</code> 文件，修改 <code>external_url</code> 的值，可以使用自定义域名，也可以是IP地址+端口号。如： <code>external_url &#39;http://105.13.44.103:1028&#39;</code>，修改完之后，保存即可。</p>
 <h2 id="重置并启动Gitlab"><a href="#重置并启动Gitlab" class="headerlink" title="重置并启动Gitlab"></a>重置并启动Gitlab</h2><blockquote>
@@ -467,16 +483,16 @@
 <p><span id="inline-blue">至此，Gitlab的搭建就完成了，下面看一下如何在Gitlab里创建和配置项目。</span></p>
 <h2 id="在Gitlab里创建和配置项目"><a href="#在Gitlab里创建和配置项目" class="headerlink" title="在Gitlab里创建和配置项目"></a>在Gitlab里创建和配置项目</h2><h3 id="配置Gitlab用户邮箱"><a href="#配置Gitlab用户邮箱" class="headerlink" title="配置Gitlab用户邮箱"></a>配置Gitlab用户邮箱</h3><p>首先注册一个gitlab账号，在注册过程中填上自己的邮箱地址。</p>
 <h3 id="添加用户侧电脑的key到Gitlab上"><a href="#添加用户侧电脑的key到Gitlab上" class="headerlink" title="添加用户侧电脑的key到Gitlab上"></a>添加用户侧电脑的key到Gitlab上</h3><p>先确保你的电脑上已安装Git，打开Git Bash，在bash中输入：</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “yourEmail<span class="symbol">@example</span>.com”  <span class="meta">## 后面那个是输入自己的邮箱</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight autoit"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “yourEmail<span class="symbol">@example</span>.com”  <span class="meta">## 后面那个是输入自己的邮箱</span></span><br></pre></td></tr></table></figure>
 <p>再在 ~/.ssh/id_rsa.pub中复制其中的内容，在<em>User Settings</em> - <em>SSH Keys</em>中添加刚才复制的内容。</p>
 <p><img src="3.png" alt=""></p>
 <h3 id="将用户侧电脑上已存在的项目上传到Gitlab上"><a href="#将用户侧电脑上已存在的项目上传到Gitlab上" class="headerlink" title="将用户侧电脑上已存在的项目上传到Gitlab上"></a>将用户侧电脑上已存在的项目上传到Gitlab上</h3><p>1、先在Gitlab上创建一个空项目，如：test</p>
 <p>2、打开本地Git Bash，cd到你需要上传的项目目录下，配置局部的用户名和邮箱地址（为了防止对全局的用户名和邮箱造成影响）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/your project                       </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.name  <span class="string">"username"</span>      </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.email <span class="string">"email"</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/your project                       </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.name  <span class="string">"username"</span>      </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config user.email <span class="string">"email"</span></span></span><br></pre></td></tr></table></figure>
 <p>3、执行git命令，将本地项目上传到Gitlab上</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote <span class="keyword">add</span> origin git@<span class="number">10.3</span><span class="meta">.1</span><span class="meta">.12</span>:zhepan/<span class="keyword">test</span>.git</span><br><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit -m <span class="string">"gitlab-test"</span></span><br><span class="line">git <span class="keyword">push</span> -u origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote <span class="keyword">add</span> origin git@<span class="number">10.3</span><span class="meta">.1</span><span class="meta">.12</span>:zhepan/<span class="keyword">test</span>.git</span><br><span class="line">git <span class="keyword">add</span> .</span><br><span class="line">git commit -m <span class="string">"gitlab-test"</span></span><br><span class="line">git <span class="keyword">push</span> -u origin master</span><br></pre></td></tr></table></figure>
 <p>至此，可以到浏览器刷新test项目，发现已经上传成功。 </p>
-<h2 id="常见问题和常用操作"><a href="#常见问题和常用操作" class="headerlink" title="常见问题和常用操作"></a>常见问题和常用操作</h2><h3 id="在执行-git-push-u-origin-master-时可能会报如下错误："><a href="#在执行-git-push-u-origin-master-时可能会报如下错误：" class="headerlink" title="在执行 git push -u origin master 时可能会报如下错误："></a>在执行 <code>git push -u origin master</code> 时可能会报如下错误：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">Permission denied, please try again.</span></span><br><span class="line"><span class="string">git@xxx'</span>s password:</span><br><span class="line">Permission denied, please try again.</span><br><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">git@xxx: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).</span></span><br><span class="line"><span class="string">fatal: Could not read from remote repository.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please make sure you have the correct access rights</span></span><br><span class="line"><span class="string">and the repository exists.</span></span><br></pre></td></tr></table></figure>
+<h2 id="常见问题和常用操作"><a href="#常见问题和常用操作" class="headerlink" title="常见问题和常用操作"></a>常见问题和常用操作</h2><h3 id="在执行-git-push-u-origin-master-时可能会报如下错误："><a href="#在执行-git-push-u-origin-master-时可能会报如下错误：" class="headerlink" title="在执行 git push -u origin master 时可能会报如下错误："></a>在执行 <code>git push -u origin master</code> 时可能会报如下错误：</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">Permission denied, please try again.</span></span><br><span class="line"><span class="string">git@xxx'</span>s password:</span><br><span class="line">Permission denied, please try again.</span><br><span class="line">git@xxx<span class="string">'s password:</span></span><br><span class="line"><span class="string">git@xxx: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).</span></span><br><span class="line"><span class="string">fatal: Could not read from remote repository.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please make sure you have the correct access rights</span></span><br><span class="line"><span class="string">and the repository exists.</span></span><br></pre></td></tr></table></figure>
 <p>但此时我确实已经在本地生成了公私钥文件，而且密码输入的也是正确的。为什么还会报<code>Permission denied</code>呢？</p>
 <blockquote>
 <p>这是因为我在生成公钥时使用了自定义的名称（如：gitlab_id_rsa、gitlab_id_rsa.pub）而不是 id_rsa 和 id_rsa.pub，于是我将生成的密钥文件进行改名，再执行git push操作，就可以了。</p>
@@ -485,53 +501,53 @@
 <blockquote>
 <p>开启防火墙</p>
 </blockquote>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> firewalld</span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> firewalld</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>关闭防火墙</p>
 </blockquote>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">stop</span> firewalld</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">stop</span> firewalld</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>设置开机启动防火墙</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="builtin-name">enable</span> firewalld.service</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="builtin-name">enable</span> firewalld.service</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>设置开机禁用防火墙</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="builtin-name">disable</span> firewalld.service</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="builtin-name">disable</span> firewalld.service</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>查询防火墙状态</p>
 </blockquote>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">systemctl status firewalld</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">systemctl status firewalld</span></span><br></pre></td></tr></table></figure>
 <p><strong>使用firewall-cmd配置端口</strong></p>
 <blockquote>
 <p>查询防火墙状态</p>
 </blockquote>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --state</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --state</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>查看所有已开放的端口</p>
 </blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=<span class="keyword">public</span> --<span class="built_in">list</span>-ports</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone=<span class="keyword">public</span> --<span class="built_in">list</span>-ports</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>重新加载配置，更新防火墙规则</p>
 </blockquote>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --reload</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --reload</span></span><br></pre></td></tr></table></figure>
 <p><strong>对端口和通道进行配置</strong>（修改配置后要重启防火墙）</p>
 <blockquote>
 <p>添加一个端口，并开启协议通道</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--add-port</span>=80/tcp --permanent </span><br><span class="line"><span class="comment">## 添加80端口，--zone表示作用域，--add-port是标识添加的端口和访问类型，--permanent表示设置为永久</span></span><br><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--add-service</span>=http --permanent </span><br><span class="line"><span class="comment">## 开启http通道</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--add-port</span>=80/tcp --permanent </span><br><span class="line"><span class="comment">## 添加80端口，--zone表示作用域，--add-port是标识添加的端口和访问类型，--permanent表示设置为永久</span></span><br><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--add-service</span>=http --permanent </span><br><span class="line"><span class="comment">## 开启http通道</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>移除某个端口</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--remove-port</span>=80/tcp --permanent</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--remove-port</span>=80/tcp --permanent</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>重启防火墙（修改配置后要重启防火墙）</p>
 </blockquote>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --reload</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">firewall-<span class="keyword">cmd</span><span class="bash"> --reload</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>查看某个端口的开通状态</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--query-port</span>=80/tcp</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="attribute">--zone</span>=public <span class="attribute">--query-port</span>=80/tcp</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -597,7 +613,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -646,6 +662,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -655,7 +673,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -809,7 +827,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -870,6 +888,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -942,11 +967,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

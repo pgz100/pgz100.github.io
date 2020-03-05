@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -254,9 +254,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -320,7 +336,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -486,31 +502,31 @@
 </ul>
 <h3 id="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"><a href="#Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网" class="headerlink" title="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"></a>Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网</h3><h4 id="1-安装polipo"><a href="#1-安装polipo" class="headerlink" title="1. 安装polipo"></a>1. 安装polipo</h4><p>Polipo是一个轻量级的跨平台代理服务器，可以实现HTTP和SOCKS代理。为了最小化延迟，Polipo管线化多个资源请求，在同一个TCP/IP连接上多路复用。所以我们使用<strong>polipo将http代理转换为socks5代理</strong>。从而使终端命令行程序（如：wget）可以进行科学上网。</p>
 <p>通过apt安装polipo</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-<span class="builtin-name">get</span> install polipo</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">$ sudo apt-<span class="builtin-name">get</span> install polipo</span><br></pre></td></tr></table></figure>
 <h4 id="2-配置polipo"><a href="#2-配置polipo" class="headerlink" title="2. 配置polipo"></a>2. 配置polipo</h4><p>打开 /etc/polipo/config 文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo vi /etc/polipo/config</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo vi /etc/polipo/config</span></span><br></pre></td></tr></table></figure>
 <p>作如下修改，主要是设置socksParentProxy 和 socksProxyType的字段值。</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># This <span class="keyword">file</span> only needs to list configuration <span class="keyword">variables</span> that <span class="comment">deviate</span></span><br><span class="line"># from <span class="comment">the default values.  See</span> /usr/<span class="comment">share</span>/doc/<span class="comment">polipo</span>/examples/<span class="comment">config.sample</span></span><br><span class="line"># and <span class="comment">"polipo -v"</span><span class="comment"> for variables you can tweak and further information.</span></span><br><span class="line"></span><br><span class="line">logSyslog <span class="comment">= true</span></span><br><span class="line">logFile <span class="comment">=</span> /var/<span class="comment">log</span>/polipo/<span class="comment">polipo.log</span></span><br><span class="line">socksParentProxy <span class="comment">=</span> <span class="comment">"localhost:1080"</span></span><br><span class="line">socksProxyType <span class="comment">= socks5</span></span><br><span class="line">loglevel <span class="comment">= 4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"># This <span class="keyword">file</span> only needs to list configuration <span class="keyword">variables</span> that <span class="comment">deviate</span></span><br><span class="line"># from <span class="comment">the default values.  See</span> /usr/<span class="comment">share</span>/doc/<span class="comment">polipo</span>/examples/<span class="comment">config.sample</span></span><br><span class="line"># and <span class="comment">"polipo -v"</span><span class="comment"> for variables you can tweak and further information.</span></span><br><span class="line"></span><br><span class="line">logSyslog <span class="comment">= true</span></span><br><span class="line">logFile <span class="comment">=</span> /var/<span class="comment">log</span>/polipo/<span class="comment">polipo.log</span></span><br><span class="line">socksParentProxy <span class="comment">=</span> <span class="comment">"localhost:1080"</span></span><br><span class="line">socksProxyType <span class="comment">= socks5</span></span><br><span class="line">loglevel <span class="comment">= 4</span></span><br></pre></td></tr></table></figure>
 <p>重启polipo</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$<span class="built_in"> service </span>polipo restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">$<span class="built_in"> service </span>polipo restart</span><br></pre></td></tr></table></figure>
 <p>设置别名，便于在终端上使用SS代理。</p>
 <p>打开用户主目录下的.bashrc文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vi .bashrc</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vi .bashrc</span></span><br></pre></td></tr></table></figure>
 <p>在 .bashrc文件最后面增加下面几行：</p>
-<figure class="highlight monkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alias</span> <span class="title">goproxy</span>=<span class="string">"export http_proxy=http://localhost:8123 https_proxy=http://localhost:8123;echo 'complete proxy settings'"</span></span><br><span class="line"><span class="keyword">alias</span> <span class="title">disproxy</span>=<span class="string">"unset http_proxy https_proxy;echo 'unset proxy'"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight monkey"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alias</span> <span class="title">goproxy</span>=<span class="string">"export http_proxy=http://localhost:8123 https_proxy=http://localhost:8123;echo 'complete proxy settings'"</span></span><br><span class="line"><span class="keyword">alias</span> <span class="title">disproxy</span>=<span class="string">"unset http_proxy https_proxy;echo 'unset proxy'"</span></span><br></pre></td></tr></table></figure>
 <p>保存退出，重启终端Terminal。</p>
 <h4 id="3-测试验证"><a href="#3-测试验证" class="headerlink" title="3. 测试验证"></a>3. 测试验证</h4><p>重启终端Terminal之后，输入以下命令：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ wget www<span class="selector-class">.google</span><span class="selector-class">.com</span><span class="selector-class">.hk</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ wget www<span class="selector-class">.google</span><span class="selector-class">.com</span><span class="selector-class">.hk</span></span><br></pre></td></tr></table></figure>
 <p>若显示以下类似结果，则表示Shadowsocks在终端Terminal上配置成功。</p>
 <p><img src="5.png" alt=""></p>
 <p>如果想要关闭SS代理，则直接在终端执行 <code>disproxy</code>命令即可。</p>
-<h3 id="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"><a href="#Windows环境下，如何让MinGW使用Shadowsocks进行科学上网" class="headerlink" title="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"></a>Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</h3><h4 id="1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录："><a href="#1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录：" class="headerlink" title="1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录："></a>1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/</span></span><br></pre></td></tr></table></figure>
-<h4 id="2-创建-bash-profile-文件，并打开它。"><a href="#2-创建-bash-profile-文件，并打开它。" class="headerlink" title="2. 创建 .bash_profile 文件，并打开它。"></a>2. 创建 .bash_profile 文件，并打开它。</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vi .bash_profile</span></span><br></pre></td></tr></table></figure>
+<h3 id="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"><a href="#Windows环境下，如何让MinGW使用Shadowsocks进行科学上网" class="headerlink" title="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"></a>Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</h3><h4 id="1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录："><a href="#1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录：" class="headerlink" title="1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录："></a>1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录：</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-创建-bash-profile-文件，并打开它。"><a href="#2-创建-bash-profile-文件，并打开它。" class="headerlink" title="2. 创建 .bash_profile 文件，并打开它。"></a>2. 创建 .bash_profile 文件，并打开它。</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vi .bash_profile</span></span><br></pre></td></tr></table></figure>
 <p>添加以下内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># add alias</span></span><br><span class="line"><span class="built_in">alias</span> goproxy=<span class="string">"export http_proxy=127.0.0.1:1080 https_proxy=127.0.0.1:1080; echo 'complete proxy settings'"</span></span><br><span class="line"><span class="built_in">alias</span> disproxy=<span class="string">"unset http_proxy https_proxy; echo 'unset proxy'"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># add alias</span></span><br><span class="line"><span class="built_in">alias</span> goproxy=<span class="string">"export http_proxy=127.0.0.1:1080 https_proxy=127.0.0.1:1080; echo 'complete proxy settings'"</span></span><br><span class="line"><span class="built_in">alias</span> disproxy=<span class="string">"unset http_proxy https_proxy; echo 'unset proxy'"</span></span><br></pre></td></tr></table></figure>
 <p>保存退出，重启MinGW。</p>
 <h4 id="3-测试验证-1"><a href="#3-测试验证-1" class="headerlink" title="3. 测试验证"></a>3. 测试验证</h4><p>重启MinGW之后，输入以下命令，由于我安装的MinGW里面没有wget，所以使用 curl 来测试验证。</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ curl www<span class="selector-class">.google</span><span class="selector-class">.com</span><span class="selector-class">.hk</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ curl www<span class="selector-class">.google</span><span class="selector-class">.com</span><span class="selector-class">.hk</span></span><br></pre></td></tr></table></figure>
 <p>若显示以下类似结果，即有内容输出，则表示Shadowsocks在MinGW上配置成功。</p>
 <p><img src="6.png" alt=""></p>
 <p>如果想要关闭SS代理，则直接在MinGW上输入 <code>disproxy</code>命令即可。</p>
@@ -581,7 +597,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -630,6 +646,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -639,7 +657,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -793,7 +811,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -854,6 +872,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -926,11 +951,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

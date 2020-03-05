@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -248,9 +248,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -314,7 +330,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -460,9 +476,9 @@
 <p>1、按照pip的官方说明文档，它的配置文件应该放在%APPDATA%/pip/目录下，配置文件名称是pip.ini，我们先按下win+R键。或者在开始菜单上点右键，点运行。然后在出来的窗口中输入%APPDATA%，然后点击确定。</p>
 <p>2、我们可能会发现该目录下并没有pip目录，那我们就手动创建一个。</p>
 <p>3、pip目录创建好以后，进入到这个目录中，然后新建一个pip.ini文件，并在文件中输入以下内容：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">time-out</span>=<span class="number">60</span></span><br><span class="line"><span class="attr">index-url</span> = https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="section">[install]</span></span><br><span class="line"><span class="attr">trusted-host</span> = mirrors.aliyun.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">time-out</span>=<span class="number">60</span></span><br><span class="line"><span class="attr">index-url</span> = https://mirrors.aliyun.com/pypi/simple</span><br><span class="line"><span class="section">[install]</span></span><br><span class="line"><span class="attr">trusted-host</span> = mirrors.aliyun.com</span><br></pre></td></tr></table></figure>
 <p><strong>注：</strong>[global] 区域配置的是下载链接和超时时间，而[install] 区域配置的是安装时信任的地址。这里我写的是阿里云提供的pip下载源，其它的几个国内pip下载源地址如下：</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">阿里云 </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//mirrors.aliyun.com/pypi/simple/</span></span><br><span class="line"> </span><br><span class="line">中国科技大学 </span><br><span class="line"><span class="symbol">https:</span><span class="comment">//pypi.mirrors.ustc.edu.cn/simple/</span></span><br><span class="line"> </span><br><span class="line">豆瓣(douban) </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//pypi.douban.com/simple/</span></span><br><span class="line"> </span><br><span class="line">清华大学 </span><br><span class="line"><span class="symbol">https:</span><span class="comment">//pypi.tuna.tsinghua.edu.cn/simple/</span></span><br><span class="line"> </span><br><span class="line">中国科学技术大学 </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//pypi.mirrors.ustc.edu.cn/simple/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line">阿里云 </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//mirrors.aliyun.com/pypi/simple/</span></span><br><span class="line"> </span><br><span class="line">中国科技大学 </span><br><span class="line"><span class="symbol">https:</span><span class="comment">//pypi.mirrors.ustc.edu.cn/simple/</span></span><br><span class="line"> </span><br><span class="line">豆瓣(douban) </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//pypi.douban.com/simple/</span></span><br><span class="line"> </span><br><span class="line">清华大学 </span><br><span class="line"><span class="symbol">https:</span><span class="comment">//pypi.tuna.tsinghua.edu.cn/simple/</span></span><br><span class="line"> </span><br><span class="line">中国科学技术大学 </span><br><span class="line"><span class="symbol">http:</span><span class="comment">//pypi.mirrors.ustc.edu.cn/simple/</span></span><br></pre></td></tr></table></figure>
 <p>4、pip.ini文件写好之后，点击保存。然后重新打开一个cmd命令行窗口，使用pip安装任意一个模块，这个时候就能看到，使用的是阿里云的下载地址了，下载速度也快很多。</p>
 <blockquote>
 <p>参考链接：</p>
@@ -471,7 +487,7 @@
 <li><a href="https://jingyan.baidu.com/article/3d69c55127775af0cf02d79e.html" target="_blank" rel="noopener">https://jingyan.baidu.com/article/3d69c55127775af0cf02d79e.html</a></li>
 </ul>
 <h1 id="查找python的安装目录"><a href="#查找python的安装目录" class="headerlink" title="查找python的安装目录"></a>查找python的安装目录</h1><p>有时候时间一长，我们自己也忘记当初把python安装到哪个位置了，那么如果想查看python的安装目录，只需进入到python命令行界面，然后依次输入以下内容即可：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">path = sys.executable</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(path)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">import sys</span><br><span class="line">path = sys.executable</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(path)</span></span></span><br></pre></td></tr></table></figure>
 <p>然后就会打印出python的安装目录了。</p>
 <p><img src="1.jpg" alt=""></p>
 <h1 id="python一键获取依赖包和安装依赖包"><a href="#python一键获取依赖包和安装依赖包" class="headerlink" title="python一键获取依赖包和安装依赖包"></a>python一键获取依赖包和安装依赖包</h1><h2 id="获取依赖包"><a href="#获取依赖包" class="headerlink" title="获取依赖包"></a>获取依赖包</h2><p>一键获取依赖包有两种方法：</p>
@@ -480,10 +496,10 @@
 <p>这时就会生成一个requirements.txt文件</p>
 <p><strong>第二种方法：</strong>根据某一个项目的 import 语句来生成依赖</p>
 <p>打开命令提示符，将路径切换到需要生成依赖的项目的根目录下，依次输入：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> pipreqs</span><br><span class="line">pipreqs ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> pipreqs</span><br><span class="line">pipreqs ./</span><br></pre></td></tr></table></figure>
 <p>执行完以后，在这个项目下会生成一个requirements.txt文件，里面记录了该项目所用到的依赖。</p>
 <h2 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h2><p>获得了依赖包之后，我们就可以在新环境下安装依赖包的模块，执行以下命令即可：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> -r requirements.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install</span> -r requirements.txt</span><br></pre></td></tr></table></figure>
 <h1 id="关于python的除法操作"><a href="#关于python的除法操作" class="headerlink" title="关于python的除法操作"></a>关于python的除法操作</h1><p>我们知道，在python中，除法有两种运算符，’/‘和’//‘，我们通常把’/‘ 叫做精确除，’//‘ 叫做地板除，它们在python2和python3上的表现结果也不太一样。</p>
 <p><strong>精确除和地板除的解释：</strong></p>
 <p>精确除：</p>
@@ -500,9 +516,9 @@
 <li>当被除数和除数都是整数时，那么结果也是整数；</li>
 <li>当被除数和除数两者中有任何一个是浮点数时，那么结果也一定是浮点数。只是如果用 ‘//‘ 运算符的话，操作的结果是整除后的结果，虽然结果仍是浮点数，但其尾数被舍去了。</li>
 </ul>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">以python2<span class="number">.7</span>为例：</span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> / <span class="number">2</span> = <span class="number">2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> <span class="comment">// 2 = 2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> <span class="comment">// 2 = 2.0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">以python2<span class="number">.7</span>为例：</span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> / <span class="number">2</span> = <span class="number">2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> <span class="comment">// 2 = 2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> <span class="comment">// 2 = 2.0</span></span><br></pre></td></tr></table></figure>
 <p>在python3中，为了与python2做个对比，这里特地加了一个 <code>4 / 2</code> 的计算。通过对比我们可以看出，无论被除数能否被整除，’/‘ 运算符操作的结果都是保留小数部分的，都是浮点数。</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">以python3<span class="number">.7</span>为例：</span><br><span class="line">&gt;&gt;&gt; <span class="number">4</span> / <span class="number">2</span> = <span class="number">2.0</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> <span class="comment">// 2 = 2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> <span class="comment">// 2 = 2.0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">以python3<span class="number">.7</span>为例：</span><br><span class="line">&gt;&gt;&gt; <span class="number">4</span> / <span class="number">2</span> = <span class="number">2.0</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5</span> <span class="comment">// 2 = 2</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> / <span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line">&gt;&gt;&gt; <span class="number">5.0</span> <span class="comment">// 2 = 2.0</span></span><br></pre></td></tr></table></figure>
 <p><strong>总结：</strong>无论是python2还是python3，如果想得到某个整数被整除后的结果，使用 ‘//‘ 就可以了。</p>
 
       
@@ -567,7 +583,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -616,6 +632,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -625,7 +643,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -779,7 +797,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -840,6 +858,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -912,11 +937,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

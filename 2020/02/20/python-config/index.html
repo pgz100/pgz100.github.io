@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -246,9 +246,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -312,7 +328,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -415,7 +431,7 @@
 
       
         <p>我们先新建一个配置文件，假设文件名称叫 test.cfg，文件内容如下：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[db]</span></span><br><span class="line"><span class="attr">dbuser</span> = test</span><br><span class="line"><span class="attr">dbpassword</span> = test123</span><br><span class="line"><span class="attr">dbport</span> = <span class="number">3308</span></span><br><span class="line"> </span><br><span class="line"><span class="section">[email]</span></span><br><span class="line"><span class="attr">emailto</span> = test@qq.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[db]</span></span><br><span class="line"><span class="attr">dbuser</span> = test</span><br><span class="line"><span class="attr">dbpassword</span> = test123</span><br><span class="line"><span class="attr">dbport</span> = <span class="number">3308</span></span><br><span class="line"> </span><br><span class="line"><span class="section">[email]</span></span><br><span class="line"><span class="attr">emailto</span> = test@qq.com</span><br></pre></td></tr></table></figure>
 <p><em>以下代码的运行环境：Win10/Python3.7</em></p>
 <h1 id="读取配置文件的基本操作"><a href="#读取配置文件的基本操作" class="headerlink" title="读取配置文件的基本操作"></a>读取配置文件的基本操作</h1><ul>
 <li>read(filename)：读取文件内容</li>
@@ -425,9 +441,9 @@
 <li>get(section,option)：获取section的option值，返回string；getint，getboolean，getfloat同理</li>
 </ul>
 <p>在test.cfg文件同级目录下新建一个python文件，内容如下：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">config = configparser.ConfigParser()</span><br><span class="line">config.read(<span class="string">"test.cfg"</span>)</span><br><span class="line"><span class="builtin-name">print</span>(config.sections())</span><br><span class="line"><span class="builtin-name">print</span>(config.options(<span class="string">"db"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.items(<span class="string">"db"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.<span class="builtin-name">get</span>(<span class="string">"db"</span>, <span class="string">"dbuser"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.getint(<span class="string">"db"</span>, <span class="string">"dbport"</span>))</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> config.sections():</span><br><span class="line">    <span class="keyword">for</span> items <span class="keyword">in</span> config.items(s):</span><br><span class="line">        # 打印键值对</span><br><span class="line">        <span class="builtin-name">print</span>(items)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">config = configparser.ConfigParser()</span><br><span class="line">config.read(<span class="string">"test.cfg"</span>)</span><br><span class="line"><span class="builtin-name">print</span>(config.sections())</span><br><span class="line"><span class="builtin-name">print</span>(config.options(<span class="string">"db"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.items(<span class="string">"db"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.<span class="builtin-name">get</span>(<span class="string">"db"</span>, <span class="string">"dbuser"</span>))</span><br><span class="line"><span class="builtin-name">print</span>(config.getint(<span class="string">"db"</span>, <span class="string">"dbport"</span>))</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> config.sections():</span><br><span class="line">    <span class="keyword">for</span> items <span class="keyword">in</span> config.items(s):</span><br><span class="line">        # 打印键值对</span><br><span class="line">        <span class="builtin-name">print</span>(items)</span><br></pre></td></tr></table></figure>
 <p>运行后的结果：</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'db'</span>, <span class="string">'emain'</span>]</span><br><span class="line">[<span class="string">'dbuser'</span>, <span class="string">'dbpassword'</span>, <span class="string">'dbport'</span>]</span><br><span class="line">[(<span class="string">'dbuser'</span>, <span class="string">'test'</span>), (<span class="string">'dbpassword'</span>, <span class="string">'test123'</span>), (<span class="string">'dbport'</span>, <span class="string">'3308'</span>)]</span><br><span class="line">test</span><br><span class="line"><span class="number">3308</span></span><br><span class="line">(<span class="string">'dbuser'</span>, <span class="string">'test'</span>)</span><br><span class="line">(<span class="string">'dbpassword'</span>, <span class="string">'test123'</span>)</span><br><span class="line">(<span class="string">'dbport'</span>, <span class="string">'3308'</span>)</span><br><span class="line">(<span class="string">'emailto'</span>, <span class="string">'test@qq.com'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight prolog"><table><tr><td class="code"><pre><span class="line">[<span class="string">'db'</span>, <span class="string">'emain'</span>]</span><br><span class="line">[<span class="string">'dbuser'</span>, <span class="string">'dbpassword'</span>, <span class="string">'dbport'</span>]</span><br><span class="line">[(<span class="string">'dbuser'</span>, <span class="string">'test'</span>), (<span class="string">'dbpassword'</span>, <span class="string">'test123'</span>), (<span class="string">'dbport'</span>, <span class="string">'3308'</span>)]</span><br><span class="line">test</span><br><span class="line"><span class="number">3308</span></span><br><span class="line">(<span class="string">'dbuser'</span>, <span class="string">'test'</span>)</span><br><span class="line">(<span class="string">'dbpassword'</span>, <span class="string">'test123'</span>)</span><br><span class="line">(<span class="string">'dbport'</span>, <span class="string">'3308'</span>)</span><br><span class="line">(<span class="string">'emailto'</span>, <span class="string">'test@qq.com'</span>)</span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong>在读取配置文件的时候，传入的sections，options要实际存在，否则会报错。</p>
 <h1 id="写入配置文件的基本操作"><a href="#写入配置文件的基本操作" class="headerlink" title="写入配置文件的基本操作"></a>写入配置文件的基本操作</h1><ul>
 <li>write(filename)：将config对象写入配置文件。如果没有事先read而直接write，则会覆盖原先的文件内容</li>
@@ -437,10 +453,10 @@
 <li>remove_option(section,option)：删除该section下的option</li>
 </ul>
 <p>在test.cfg文件同级目录下新建一个python文件，内容如下：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"test.cfg"</span></span><br><span class="line">config = configparser.ConfigParser()</span><br><span class="line">config.read(filename)</span><br><span class="line">config.add_section(<span class="string">"user"</span>)</span><br><span class="line">config.<span class="builtin-name">set</span>(<span class="string">"user"</span>, <span class="string">"name"</span>, <span class="string">"Root"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="string">"db"</span> <span class="keyword">not</span> <span class="keyword">in</span> config.sections():</span><br><span class="line">    config.add_section(<span class="string">"db"</span>)</span><br><span class="line">config.<span class="builtin-name">set</span>(<span class="string">"db"</span>,<span class="string">"dbuser"</span>,<span class="string">"platform"</span>)</span><br><span class="line">with open(filename, <span class="string">"w+"</span>) as f:</span><br><span class="line">    config.write(f)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">filename = <span class="string">"test.cfg"</span></span><br><span class="line">config = configparser.ConfigParser()</span><br><span class="line">config.read(filename)</span><br><span class="line">config.add_section(<span class="string">"user"</span>)</span><br><span class="line">config.<span class="builtin-name">set</span>(<span class="string">"user"</span>, <span class="string">"name"</span>, <span class="string">"Root"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="string">"db"</span> <span class="keyword">not</span> <span class="keyword">in</span> config.sections():</span><br><span class="line">    config.add_section(<span class="string">"db"</span>)</span><br><span class="line">config.<span class="builtin-name">set</span>(<span class="string">"db"</span>,<span class="string">"dbuser"</span>,<span class="string">"platform"</span>)</span><br><span class="line">with open(filename, <span class="string">"w+"</span>) as f:</span><br><span class="line">    config.write(f)</span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong>在对section操作之前，要先判断section是否存在，避免运行时抛异常。</p>
 <p>运行后，test.cfg文件内容被修改为：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[db]</span></span><br><span class="line"><span class="attr">dbuser</span> = platform</span><br><span class="line"><span class="attr">dbpassword</span> = test</span><br><span class="line"><span class="attr">dbport</span> = <span class="number">3308</span></span><br><span class="line"> </span><br><span class="line"><span class="section">[email]</span></span><br><span class="line"><span class="attr">emailto</span> = test@qq.com</span><br><span class="line"> </span><br><span class="line"><span class="section">[user]</span></span><br><span class="line"><span class="attr">name</span> = Root</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[db]</span></span><br><span class="line"><span class="attr">dbuser</span> = platform</span><br><span class="line"><span class="attr">dbpassword</span> = test</span><br><span class="line"><span class="attr">dbport</span> = <span class="number">3308</span></span><br><span class="line"> </span><br><span class="line"><span class="section">[email]</span></span><br><span class="line"><span class="attr">emailto</span> = test@qq.com</span><br><span class="line"> </span><br><span class="line"><span class="section">[user]</span></span><br><span class="line"><span class="attr">name</span> = Root</span><br></pre></td></tr></table></figure>
 <p>至此，ConfigParser模块的使用就介绍完了，用法比较简单，易上手。</p>
 
       
@@ -509,7 +525,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -558,6 +574,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -567,7 +585,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -721,7 +739,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -782,6 +800,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -854,11 +879,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     

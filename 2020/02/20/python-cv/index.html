@@ -64,10 +64,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
 
 
   <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Pisces',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -250,9 +250,25 @@
         
         
           
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
         
         
@@ -316,7 +332,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -445,9 +461,9 @@
 <h2 id="Pillow简介"><a href="#Pillow简介" class="headerlink" title="Pillow简介"></a>Pillow简介</h2><p>Pillow是PIL的一个派生分支，但如今已经发展成为比PIL本身更具活力的图像处理库，目前的最新版本是7.0.0。由于PIL只支持到Python2.7，所以在Python3上，我们使用Pillow来代替PIL。</p>
 <p>Pillow的Github主页：<a href="https://github.com/python-pillow/Pillow" target="_blank" rel="noopener">https://github.com/python-pillow/Pillow</a><br>Pillow的英文文档：<a href="https://pillow.readthedocs.io/en/stable/" target="_blank" rel="noopener">https://pillow.readthedocs.io/en/stable/</a><br>Pillow的文档中文翻译(对应版本v6.0.0)：<a href="https://www.osgeo.cn/pillow/" target="_blank" rel="noopener">https://www.osgeo.cn/pillow/</a></p>
 <h3 id="Python-3-x-安装Pillow"><a href="#Python-3-x-安装Pillow" class="headerlink" title="Python 3.x 安装Pillow"></a>Python 3.x 安装Pillow</h3><p>因为我电脑上同时安装了python2和python3，所以需要使用pip2或pip3来安装python2或python3的模块。如果你的电脑上只安装了一个python版本，那么直接使用<code>pip</code>来安装模块就可以了。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> Pillow</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> Pillow</span><br></pre></td></tr></table></figure>
 <p>安装完成后，使用<code>from PIL import Image</code>就完成库的导入了。例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.open(<span class="string">"bride.jpg"</span>)</span><br><span class="line"><span class="comment"># 加载图像，将其旋转45度，并使用外部查看器（通常是UNIX上的xv，以及Windows上的paint程序）显示它。</span></span><br><span class="line">im.rotate(<span class="number">45</span>).show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.open(<span class="string">"bride.jpg"</span>)</span><br><span class="line"><span class="comment"># 加载图像，将其旋转45度，并使用外部查看器（通常是UNIX上的xv，以及Windows上的paint程序）显示它。</span></span><br><span class="line">im.rotate(<span class="number">45</span>).show()</span><br></pre></td></tr></table></figure>
 <h1 id="关于pyscreenshot"><a href="#关于pyscreenshot" class="headerlink" title="关于pyscreenshot"></a>关于pyscreenshot</h1><p>在本文一开始的时候，介绍说除了需要安装Pillow或PIL模块之外，还需要安装pyscreenshot。通过名称我们可以大致猜出来，这个模块是一个专门用来截屏的。而在Pillow或PIL模块中，有个ImageGrab模块，该模块主要用于将屏幕或剪贴板的内容复制到PIL图像存储器中，ImageGrab模块内部有个grab函数，功能也是截屏。</p>
 <p>这时候你可能会问，既然ImageGrab.grab函数可以截屏，那为什么还要装个pyscreenshot来截屏呢？</p>
 <p>要解答这个问题，我们需要看一眼Pillow的官方文档。</p>
@@ -459,13 +475,13 @@
 <p>根据<a href="https://pyscreenshot.readthedocs.io/en/latest/" target="_blank" rel="noopener">pyscreenshot官方文档</a>，安装该模块之前，需要事先安装下列模块之一：</p>
 <p><img src="2.jpg" alt=""></p>
 <h2 id="Windows上安装pyscreenshot"><a href="#Windows上安装pyscreenshot" class="headerlink" title="Windows上安装pyscreenshot"></a>Windows上安装pyscreenshot</h2><p>需要先安装一下Pillow模块，然后再安装pyscreenshot就可以了。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> pyscreenshot</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> pyscreenshot</span><br></pre></td></tr></table></figure>
 <h2 id="Linux上安装pyscreenshot"><a href="#Linux上安装pyscreenshot" class="headerlink" title="Linux上安装pyscreenshot"></a>Linux上安装pyscreenshot</h2><p>需要先安装PyQt4模块，以在 Ubuntu18.04/Python3.7 环境下安装为例：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get <span class="keyword">install</span> python-pip</span><br><span class="line">sudo pip <span class="keyword">install</span> pyscreenshot</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-imaging</span><br><span class="line"><span class="comment"># optional back-ends</span></span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> scrot</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> imagemagick</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-gtk2</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-qt4</span><br><span class="line"><span class="comment"># optional for examples</span></span><br><span class="line">sudo pip <span class="keyword">install</span> entrypoint2</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sudo apt-get <span class="keyword">install</span> python-pip</span><br><span class="line">sudo pip <span class="keyword">install</span> pyscreenshot</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-imaging</span><br><span class="line"><span class="comment"># optional back-ends</span></span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> scrot</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> imagemagick</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-gtk2</span><br><span class="line">sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> python-qt4</span><br><span class="line"><span class="comment"># optional for examples</span></span><br><span class="line">sudo pip <span class="keyword">install</span> entrypoint2</span><br></pre></td></tr></table></figure>
 <h2 id="pyscreenshot核心函数"><a href="#pyscreenshot核心函数" class="headerlink" title="pyscreenshot核心函数"></a>pyscreenshot核心函数</h2><p>这里介绍一下我们接下来需要用到的grab函数。</p>
 <h3 id="grab"><a href="#grab" class="headerlink" title="grab"></a>grab</h3><p>源码位于：Python37\Lib\site-packages\pyscreenshot目录下的 init.py 文件</p>
 <p>函数原型</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grab(<span class="attribute">bbox</span>=None, <span class="attribute">childprocess</span>=<span class="literal">True</span>, <span class="attribute">backend</span>=None)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">grab(<span class="attribute">bbox</span>=None, <span class="attribute">childprocess</span>=<span class="literal">True</span>, <span class="attribute">backend</span>=None)</span><br></pre></td></tr></table></figure>
 <p>函数说明</p>
 <blockquote>
 <p>将屏幕内容复制到PIL图像存储器中，可全屏幕复制，也可以指定区域复制。</p>
@@ -479,7 +495,7 @@
 <li><strong>childprocess</strong> – run back-end in new process using popen. This can isolate back-ends from each other and from main process.</li>
 <li><strong>backend</strong> – back-end can be forced if set (examples:scrot, wx,..), otherwise back-end is automatic</li>
 </ul>
-<h2 id="pyscreenshot截屏示例代码"><a href="#pyscreenshot截屏示例代码" class="headerlink" title="pyscreenshot截屏示例代码"></a>pyscreenshot截屏示例代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyscreenshot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录的绝对路径</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全屏截图</span></span><br><span class="line">im = pyscreenshot.grab() <span class="comment">#返回的是一个Image对象</span></span><br><span class="line">im.show() <span class="comment"># 调用的是Pillow模块中的show函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 截取指定区域的图片</span></span><br><span class="line">im = pyscreenshot.grab(bbox=(<span class="number">10</span>,<span class="number">10</span>,<span class="number">510</span>,<span class="number">510</span>)) <span class="comment"># X1,Y1,X2,Y2</span></span><br><span class="line"><span class="comment"># 将截图保存在当前文件所在目录下，并将图片文件命名为screen.png</span></span><br><span class="line">filepath = os.path.join(rootDir, <span class="string">'screen.png'</span>)</span><br><span class="line">im.save(filepath) <span class="comment"># 调用的是Pillow模块中的save函数</span></span><br><span class="line"><span class="comment"># 显示截图内容到屏幕上</span></span><br><span class="line">im.show()</span><br></pre></td></tr></table></figure>
+<h2 id="pyscreenshot截屏示例代码"><a href="#pyscreenshot截屏示例代码" class="headerlink" title="pyscreenshot截屏示例代码"></a>pyscreenshot截屏示例代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pyscreenshot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录的绝对路径</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全屏截图</span></span><br><span class="line">im = pyscreenshot.grab() <span class="comment">#返回的是一个Image对象</span></span><br><span class="line">im.show() <span class="comment"># 调用的是Pillow模块中的show函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 截取指定区域的图片</span></span><br><span class="line">im = pyscreenshot.grab(bbox=(<span class="number">10</span>,<span class="number">10</span>,<span class="number">510</span>,<span class="number">510</span>)) <span class="comment"># X1,Y1,X2,Y2</span></span><br><span class="line"><span class="comment"># 将截图保存在当前文件所在目录下，并将图片文件命名为screen.png</span></span><br><span class="line">filepath = os.path.join(rootDir, <span class="string">'screen.png'</span>)</span><br><span class="line">im.save(filepath) <span class="comment"># 调用的是Pillow模块中的save函数</span></span><br><span class="line"><span class="comment"># 显示截图内容到屏幕上</span></span><br><span class="line">im.show()</span><br></pre></td></tr></table></figure>
 <p>上述代码中的save函数和show函数，由于它们都属于Pillow模块，所以其源码位于：Python37\Lib\site-packages\PIL\Image.py</p>
 <p><strong>由此也可以看出pyscreenshot引入了Pillow作为其支撑模块之一。</strong></p>
 <blockquote>
@@ -501,7 +517,7 @@
 <p>从<strong>2017年12月开始的3.4.x</strong>版本，opencv_dnn从opencv_contrib移至opencv，同时OpenCV开始支持C++ 11构建，之后明显感到对<strong>神经网络</strong>的支持在加强，opencv_dnn被持续改进和扩充。</p>
 <h3 id="OpenCV-4-0"><a href="#OpenCV-4-0" class="headerlink" title="OpenCV 4.0"></a>OpenCV 4.0</h3><p><strong>2018年10月4.0.0</strong>发布，OpenCV开始需要支持<strong>C++11</strong>的编译器才能编译，同时对几百个基础函数使用 <strong>“wide universal intrinsics”</strong>重写，这些内联函数可以根据目标平台和编译选项映射为SSE2、 SSE4、 AVX2、NEON 或者 VSX 内联函数，获得性能提升。此外，还加入了QR code的检测和识别，以及Kinect Fusion algorithm，DNN也在持续改善和扩充。</p>
 <h2 id="安装opencv-python模块"><a href="#安装opencv-python模块" class="headerlink" title="安装opencv-python模块"></a>安装opencv-python模块</h2><p>安装方式比较简单，只需一行命令：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> opencv-python</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> opencv-python</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参考链接：</p>
 </blockquote>
@@ -514,7 +530,7 @@
 <h1 id="AirCV"><a href="#AirCV" class="headerlink" title="AirCV"></a>AirCV</h1><p>AirCV是一个基于<strong>Python-opencv2</strong>的目标定位模块，支持<em>python2.7及以上版本</em>。网上关于Aircv的介绍资料相对较少，我在这里做个简单的整理和汇总。</p>
 <h2 id="安装AirCV模块"><a href="#安装AirCV模块" class="headerlink" title="安装AirCV模块"></a>安装AirCV模块</h2><p>我的电脑环境：Win10/Python3.7</p>
 <p>由于AirCV是基于<strong>Python-opencv2</strong>开发的（对opencv2中的函数做了一层封装），所以需要先安装好opencv-python模块，然后再安装AirCV，安装命令如下：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> aircv</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> aircv</span><br></pre></td></tr></table></figure>
 <p>安装完毕后，可通过<code>pip3 list</code>来查看当前所有已安装的模块。</p>
 <p><img src="3.jpg" alt=""></p>
 <p>然后在python代码中使用<code>import aircv</code>就可以导入aircv模块了。</p>
@@ -525,7 +541,7 @@
 </blockquote>
 <h2 id="AirCV的几个核心函数"><a href="#AirCV的几个核心函数" class="headerlink" title="AirCV的几个核心函数"></a>AirCV的几个核心函数</h2><p>AirCV模块的源码就一个文件 init.py，位于：Python37\Lib\site-packages\aircv目录下。</p>
 <h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a>imread</h3><p>函数原型</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">imread</span><span class="params">(filename)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">imread</span><span class="params">(filename)</span></span></span><br></pre></td></tr></table></figure>
 <p>函数说明</p>
 <blockquote>
 <p>图片读取</p>
@@ -540,12 +556,12 @@
 </blockquote>
 <p>兴趣延展：<strong>关于返回值的 “一探到底”</strong></p>
 <p>我们可以将imread的返回值，使用shape函数打印出来，例如：</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> aircv</span><br><span class="line">img = aircv.imread(<span class="string">'test.png'</span>) <span class="comment"># 读入一张彩色图片</span></span><br><span class="line"><span class="built_in">print</span>(img.shape)</span><br></pre></td></tr></table></figure>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> aircv</span><br><span class="line">img = aircv.imread(<span class="string">'test.png'</span>) <span class="comment"># 读入一张彩色图片</span></span><br><span class="line"><span class="built_in">print</span>(img.shape)</span><br></pre></td></tr></table></figure>
 <p>运行后，会打印出类似下面的结果：</p>
 <p>(220, 1000, 3)</p>
 <p>上面这个就是一个三维数组，其前面两个值分别是图片的高度和宽度，最后面那个数字3，是代表每个像素点是由BGR三个元素组成。</p>
 <h3 id="find-template"><a href="#find-template" class="headerlink" title="find_template"></a>find_template</h3><p>函数原型</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find_template(im_source, im_search, <span class="attribute">threshold</span>=0.5, <span class="attribute">rgb</span>=<span class="literal">False</span>, <span class="attribute">bgremove</span>=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">find_template(im_source, im_search, <span class="attribute">threshold</span>=0.5, <span class="attribute">rgb</span>=<span class="literal">False</span>, <span class="attribute">bgremove</span>=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <p>函数说明</p>
 <blockquote>
 <p>查找匹配的图片，并返回目标图片的中心点坐标和相似度</p>
@@ -562,7 +578,7 @@
 <li>如果未匹配到相似图片或相似度小于设定的阈值，则返回None。</li>
 </ul>
 <h3 id="find-all-template"><a href="#find-all-template" class="headerlink" title="find_all_template"></a>find_all_template</h3><p>函数原型</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find_all_template(im_source, im_search, <span class="attribute">threshold</span>=0.5, <span class="attribute">maxcnt</span>=0, <span class="attribute">rgb</span>=<span class="literal">False</span>, <span class="attribute">bgremove</span>=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">find_all_template(im_source, im_search, <span class="attribute">threshold</span>=0.5, <span class="attribute">maxcnt</span>=0, <span class="attribute">rgb</span>=<span class="literal">False</span>, <span class="attribute">bgremove</span>=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <p>函数说明</p>
 <blockquote>
 <p>查找多个相同的图片，并返回这些相同图片的中心点坐标和相似度</p>
@@ -591,9 +607,9 @@
 </ul>
 <hr>
 <p>至此，我们就把Pillow(PIL)、pyscreenshot、opencv、aircv这几个核心模块介绍完了，最后我们一起来利用这几个模块来实现图像比对功能。</p>
-<h1 id="基于python的图像比对功能代码"><a href="#基于python的图像比对功能代码" class="headerlink" title="基于python的图像比对功能代码"></a>基于python的图像比对功能代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> aircv <span class="keyword">as</span> ac</span><br><span class="line"><span class="keyword">import</span> pyscreenshot <span class="keyword">as</span> ImageGrab</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录的绝对路径</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">""" 设置截屏区域坐标 """</span></span><br><span class="line"><span class="comment"># 截屏左上角坐标</span></span><br><span class="line">left_up_x = <span class="number">300</span></span><br><span class="line">left_up_y = <span class="number">194</span></span><br><span class="line"><span class="comment"># 截屏右下角坐标</span></span><br><span class="line">right_down_x = <span class="number">1300</span></span><br><span class="line">right_down_y = <span class="number">804</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片截屏</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">screenshot</span><span class="params">(filepath)</span>:</span></span><br><span class="line">    im = ImageGrab.grab((left_up_x, left_up_y, right_down_x, right_down_y))</span><br><span class="line">    im.save(filepath)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图像比对，并设置阈值为0.7</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">matchImg</span><span class="params">(imgsrc_filepath, imgobj_filepath, threshold=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_result = ac.find_template(imsrc, imobj, threshold)</span><br><span class="line">    <span class="keyword">if</span> match_result <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    x = match_result[<span class="string">'result'</span>][<span class="number">0</span>]</span><br><span class="line">    y = match_result[<span class="string">'result'</span>][<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># 当前x y为识别图片的中心点，是相对截图坐标的偏移量，所以需要再加上截屏左上角坐标</span></span><br><span class="line">    <span class="keyword">return</span> x+left_up_x, y+left_up_y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 匹配多个相同图片，并设置阈值为0.9</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">matchMultipleImg</span><span class="params">(imgsrc_filepath, imgobj_filepath, threshold=<span class="number">0.9</span>)</span>:</span></span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_all_result = ac.find_all_template(imsrc, imobj, threshold)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> match_all_result:</span><br><span class="line">    	<span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">    <span class="keyword">return</span> match_all_result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">imgsrc_filepath = os.path.join(rootDir, <span class="string">'screen.png'</span>) <span class="comment"># 截屏文件路径</span></span><br><span class="line">imgobj_filepath = os.path.join(rootDir, <span class="string">'search.png'</span>) <span class="comment"># 待查找图片文件路径</span></span><br><span class="line">screenshot(imgsrc_filepath)</span><br><span class="line">x, y = matchImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line"><span class="keyword">if</span> x <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> y <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    print(<span class="string">'未匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">'匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line">	print(<span class="string">'x: %s, y: %s'</span> % (x,y))</span><br><span class="line">	</span><br><span class="line">all_result = matchMultipleImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line"><span class="keyword">if</span> all_result <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    print(<span class="string">'未匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line">    print(all_result)</span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> all_result:</span><br><span class="line">        x = result[<span class="string">'result'</span>][<span class="number">0</span>]</span><br><span class="line">        y = result[<span class="string">'result'</span>][<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 此时的x，y是相对坐标，打印的时候别忘了加上截屏的左上角坐标，变成绝对坐标</span></span><br><span class="line">        print(<span class="string">'(%s, %s)'</span> % (x+left_up_x,y+left_up_y))</span><br></pre></td></tr></table></figure>
+<h1 id="基于python的图像比对功能代码"><a href="#基于python的图像比对功能代码" class="headerlink" title="基于python的图像比对功能代码"></a>基于python的图像比对功能代码</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> aircv <span class="keyword">as</span> ac</span><br><span class="line"><span class="keyword">import</span> pyscreenshot <span class="keyword">as</span> ImageGrab</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录的绝对路径</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="string">""" 设置截屏区域坐标 """</span></span><br><span class="line"><span class="comment"># 截屏左上角坐标</span></span><br><span class="line">left_up_x = <span class="number">300</span></span><br><span class="line">left_up_y = <span class="number">194</span></span><br><span class="line"><span class="comment"># 截屏右下角坐标</span></span><br><span class="line">right_down_x = <span class="number">1300</span></span><br><span class="line">right_down_y = <span class="number">804</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片截屏</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">screenshot</span><span class="params">(filepath)</span>:</span></span><br><span class="line">    im = ImageGrab.grab((left_up_x, left_up_y, right_down_x, right_down_y))</span><br><span class="line">    im.save(filepath)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图像比对，并设置阈值为0.7</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">matchImg</span><span class="params">(imgsrc_filepath, imgobj_filepath, threshold=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_result = ac.find_template(imsrc, imobj, threshold)</span><br><span class="line">    <span class="keyword">if</span> match_result <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">None</span>, <span class="keyword">None</span></span><br><span class="line">    x = match_result[<span class="string">'result'</span>][<span class="number">0</span>]</span><br><span class="line">    y = match_result[<span class="string">'result'</span>][<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># 当前x y为识别图片的中心点，是相对截图坐标的偏移量，所以需要再加上截屏左上角坐标</span></span><br><span class="line">    <span class="keyword">return</span> x+left_up_x, y+left_up_y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 匹配多个相同图片，并设置阈值为0.9</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">matchMultipleImg</span><span class="params">(imgsrc_filepath, imgobj_filepath, threshold=<span class="number">0.9</span>)</span>:</span></span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_all_result = ac.find_all_template(imsrc, imobj, threshold)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> match_all_result:</span><br><span class="line">    	<span class="keyword">return</span> <span class="keyword">None</span></span><br><span class="line">    <span class="keyword">return</span> match_all_result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">imgsrc_filepath = os.path.join(rootDir, <span class="string">'screen.png'</span>) <span class="comment"># 截屏文件路径</span></span><br><span class="line">imgobj_filepath = os.path.join(rootDir, <span class="string">'search.png'</span>) <span class="comment"># 待查找图片文件路径</span></span><br><span class="line">screenshot(imgsrc_filepath)</span><br><span class="line">x, y = matchImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line"><span class="keyword">if</span> x <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> y <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    print(<span class="string">'未匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">'匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line">	print(<span class="string">'x: %s, y: %s'</span> % (x,y))</span><br><span class="line">	</span><br><span class="line">all_result = matchMultipleImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line"><span class="keyword">if</span> all_result <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">    print(<span class="string">'未匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'匹配到图片：%s'</span> % imgobj_filepath)</span><br><span class="line">    print(all_result)</span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> all_result:</span><br><span class="line">        x = result[<span class="string">'result'</span>][<span class="number">0</span>]</span><br><span class="line">        y = result[<span class="string">'result'</span>][<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 此时的x，y是相对坐标，打印的时候别忘了加上截屏的左上角坐标，变成绝对坐标</span></span><br><span class="line">        print(<span class="string">'(%s, %s)'</span> % (x+left_up_x,y+left_up_y))</span><br></pre></td></tr></table></figure>
 <p>运行后，会得到类似下面的结果：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">匹配到图片：<span class="string">D:</span>\python_demo\search.png</span><br><span class="line"><span class="string">x:</span> <span class="number">344.0</span>, <span class="string">y:</span> <span class="number">646.5</span></span><br><span class="line">匹配到图片：<span class="string">D:</span>\python_demo\search.png</span><br><span class="line">[&#123;<span class="string">'result'</span>: (<span class="number">44.0</span>, <span class="number">452.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">9</span>, <span class="number">423</span>), (<span class="number">9</span>, <span class="number">482</span>), (<span class="number">79</span>, <span class="number">423</span>), (<span class="number">79</span>, <span class="number">482</span>)), <span class="string">'confidence'</span>: <span class="number">0.9926632046699524</span>&#125;, &#123;<span class="string">'result'</span>: (<span class="number">120.0</span>, <span class="number">452.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">85</span>, <span class="number">423</span>), (<span class="number">85</span>, <span class="number">482</span>), (<span class="number">155</span>, <span class="number">423</span>), (<span class="number">155</span>, <span class="number">482</span>)), <span class="string">'confidence'</span>: <span class="number">0.9902418255805969</span>&#125;, &#123;<span class="string">'result'</span>: (<span class="number">44.0</span>, <span class="number">555.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">9</span>, <span class="number">526</span>), (<span class="number">9</span>, <span class="number">585</span>), (<span class="number">79</span>, <span class="number">526</span>), (<span class="number">79</span>, <span class="number">585</span>)), <span class="string">'confidence'</span>: <span class="number">0.9793710112571716</span>&#125;]</span><br><span class="line">(<span class="number">344.0</span>, <span class="number">646.5</span>)</span><br><span class="line">(<span class="number">420.0</span>, <span class="number">646.5</span>)</span><br><span class="line">(<span class="number">344.0</span>, <span class="number">749.5</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">匹配到图片：<span class="string">D:</span>\python_demo\search.png</span><br><span class="line"><span class="string">x:</span> <span class="number">344.0</span>, <span class="string">y:</span> <span class="number">646.5</span></span><br><span class="line">匹配到图片：<span class="string">D:</span>\python_demo\search.png</span><br><span class="line">[&#123;<span class="string">'result'</span>: (<span class="number">44.0</span>, <span class="number">452.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">9</span>, <span class="number">423</span>), (<span class="number">9</span>, <span class="number">482</span>), (<span class="number">79</span>, <span class="number">423</span>), (<span class="number">79</span>, <span class="number">482</span>)), <span class="string">'confidence'</span>: <span class="number">0.9926632046699524</span>&#125;, &#123;<span class="string">'result'</span>: (<span class="number">120.0</span>, <span class="number">452.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">85</span>, <span class="number">423</span>), (<span class="number">85</span>, <span class="number">482</span>), (<span class="number">155</span>, <span class="number">423</span>), (<span class="number">155</span>, <span class="number">482</span>)), <span class="string">'confidence'</span>: <span class="number">0.9902418255805969</span>&#125;, &#123;<span class="string">'result'</span>: (<span class="number">44.0</span>, <span class="number">555.5</span>), <span class="string">'rectangle'</span>: ((<span class="number">9</span>, <span class="number">526</span>), (<span class="number">9</span>, <span class="number">585</span>), (<span class="number">79</span>, <span class="number">526</span>), (<span class="number">79</span>, <span class="number">585</span>)), <span class="string">'confidence'</span>: <span class="number">0.9793710112571716</span>&#125;]</span><br><span class="line">(<span class="number">344.0</span>, <span class="number">646.5</span>)</span><br><span class="line">(<span class="number">420.0</span>, <span class="number">646.5</span>)</span><br><span class="line">(<span class="number">344.0</span>, <span class="number">749.5</span>)</span><br></pre></td></tr></table></figure>
 <p>上述演示了查找目标图片和找出多个相同图片位置的方法，其实使用aircv不仅可以实现在大图中找小图，而且还可以识别小图中的信息，比如识别出图片中的文字信息。这个功能可以用来识别一些网站上的动态验证码，关于这块，网上有个现成的帖子，供大家学习和参考：<a href="https://blog.csdn.net/qq_37550440/article/details/87364362" target="_blank" rel="noopener">aircv 大图找小图 并识别小图中信息</a></p>
 <hr>
 <p>到这里，本文的介绍就全部结束了。其实本文介绍的图像比对功能，我在很久之前做项目的时候就已经实现过，只是当时没有进行及时的梳理和总结，所以一直对这个功能里面所涉及到的知识点不那么清晰，在脑子里基本上是一团浆糊。</p>
@@ -670,7 +686,7 @@
 
   <div>
 
-    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 <i class="fa fa-paw"></i> 感谢您的阅读-------------</div>
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
 
 </div>
 
@@ -719,6 +735,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
               <p class="site-author-name" itemprop="name">Peter Pan</p>
               <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
           </div>
@@ -728,7 +746,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives">
+                  <a href="/archives/">
                 
                     <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">日志</span>
@@ -882,7 +900,7 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="mailto:pgz100@126.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
                   
                 </span>
               
@@ -943,6 +961,13 @@
       <!--/noindex-->
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -1015,11 +1040,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     
