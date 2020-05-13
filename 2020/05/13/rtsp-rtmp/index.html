@@ -108,21 +108,18 @@
 
 
 
-  <meta name="description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
-<meta name="keywords" content="ubuntu,开机自启,systemd">
+  <meta name="description" content="本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。">
+<meta name="keywords" content="流媒体协议">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu系统下，使用systemd配置开机启动的方法">
-<meta property="og:url" content="http://yoursite.com/2018/11/05/linux-quick-run/index.html">
+<meta property="og:title" content="浅谈RTSP和RTMP流媒体协议">
+<meta property="og:url" content="http://yoursite.com/2020/05/13/rtsp-rtmp/index.html">
 <meta property="og:site_name" content="WingTsun Cat">
-<meta property="og:description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
+<meta property="og:description" content="本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/1.png">
-<meta property="og:image" content="http://yoursite.com/2018/11/05/linux-quick-run/2.png">
-<meta property="og:updated_time" content="2020-02-06T08:39:31.297Z">
+<meta property="og:updated_time" content="2020-05-13T15:29:54.606Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu系统下，使用systemd配置开机启动的方法">
-<meta name="twitter:description" content="Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。">
-<meta name="twitter:image" content="http://yoursite.com/2018/11/05/linux-quick-run/1.png">
+<meta name="twitter:title" content="浅谈RTSP和RTMP流媒体协议">
+<meta name="twitter:description" content="本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。">
 
 
 
@@ -131,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/11/05/linux-quick-run/">
+  <link rel="canonical" href="http://yoursite.com/2020/05/13/rtsp-rtmp/">
 
 
 
@@ -141,7 +138,7 @@
   };
 </script>
 
-  <title>Ubuntu系统下，使用systemd配置开机启动的方法 | WingTsun Cat</title>
+  <title>浅谈RTSP和RTMP流媒体协议 | WingTsun Cat</title>
   
 
 
@@ -326,7 +323,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/05/linux-quick-run/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/rtsp-rtmp/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
@@ -343,7 +340,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ubuntu系统下，使用systemd配置开机启动的方法
+          <h1 class="post-title" itemprop="name headline">浅谈RTSP和RTMP流媒体协议
               
             
           </h1>
@@ -368,24 +365,12 @@
                 
               
 
-              <time title="创建时间：2018-11-05 22:37:09" itemprop="dateCreated datePublished" datetime="2018-11-05T22:37:09+08:00">2018-11-05</time>
+              <time title="创建时间：2020-05-13 23:19:58 / 修改时间：23:29:54" itemprop="dateCreated datePublished" datetime="2020-05-13T23:19:58+08:00">2020-05-13</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-02-06 16:39:31" itemprop="dateModified" datetime="2020-02-06T16:39:31+08:00">2020-02-06</time>
               
             
           </span>
@@ -402,7 +387,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/linux系统相关/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/网络通信相关/" itemprop="url" rel="index"><span itemprop="name">网络通信相关</span></a></span>
 
                 
                 
@@ -429,7 +414,7 @@
           
 
           
-              <div class="post-description">Ubuntu16.04以后，设置开机自启动的方式有所变化，本文主要介绍在Ubuntu16.04及以上版本设置开机启动的方法。</div>
+              <div class="post-description">本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。</div>
           
 
         </div>
@@ -445,33 +430,93 @@
       
 
       
-        <p>从Ubuntu16.04开始，不再使用initd来管理系统，而改用systemd。</p>
-<h2 id="systemd介绍"><a href="#systemd介绍" class="headerlink" title="systemd介绍"></a>systemd介绍</h2><p>systemd默认会读取/etc/systemd/system目录下的配置文件，而该目录下的文件又会链接到/lib/systemd/system目录下的文件。</p>
-<h2 id="使用systemd配置开机启动"><a href="#使用systemd配置开机启动" class="headerlink" title="使用systemd配置开机启动"></a>使用systemd配置开机启动</h2><p>下面<strong>以Ubuntu18.04为例</strong>，配置开机启动。为了与之前的Ubuntu开机启动的方式保持一致，我们希望仍然在/etc/rc.local 文件中配置开机启动程序。具体操作如下：</p>
-<h3 id="1-配置rc-local-service文件"><a href="#1-配置rc-local-service文件" class="headerlink" title="1. 配置rc-local.service文件"></a>1. 配置rc-local.service文件</h3><p>一般系统安装完之后，/lib/systemd/system目录下会有rc-local.service文件，即我们所需要的配置文件。</p>
-<p>打开 rc-local.service文件，可以看到类似以下内容：</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment">#  SPDX-License-Identifier: LGPL-2.1+</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This unit gets pulled automatically into multi-user.target by</span></span><br><span class="line"><span class="comment"># systemd-rc-local-generator if /etc/rc.local is executable.</span></span><br><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=/etc/rc.local Compatibility</span><br><span class="line"><span class="attr">Documentation</span>=man:systemd-rc-local-generator(<span class="number">8</span>)</span><br><span class="line"><span class="attr">ConditionFileIsExecutable</span>=/etc/rc.local</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/etc/rc.local start</span><br><span class="line"><span class="attr">TimeoutSec</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">RemainAfterExit</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">GuessMainPID</span>=<span class="literal">no</span></span><br></pre></td></tr></table></figure>
-<p><strong>一般来说，正常的启动文件主要分成三部分</strong></p>
-<blockquote>
-<p>[Unit] 段：启动顺序与依赖关系<br>[Service] 段：启动行为,如何启动，启动类型<br>[Install] 段：定义如何安装这个配置文件，即怎样做到开机启动</p>
-</blockquote>
-<p>可以看出，/etc/rc.local 的启动顺序是在network后面，但是显然它少了 [Install] 段，也就是，没有定义如何做开机启动，所以我们需要在后面加上 [Install] 段：</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[Install]</span>  </span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target  </span><br><span class="line"><span class="attr">Alias</span>=rc-local.service</span><br></pre></td></tr></table></figure>
-<p>配置好之后，文件内容是这样的：</p>
-<p><img src="1.png" alt=""></p>
-<p>然后保存退出。</p>
-<h3 id="2-配置rc-local文件"><a href="#2-配置rc-local文件" class="headerlink" title="2. 配置rc.local文件"></a>2. 配置rc.local文件</h3><p>因为Ubuntu18.04系统默认是没有 /etc/rc.local 文件的，所以需要我们手动创建，并赋予其可执行权限：</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$ sudo touch /etc/rc.<span class="keyword">local</span></span><br><span class="line">$ sudo chmod <span class="number">755</span> /etc/rc.<span class="keyword">local</span></span><br></pre></td></tr></table></figure>
-<p>打开rc.local文件，添加以下内容：</p>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>接着就可以在里面添加我们所需要的开机启动程序命令，可以直接写命令，也可以执行Shell脚本文件sh。</p>
-<p>这里我们先写一个测试命令<code>echo &quot;this just a test&quot; &gt; /usr/local/text.log</code>，以验证脚本是否生效，注意命令一定要写在<code>exit 0</code>之前。</p>
-<p>测试命令添加完之后，文件内容是这样的：</p>
-<p><img src="2.png" alt=""></p>
-<h3 id="3-为rc-local-service创建软链接"><a href="#3-为rc-local-service创建软链接" class="headerlink" title="3. 为rc.local.service创建软链接"></a>3. 为rc.local.service创建软链接</h3><p>通过<code>ls</code>命令可以看到，<code>/lib/systemd/system/rc.local.service</code>是一个软链接，链接到<code>/lib/systemd/system/rc-local.service</code>，而且 systemd 是默认读取 /etc/systemd/system 下的配置文件,，所以我们还需要在 /etc/systemd/system 目录下创建一个软链接，链接到<code>/lib/systemd/system/rc.local.service</code>，如下：</p>
-<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line">sudo ln -s /<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">rc</span>.<span class="title">local</span>.<span class="title">service</span> /<span class="title">etc</span>/<span class="title">systemd</span>/<span class="title">system</span>/</span></span><br></pre></td></tr></table></figure>
-<p>此时在/etc/systemd/system目录下会看到生成了一个软链接 rc.local.service。</p>
-<h3 id="4-重启系统，验证测试脚本"><a href="#4-重启系统，验证测试脚本" class="headerlink" title="4. 重启系统，验证测试脚本"></a>4. 重启系统，验证测试脚本</h3><p>执行<code>reboot</code>命令重启系统，查看/usr/local目录，会发现生成了一个text.log，说明开机启动已配置成功。</p>
+        <h1 id="流媒体协议一览"><a href="#流媒体协议一览" class="headerlink" title="流媒体协议一览"></a>流媒体协议一览</h1><p>流媒体协议是服务器与客户端之间通信遵循的规定，当前网络上主要的流媒体协议如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>推出机构</th>
+<th>传输层协议</th>
+<th>客户端</th>
+<th>目前使用领域</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTSP+RTP</td>
+<td>IETF</td>
+<td>UDP</td>
+<td>VLC, WMP</td>
+<td>IPTV</td>
+</tr>
+<tr>
+<td>RTMP</td>
+<td>Adobe Inc.</td>
+<td>TCP</td>
+<td>Flash</td>
+<td>互联网直播</td>
+</tr>
+<tr>
+<td>RTMFP</td>
+<td>Adobe Inc.</td>
+<td>UDP</td>
+<td>Flash</td>
+<td>互联网直播</td>
+</tr>
+<tr>
+<td>MMS</td>
+<td>Microsoft Inc.</td>
+<td>TCP/UDP</td>
+<td>WMP</td>
+<td>互联网直播+点播</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>WWW+IETF</td>
+<td>TCP</td>
+<td>Flash</td>
+<td>互联网点播</td>
+</tr>
+</tbody>
+</table>
+<h1 id="RTMP协议简介"><a href="#RTMP协议简介" class="headerlink" title="RTMP协议简介"></a>RTMP协议简介</h1><p>RTMP，全称Real Time Messaging Protocol，实时消息传输协议，是TCP/IP协议体系中的一个应用层协议，该协议基于TCP传输，包括RTMP基本协议及RTMPT/RTMPS/RTMPE等多种变种。RTMP是一种设计用来进行实时数据通信的网络协议，主要用来在Flash/AIR平台和支持RTMP协议的流媒体/交互服务器之间进行音视频和数据通信。支持该协议的软件包括Adobe Media Server/Ultrant Media Server/red5等。RTMP与HTTP一样，都属于TCP/IP四层模型的应用层。</p>
+<h1 id="RTP-RTCP协议简介"><a href="#RTP-RTCP协议简介" class="headerlink" title="RTP/RTCP协议简介"></a>RTP/RTCP协议简介</h1><p>RTP：实时传输协议；RTCP：实时传输控制协议。</p>
+<p>RTP被定义为传输音频、视频、模拟数据等实时数据的传输协议，与传统的注重的高可靠的数据传输的运输层协议相比，它更加侧重的数据传输的实时性。此协议提供的服务包括数据顺序号、时间标记、传输控制等。</p>
+<p>RTP通常与传输控制协议RTCP一起工作，RTP只负责实时数据的传输，RTCP负责对RTP的通信和会话进行带外管理（如流量控制、拥塞控制、会话源管理等）。</p>
+<p>RTP位于传输层之上，应用层之下，默认是基于UDP传输数据。具体传输流程：实时语音、视频数据经过模数转换和压缩编码处理后，先送给RTP封装成为RTP数据单元，RTP数据单元被封装为UDP数据报，然后再向下递交给IP封装为IP数据包。</p>
+<p>RTP分组只包含RTP数据，而控制是由配套协议RTCP提供。</p>
+<h1 id="RTSP协议简介"><a href="#RTSP协议简介" class="headerlink" title="RTSP协议简介"></a>RTSP协议简介</h1><p>RTSP，全称Real Time Streaming Protocol，实时流传输协议，是TCP/IP协议体系中的一个应用层协议，该协议定义了一对多应用程序如何有效地通过IP网络传送多媒体数据。</p>
+<p>RTSP在体系结构上位于RTP/RTCP之上，它使用UDP完成数据传输。</p>
+<p>HTTP与RTSP相比，HTTP传送HTML，而RTSP传送的是多媒体数据。HTTP请求由客户机发出，服务器作出响应；而使用RTSP时，客户机和服务器都可以发出请求，所以RTSP可以是双向的。</p>
+<h1 id="RTMP和RTSP对比"><a href="#RTMP和RTSP对比" class="headerlink" title="RTMP和RTSP对比"></a>RTMP和RTSP对比</h1><p><strong>RTMP，实时消息传输协议</strong></p>
+<ul>
+<li>是应用层协议</li>
+<li>是流媒体协议</li>
+<li>基于TCP协议传输</li>
+<li>是Adobe的私有协议，未完全公开。</li>
+<li>依赖flash player作为播放器</li>
+<li>一般传输flv，f4v格式流</li>
+<li>一般在TCP1个通道上传输命令和数据</li>
+</ul>
+<p><strong>综合评价：</strong></p>
+<ol>
+<li>由于是基于TCP协议传输，所以RTMP不会丢包，但会有积累延迟：当网络状态差时，服务器会将包缓存起来，导致累积的延迟；待网络状况好了，就一起发给客户端。这个的对策就是，当客户端的缓冲区很大，就断开重连。</li>
+<li>由于互联网环境相对较差，采用RTMP保证了视频的传输质量，但是其传输延迟相对较高，传输效率相对较低。 </li>
+</ol>
+<p><strong>RTSP，实时流传输协议</strong></p>
+<ul>
+<li>是应用层协议</li>
+<li>是流媒体协议</li>
+<li>是共有协议，有专门机构做维护。</li>
+<li>基于UDP协议传输</li>
+<li>一般传输ts，mp4格式流</li>
+<li>一般需要2~3个通道上传输，命令和数据通道分离。</li>
+</ul>
+<p><strong>综合评价：</strong></p>
+<ol>
+<li>RTSP+RTP经常用于IPTV领域。因为其采用UDP传输视音频，支持组播，效率较高。但其缺点是网络不好的情况下可能会丢包，影响视频观看质量。</li>
+<li>由于互联网网络环境的不稳定性，RTSP+RTP很少用于互联网视音频传输。互联网视频服务通常采用TCP作为其流媒体的传输层协议，因而像RTMP，MMS，HTTP这类的协议广泛用于互联网视音频服务之中，这类协议不会发生丢包，因而保证了视频的质量，但是传输的效率会相对低一些。</li>
+</ol>
 
       
     </div>
@@ -492,11 +537,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ubuntu/" rel="tag"><i class="fa fa-tag"></i> ubuntu</a>
-          
-            <a href="/tags/开机自启/" rel="tag"><i class="fa fa-tag"></i> 开机自启</a>
-          
-            <a href="/tags/systemd/" rel="tag"><i class="fa fa-tag"></i> systemd</a>
+            <a href="/tags/流媒体协议/" rel="tag"><i class="fa fa-tag"></i> 流媒体协议</a>
           
         </div>
       
@@ -509,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/05/ss-bbr-vps/" rel="next" title="搬瓦工搭建Shadowsocks过程中的常见注意事项">
-                <i class="fa fa-chevron-left"></i> 搬瓦工搭建Shadowsocks过程中的常见注意事项
+              <a href="/2020/03/04/behind-prod/" rel="next" title="《幕后产品：打造突破式产品思维》之精华提炼">
+                <i class="fa fa-chevron-left"></i> 《幕后产品：打造突破式产品思维》之精华提炼
               </a>
             
           </div>
@@ -518,10 +559,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/16/v2ray/" rel="prev" title="Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代">
-                Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -810,7 +847,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd介绍"><span class="nav-number">1.</span> <span class="nav-text">systemd介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用systemd配置开机启动"><span class="nav-number">2.</span> <span class="nav-text">使用systemd配置开机启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置rc-local-service文件"><span class="nav-number">2.1.</span> <span class="nav-text">1. 配置rc-local.service文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置rc-local文件"><span class="nav-number">2.2.</span> <span class="nav-text">2. 配置rc.local文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-为rc-local-service创建软链接"><span class="nav-number">2.3.</span> <span class="nav-text">3. 为rc.local.service创建软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-重启系统，验证测试脚本"><span class="nav-number">2.4.</span> <span class="nav-text">4. 重启系统，验证测试脚本</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#流媒体协议一览"><span class="nav-number">1.</span> <span class="nav-text">流媒体协议一览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTMP协议简介"><span class="nav-number">2.</span> <span class="nav-text">RTMP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTP-RTCP协议简介"><span class="nav-number">3.</span> <span class="nav-text">RTP/RTCP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTSP协议简介"><span class="nav-number">4.</span> <span class="nav-text">RTSP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTMP和RTSP对比"><span class="nav-number">5.</span> <span class="nav-text">RTMP和RTSP对比</span></a></li></ol></div>
             
 
           </div>
