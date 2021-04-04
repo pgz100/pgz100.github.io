@@ -108,22 +108,25 @@
 
 
 
-  <meta name="description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。">
+  <meta name="description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台，其中mosquitto分别介绍采用源码安装部署和docker容器化部署两种搭建方式。">
 <meta name="keywords" content="mosquitto,domoticz,mqtt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="智能家居物联网平台环境搭建">
 <meta property="og:url" content="http://yoursite.com/2020/02/05/smart-home/index.html">
 <meta property="og:site_name" content="WingTsun Cat">
-<meta property="og:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。">
+<meta property="og:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台，其中mosquitto分别介绍采用源码安装部署和docker容器化部署两种搭建方式。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/1.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/2.png">
-<meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/3.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/4.jpg">
-<meta property="og:updated_time" content="2020-02-06T08:36:08.678Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/05/smart-home/7.jpg">
+<meta property="og:updated_time" content="2021-04-04T06:36:00.978Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智能家居物联网平台环境搭建">
-<meta name="twitter:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。">
+<meta name="twitter:description" content="在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台，其中mosquitto分别介绍采用源码安装部署和docker容器化部署两种搭建方式。">
 <meta name="twitter:image" content="http://yoursite.com/2020/02/05/smart-home/1.jpg">
 
 
@@ -387,7 +390,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-06 16:36:08" itemprop="dateModified" datetime="2020-02-06T16:36:08+08:00">2020-02-06</time>
+                <time title="修改时间：2021-04-04 14:36:00" itemprop="dateModified" datetime="2021-04-04T14:36:00+08:00">2021-04-04</time>
               
             
           </span>
@@ -431,7 +434,7 @@
           
 
           
-              <div class="post-description">在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台。</div>
+              <div class="post-description">在ubuntu18.04 64位系统环境下，基于mosquitto和domoticz搭建智能家居物联网平台，其中mosquitto分别介绍采用源码安装部署和docker容器化部署两种搭建方式。</div>
           
 
         </div>
@@ -447,15 +450,19 @@
       
 
       
-        <h1 id="Mosquitto简介"><a href="#Mosquitto简介" class="headerlink" title="Mosquitto简介"></a>Mosquitto简介</h1><p>mosquitto是一个实现了MQTT3.1协议的消息代理服务器（broker），提供轻量级、支持可发布/可订阅的的消息推送模式。mosquitto由MQTT协议创始人之一的Andy Stanford-Clark开发，它为我们提供了非常棒的轻量级数据交换的解决方案。官方网站：<a href="http://mosquitto.org/" target="_blank" rel="noopener">http://mosquitto.org/</a> 和 github项目地址：<a href="https://github.com/eclipse/mosquitto。" target="_blank" rel="noopener">https://github.com/eclipse/mosquitto。</a></p>
-<h1 id="Domoticz简介"><a href="#Domoticz简介" class="headerlink" title="Domoticz简介"></a>Domoticz简介</h1><p>Domoticz是一个轻量级、开源的智能家居系统，通过它你可以监测和控制各种设备比如：灯、开关 ，各种传感器、仪表比如： 温度、雨、风、紫外线、电、气体、水 等等， 还可以向任一移动设备发送通知或警告。Domoticz支持Linux、Windows、树莓派及各种嵌入式设备。Domoticz中文站点：<a href="https://www.domoticz.cn/" target="_blank" rel="noopener">https://www.domoticz.cn/</a> 和   <a href="https://www.domoticz.cn/wiki/Domoticz%E6%89%8B%E5%86%8C" target="_blank" rel="noopener">wiki手册</a> 。</p>
-<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><h2 id="更改ubuntu系统安装源"><a href="#更改ubuntu系统安装源" class="headerlink" title="更改ubuntu系统安装源"></a>更改ubuntu系统安装源</h2><p>ubuntu系统默认使用的是国外安装源，在下载安装包过程中速度可能会比较慢，建议将其更改为国内安装源。</p>
+        <h1 id="MQTT简介"><a href="#MQTT简介" class="headerlink" title="MQTT简介"></a>MQTT简介</h1><p>MQTT（Message Queuing Telemetry Transport，消息队列遥测传输协议），是一种基于发布/订阅（publish/subscribe）模式的”轻量级”通讯协议，该协议构建于TCP/IP协议上，由IBM在1999年发布。MQTT最大优点在于，可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。作为一种低开销、低带宽占用的即时通讯协议，使其在物联网、小型设备、移动应用等方面有较广泛的应用。</p>
+<p>MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT协议是轻量、简单、开放和易于实现的，这些特点使它适用范围非常广泛。在很多情况下，包括受限的环境中，如：机器与机器（M2M）通信和物联网（IoT）。其在，通过卫星链路通信传感器、偶尔拨号的医疗设备、智能家居、及一些小型化设备中已广泛使用。</p>
+<h1 id="Mosquitto简介"><a href="#Mosquitto简介" class="headerlink" title="Mosquitto简介"></a>Mosquitto简介</h1><p>Mosquitto是最常用的开源MQTT实现，它实现了MQTT3.1协议的消息代理服务器（broker），提供轻量级、支持可发布/可订阅的的消息推送模式，使设备对设备之间的短消息通信变得简单，比如现在应用广泛的低功耗传感器，手机、嵌入式计算机、微型控制器等移动设备。Mosquitto由MQTT协议创始人之一的Andy Stanford-Clark开发，它为我们提供了非常棒的轻量级数据交换的解决方案。官方网站：<a href="http://mosquitto.org/" target="_blank" rel="noopener">http://mosquitto.org/</a> 和 github项目地址：<a href="https://github.com/eclipse/mosquitto" target="_blank" rel="noopener">https://github.com/eclipse/mosquitto</a></p>
+<h1 id="Domoticz简介"><a href="#Domoticz简介" class="headerlink" title="Domoticz简介"></a>Domoticz简介</h1><p>Domoticz是一个轻量级、开源的智能家居系统，通过它你可以监测和控制各种设备比如：灯、开关 ，各种传感器、仪表比如： 温度、雨、风、紫外线、电、气体、水 等等， 还可以向任一移动设备发送通知或警告。Domoticz支持Linux、Windows、树莓派及各种嵌入式设备。Domoticz中文站点：<a href="https://www.domoticz.cn/" target="_blank" rel="noopener">https://www.domoticz.cn/</a> 和 <a href="https://www.domoticz.cn/wiki/Domoticz%E6%89%8B%E5%86%8C" target="_blank" rel="noopener">wiki手册</a></p>
+<p><span id="inline-blue">下面让我们开始一步步地搭建智能家居物联网平台吧！</span></p>
+<h1 id="更改ubuntu系统安装源"><a href="#更改ubuntu系统安装源" class="headerlink" title="更改ubuntu系统安装源"></a>更改ubuntu系统安装源</h1><p>由于ubuntu系统默认使用的是国外安装源，在下载安装包过程中速度可能会比较慢，所以建议将其更改为国内安装源。</p>
 <p>1、修改/etc/apt/sources.list文件，建议将现有的sources.list备份下。</p>
 <p>将sources.list文件内容替换如下：</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-security main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-updates main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-proposed main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http:<span class="regexp">//mi</span>rrors.aliyun.com<span class="regexp">/ubuntu/</span> bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 <p>2、更新软件包</p>
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> update</span><br><span class="line">sudo apt-<span class="builtin-name">get</span> upgrade</span><br></pre></td></tr></table></figure>
-<h2 id="mosquitto环境搭建"><a href="#mosquitto环境搭建" class="headerlink" title="mosquitto环境搭建"></a>mosquitto环境搭建</h2><h3 id="下载和安装mosquitto"><a href="#下载和安装mosquitto" class="headerlink" title="下载和安装mosquitto"></a>下载和安装mosquitto</h3><p>1、如果你是在Linux系统上安装Mosquitto，建议大家使用源码安装，最新的源码可从<a href="http://mosquitto.org/files/source/" target="_blank" rel="noopener">http://mosquitto.org/files/source/</a> 获取。我这里下载的是当前最新版本：mosquitto-1.6.8。</p>
+<h1 id="mosquitto环境搭建"><a href="#mosquitto环境搭建" class="headerlink" title="mosquitto环境搭建"></a>mosquitto环境搭建</h1><p>搭建mosquitto环境通常有两种方式，一种是通过mosquitto源码安装部署，一种是通过docker容器化部署，下面将分别介绍这两种搭建方式。</p>
+<h2 id="通过下载源码安装部署"><a href="#通过下载源码安装部署" class="headerlink" title="通过下载源码安装部署"></a>通过下载源码安装部署</h2><h3 id="下载和安装mosquitto"><a href="#下载和安装mosquitto" class="headerlink" title="下载和安装mosquitto"></a>下载和安装mosquitto</h3><p>1、如果你是在Linux系统上安装Mosquitto，建议大家使用源码安装，最新的源码可从<a href="http://mosquitto.org/files/source/" target="_blank" rel="noopener">http://mosquitto.org/files/source/</a> 获取。我这里下载的是当前最新版本：mosquitto-1.6.8。</p>
 <p>2、下载后解压出来。这里有个需要注意的地方：<strong>默认情况下Mosquitto的安装需要OpenSSL的支持；如果不需要SSL，则需要关闭config.mk里面的某些与SSL功能有关的选项（WITH_TLS、WITH_TLS_PSK）。</strong></p>
 <p>3、请确保已安装make、gcc、g++、openssl等依赖包。</p>
 <p>4、安装mosquitto：cd到mosquitto源码根目录下，执行 <code>make install</code>。</p>
@@ -517,8 +524,8 @@
 <p>说明：read – 订阅权限 、write – 发布权限。</p>
 <p>添加完毕后，保存退出。</p>
 <p>至此 admin 、 mosquitto_test 两个用户的权限已配置完成。</p>
-<h3 id="mosquitto启动和停止"><a href="#mosquitto启动和停止" class="headerlink" title="mosquitto启动和停止"></a>mosquitto启动和停止</h3><p>默认情况下，mosquitto使用的端口是1883。如果希望修改端口，则需修改mosquitto.conf文件中的 port 字段值。</p>
-<p><img src="3.jpg" alt=""></p>
+<h3 id="mosquitto启动和停止"><a href="#mosquitto启动和停止" class="headerlink" title="mosquitto启动和停止"></a>mosquitto启动和停止</h3><p>mosquitto默认使用的端口是1883。如果希望修改端口，则需修改mosquitto.conf文件中的 port 字段值。</p>
+<p><img src="3.png" alt=""></p>
 <p>一切准备就绪后，启动mosquitto：</p>
 <figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf    ##前台运行</span><br><span class="line">或</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d ##后台运行</span><br></pre></td></tr></table></figure>
 <p>停止mosquitto：使用kill命令强制终止即可。</p>
@@ -529,24 +536,54 @@
 <li><a href="https://www.cnblogs.com/Paul-watermelon/p/10400758.html" target="_blank" rel="noopener">https://www.cnblogs.com/Paul-watermelon/p/10400758.html</a></li>
 <li><a href="https://www.cnblogs.com/saryli/p/9820532.html" target="_blank" rel="noopener">https://www.cnblogs.com/saryli/p/9820532.html</a></li>
 </ul>
-<p>至此，mosquitto环境搭建完毕，我们知道，单单只有一个broker是不行的，我们还需要一个可以进行家居控制的工具，接下来我们开始搭建这个可视化的工具Domoticz。</p>
-<h2 id="domoticz环境搭建"><a href="#domoticz环境搭建" class="headerlink" title="domoticz环境搭建"></a>domoticz环境搭建</h2><p>本文开头简单介绍了domoticz是个啥东东，其中说到了domoticz支持linux系统。经本人亲身测试，domoticz在centos系统上支持的不是很好，比如在安装domoticz的时候，centos系统无法使用命令<code>curl -L install.domoticz.cn | bash</code>来一键式安装domoticz，不会出现所谓的安装界面。所以最终选择在<strong>ubuntu 18.04 64系统</strong>上安装domoticz，总的来说，domoticz在ubuntu系统上的适配做的比较好。</p>
+<h2 id="通过docker容器化部署"><a href="#通过docker容器化部署" class="headerlink" title="通过docker容器化部署"></a>通过docker容器化部署</h2><p><strong>注：</strong>应事先在机器上安装好docker环境，且保证docker已经正常启动。</p>
+<h3 id="查询镜像"><a href="#查询镜像" class="headerlink" title="查询镜像"></a>查询镜像</h3> <figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker search mosquitto</span></span><br></pre></td></tr></table></figure>
+<p>选择STARS数最多的 eclipse-mosquitto</p>
+<h3 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h3><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker pull eclipse-mosquitto</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h3><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker images eclipse-mosquitto</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建目录文件，用于容器目录挂载"><a href="#创建目录文件，用于容器目录挂载" class="headerlink" title="创建目录文件，用于容器目录挂载"></a>创建目录文件，用于容器目录挂载</h3><h4 id="在宿主机环境下创建目录"><a href="#在宿主机环境下创建目录" class="headerlink" title="在宿主机环境下创建目录"></a>在宿主机环境下创建目录</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">mkdir -p /mosquitto/config</span><br><span class="line">mkdir -p /mosquitto/data</span><br><span class="line">mkdir -p /mosquitto/log</span><br></pre></td></tr></table></figure>
+<h4 id="初始化用户密码文件"><a href="#初始化用户密码文件" class="headerlink" title="初始化用户密码文件"></a>初始化用户密码文件</h4><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">touch /mosquitto/<span class="built_in">config</span>/pwfile.conf</span><br><span class="line">chmod -R <span class="number">755</span> /mosquitto/<span class="built_in">config</span>/pwfile.conf</span><br></pre></td></tr></table></figure>
+<p><strong>注</strong>：这里先生成一个空文件，后续会进到容器里面使用<em>mosquitto_passwd</em>命令来自动生成用户密码。</p>
+<h4 id="初始化权限管理文件"><a href="#初始化权限管理文件" class="headerlink" title="初始化权限管理文件"></a>初始化权限管理文件</h4><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">vi</span> /mosquitto/config/aclfile.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<p>在文件中添加以下内容（此处假设会创建admin和mosquitto_test这两个用户）</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="keyword">user</span> <span class="title">admin</span></span><br><span class="line">topic <span class="keyword">read</span> root/topic/<span class="comment">#</span></span><br><span class="line"><span class="keyword">user</span> <span class="title">mosquitto_test</span></span><br><span class="line">topic <span class="keyword">write</span> root/topic<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>说明：read – 订阅权限 、write – 发布权限。</p>
+<h4 id="初始化mosquitto配置文件"><a href="#初始化mosquitto配置文件" class="headerlink" title="初始化mosquitto配置文件"></a>初始化mosquitto配置文件</h4><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">vi</span> /mosquitto/config/mosquitto.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<p>在配置文件中输入以下内容</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line">persistence <span class="literal">true</span></span><br><span class="line">persistence_location /mosquitto/data</span><br><span class="line"><span class="meta"># 设置log路径</span></span><br><span class="line">log_dest file /mosquitto/log/mosquitto.log</span><br><span class="line"></span><br><span class="line"><span class="meta"># 设置log类型</span></span><br><span class="line"><span class="meta">#log_type error</span></span><br><span class="line"><span class="meta">#log_type warning</span></span><br><span class="line"><span class="meta">#log_type notice</span></span><br><span class="line"><span class="meta">#log_type information</span></span><br><span class="line">log_type all</span><br><span class="line"></span><br><span class="line"><span class="meta"># 是否保存客户端的连接和断开连接的信息到日志</span></span><br><span class="line">connection_messages <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 是否设置日志时间戳</span></span><br><span class="line">log_timestamp <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 设置时间戳格式</span></span><br><span class="line">log_timestamp_format %Y-%m-%dT%H:%M:%S</span><br><span class="line"></span><br><span class="line"><span class="meta"># 是否开启匿名模式</span></span><br><span class="line">allow_anonymous <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 指定用户密码文件</span></span><br><span class="line">password_file /mosquitto/config/pwfile.conf</span><br><span class="line"></span><br><span class="line"><span class="meta"># 指定权限管理文件</span></span><br><span class="line">acl_file /mosquitto/config/aclfile.conf</span><br><span class="line"></span><br><span class="line"><span class="meta"># For MQTT v5 clients, it is possible to have the server send a "server</span></span><br><span class="line"><span class="meta"># keepalive" value that will override the keepalive value set by the client.</span></span><br><span class="line"><span class="meta"># This is intended to be used as a mechanism to say that the server will</span></span><br><span class="line"><span class="meta"># disconnect the client earlier than it anticipated, and that the client should</span></span><br><span class="line"><span class="meta"># use the new keepalive value. The max_keepalive option allows you to specify</span></span><br><span class="line"><span class="meta"># that clients may only connect with keepalive less than or equal to this</span></span><br><span class="line"><span class="meta"># value, otherwise they will be sent a server keepalive telling them to use</span></span><br><span class="line"><span class="meta"># max_keepalive. This only applies to MQTT v5 clients. The maximum value</span></span><br><span class="line"><span class="meta"># allowable is 65535. Do not set below 10.</span></span><br><span class="line"><span class="meta">#max_keepalive 65535</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># Set the keepalive interval for this bridge connection, in seconds.</span></span><br><span class="line"><span class="meta">#keepalive_interval 60</span></span><br></pre></td></tr></table></figure>
+<h4 id="添加目录权限"><a href="#添加目录权限" class="headerlink" title="添加目录权限"></a>添加目录权限</h4><figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">chmod -R 755 <span class="string">/mosquitto</span></span><br><span class="line">chmode -R 777 <span class="string">/mosquitto/log</span> <span class="comment">#日志目录要最大权限</span></span><br></pre></td></tr></table></figure>
+<h3 id="启动镜像"><a href="#启动镜像" class="headerlink" title="启动镜像"></a>启动镜像</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">docker <span class="builtin-name">run</span> -it <span class="attribute">--name</span>=mosquitto --privileged -p 1883:1883 -p 9001:9001 -v /mosquitto/config:/mosquitto<span class="built_in">/config </span>-v /mosquitto/data:/mosquitto/data -v /mosquitto/log:/mosquitto/log -d eclipse-mosquitto</span><br></pre></td></tr></table></figure>
+<h3 id="进入docker容器"><a href="#进入docker容器" class="headerlink" title="进入docker容器"></a>进入docker容器</h3><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">docker exec -<span class="keyword">it</span> mosquitto sh</span><br></pre></td></tr></table></figure>
+<h3 id="生成用户密码"><a href="#生成用户密码" class="headerlink" title="生成用户密码"></a>生成用户密码</h3><p>使用<em>mosquitto_passwd</em>命令创建用户密码，第一个admin是用户名，第二个admin是密码</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">mosquitto_passwd -<span class="selector-tag">b</span> /mosquitto/config/pwfile<span class="selector-class">.conf</span> admin admin</span><br><span class="line">mosquitto_passwd -<span class="selector-tag">b</span> /mosquitto/config/pwfile<span class="selector-class">.conf</span> mosquitto_test mosquitto_test</span><br></pre></td></tr></table></figure>
+<h3 id="重启mosquitto容器"><a href="#重启mosquitto容器" class="headerlink" title="重启mosquitto容器"></a>重启mosquitto容器</h3><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker restart mosquitto</span></span><br></pre></td></tr></table></figure>
+<h3 id="在宿主机查看mosquitto是否正常启用"><a href="#在宿主机查看mosquitto是否正常启用" class="headerlink" title="在宿主机查看mosquitto是否正常启用"></a>在宿主机查看mosquitto是否正常启用</h3><p>查看容器是否正常重启</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker ps</span></span><br></pre></td></tr></table></figure>
+<p><img src="4.jpg" alt=""></p>
+<p>查看mosquitto服务是否正常启动</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ps</span> aux |<span class="keyword">grep</span> mosquitto</span><br></pre></td></tr></table></figure>
+<p><img src="5.jpg" alt=""></p>
+<p>查看mosquitto服务运行日志</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cat</span> /mosquitto/<span class="keyword">log</span>/mosquitto.<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+<p><img src="6.jpg" alt=""></p>
+<p>至此，mosquitto环境就搭建完成了。我们知道，单单只有一个broker是不行的，我们还需要一个可以进行家居控制的工具，接下来我们开始搭建这个可视化的工具Domoticz。</p>
+<h1 id="domoticz环境搭建"><a href="#domoticz环境搭建" class="headerlink" title="domoticz环境搭建"></a>domoticz环境搭建</h1><p>本文开头简单介绍了domoticz是个啥东东，其中说到了domoticz支持linux系统。经本人亲身测试，domoticz在centos系统上支持的不是很好，比如在安装domoticz的时候，centos系统无法使用命令<code>curl -L install.domoticz.cn | bash</code>来一键式安装domoticz，不会出现所谓的安装界面。所以最终选择在<strong>ubuntu 18.04 64系统</strong>上安装domoticz，总的来说，domoticz在ubuntu系统上的适配做的比较好。</p>
 <p>安装domoticz通常有两种方式：一种是直接通过命令行安装，一种是下载源码后，编译源码来安装。网上大多数安装教程介绍的是通过命令行来安装，参考链接：<a href="https://blog.csdn.net/why19940926/article/details/88372645，下面重点介绍通过编译源码来安装domoticz。" target="_blank" rel="noopener">https://blog.csdn.net/why19940926/article/details/88372645，下面重点介绍通过编译源码来安装domoticz。</a></p>
-<h3 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h3><p>假定你已经更改了ubuntu系统安装源，并已经更新了系统软件包。</p>
+<h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><p>假定你已经更改了ubuntu系统安装源，并已经更新了系统软件包。</p>
 <p>当前最新稳定版是v4.10717，但有人说最新版不是很稳定，推荐使用v3.8153。</p>
 <blockquote>
 <p>参考链接：<a href="https://www.domoticz.cn/forum/viewtopic.php?f=4&amp;t=2" target="_blank" rel="noopener">https://www.domoticz.cn/forum/viewtopic.php?f=4&amp;t=2</a></p>
 </blockquote>
 <p>为保险起见，这里使用了某人推荐的v3.8153版本（v3.0系列的最后一个稳定版本），下载地址如下：</p>
 <p><a href="https://github.com/domoticz/domoticz/tree/3.8153" target="_blank" rel="noopener">https://github.com/domoticz/domoticz/tree/3.8153</a></p>
-<h3 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
-<h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>cmake -DCMAKE_BUILD_TYPE=Release .</span><br><span class="line"><span class="variable">$ </span>make</span><br></pre></td></tr></table></figure>
+<h2 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
+<h2 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
 <p><strong>说明：</strong>在低配电脑上进行编译可能需要10-15分钟。如果你的电脑拥有多核CPU，可以通过给<code>make</code>命令增加’-j’标识来使用更多核心，这样会快很多。四核CPU可以使用<code>make -j4</code>代替<code>make</code>。</p>
-<h3 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h3><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>./domoticz</span><br></pre></td></tr></table></figure>
+<h2 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./domoticz</span></span><br></pre></td></tr></table></figure>
 <p>然后在浏览器中输入IP:8080即可访问domoticz的Web控制界面，会发现Web前端的版本号是v3.5876，而本次下载的domoticz源码版本号是v3.8153，注意不要把这两者弄混淆了。</p>
-<p><img src="4.jpg" alt=""></p>
+<p><img src="7.jpg" alt=""></p>
 <p><strong>说明：</strong>domoticz默认使用的端口是8080，如果需要更改端口号，可在启动domoticz时，使用参数 <code>-www</code> 来指定端口号，如：<code>./domoticz -www 8090</code></p>
 <p>还可通过命令<code>./domoticz -h</code>来查看详细用法。</p>
 <blockquote>
@@ -556,8 +593,8 @@
 <li><a href="https://www.domoticz.cn/wiki/Linux" target="_blank" rel="noopener">https://www.domoticz.cn/wiki/Linux</a></li>
 <li><a href="https://www.domoticz.cn/wiki/Install.txt" target="_blank" rel="noopener">https://www.domoticz.cn/wiki/Install.txt</a></li>
 </ul>
-<h1 id="可能用到的工具"><a href="#可能用到的工具" class="headerlink" title="可能用到的工具"></a>可能用到的工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
-<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">$ apt-get install net-tools ##安装netstat</span><br><span class="line">$ netstat -nultp            ##查看所有tcp、udp的端口使用情况</span><br></pre></td></tr></table></figure>
+<h1 id="搭建过程中的常用工具"><a href="#搭建过程中的常用工具" class="headerlink" title="搭建过程中的常用工具"></a>搭建过程中的常用工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>各参数说明：</p>
 <ul>
@@ -569,7 +606,7 @@
 </ul>
 </blockquote>
 <p>例如查看 8000 端口的情况，使用以下命令：</p>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">$ netstat -nultp <span class="string">| grep 8000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -699,7 +736,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -732,7 +769,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">10</span>
+                      
+                    
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -829,7 +868,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">42</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -908,7 +951,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mosquitto简介"><span class="nav-number">1.</span> <span class="nav-text">Mosquitto简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Domoticz简介"><span class="nav-number">2.</span> <span class="nav-text">Domoticz简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开始搭建"><span class="nav-number">3.</span> <span class="nav-text">开始搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更改ubuntu系统安装源"><span class="nav-number">3.1.</span> <span class="nav-text">更改ubuntu系统安装源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mosquitto环境搭建"><span class="nav-number">3.2.</span> <span class="nav-text">mosquitto环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载和安装mosquitto"><span class="nav-number">3.2.1.</span> <span class="nav-text">下载和安装mosquitto</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mosquitto用户配置和权限管理"><span class="nav-number">3.2.2.</span> <span class="nav-text">mosquitto用户配置和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户配置"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">用户配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">权限管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mosquitto启动和停止"><span class="nav-number">3.2.3.</span> <span class="nav-text">mosquitto启动和停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#domoticz环境搭建"><span class="nav-number">3.3.</span> <span class="nav-text">domoticz环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载源码"><span class="nav-number">3.3.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装相关依赖库和工具"><span class="nav-number">3.3.2.</span> <span class="nav-text">安装相关依赖库和工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译源码"><span class="nav-number">3.3.3.</span> <span class="nav-text">编译源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动domoticz"><span class="nav-number">3.3.4.</span> <span class="nav-text">启动domoticz</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可能用到的工具"><span class="nav-number">4.</span> <span class="nav-text">可能用到的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看系统端口被占用情况"><span class="nav-number">4.1.</span> <span class="nav-text">查看系统端口被占用情况</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MQTT简介"><span class="nav-number">1.</span> <span class="nav-text">MQTT简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mosquitto简介"><span class="nav-number">2.</span> <span class="nav-text">Mosquitto简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Domoticz简介"><span class="nav-number">3.</span> <span class="nav-text">Domoticz简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更改ubuntu系统安装源"><span class="nav-number">4.</span> <span class="nav-text">更改ubuntu系统安装源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mosquitto环境搭建"><span class="nav-number">5.</span> <span class="nav-text">mosquitto环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过下载源码安装部署"><span class="nav-number">5.1.</span> <span class="nav-text">通过下载源码安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载和安装mosquitto"><span class="nav-number">5.1.1.</span> <span class="nav-text">下载和安装mosquitto</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mosquitto用户配置和权限管理"><span class="nav-number">5.1.2.</span> <span class="nav-text">mosquitto用户配置和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户配置"><span class="nav-number">5.1.2.1.</span> <span class="nav-text">用户配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">5.1.2.2.</span> <span class="nav-text">权限管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mosquitto启动和停止"><span class="nav-number">5.1.3.</span> <span class="nav-text">mosquitto启动和停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过docker容器化部署"><span class="nav-number">5.2.</span> <span class="nav-text">通过docker容器化部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询镜像"><span class="nav-number">5.2.1.</span> <span class="nav-text">查询镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拉取镜像"><span class="nav-number">5.2.2.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看镜像"><span class="nav-number">5.2.3.</span> <span class="nav-text">查看镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建目录文件，用于容器目录挂载"><span class="nav-number">5.2.4.</span> <span class="nav-text">创建目录文件，用于容器目录挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在宿主机环境下创建目录"><span class="nav-number">5.2.4.1.</span> <span class="nav-text">在宿主机环境下创建目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化用户密码文件"><span class="nav-number">5.2.4.2.</span> <span class="nav-text">初始化用户密码文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化权限管理文件"><span class="nav-number">5.2.4.3.</span> <span class="nav-text">初始化权限管理文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化mosquitto配置文件"><span class="nav-number">5.2.4.4.</span> <span class="nav-text">初始化mosquitto配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加目录权限"><span class="nav-number">5.2.4.5.</span> <span class="nav-text">添加目录权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动镜像"><span class="nav-number">5.2.5.</span> <span class="nav-text">启动镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入docker容器"><span class="nav-number">5.2.6.</span> <span class="nav-text">进入docker容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成用户密码"><span class="nav-number">5.2.7.</span> <span class="nav-text">生成用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启mosquitto容器"><span class="nav-number">5.2.8.</span> <span class="nav-text">重启mosquitto容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在宿主机查看mosquitto是否正常启用"><span class="nav-number">5.2.9.</span> <span class="nav-text">在宿主机查看mosquitto是否正常启用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#domoticz环境搭建"><span class="nav-number">6.</span> <span class="nav-text">domoticz环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载源码"><span class="nav-number">6.1.</span> <span class="nav-text">下载源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装相关依赖库和工具"><span class="nav-number">6.2.</span> <span class="nav-text">安装相关依赖库和工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译源码"><span class="nav-number">6.3.</span> <span class="nav-text">编译源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动domoticz"><span class="nav-number">6.4.</span> <span class="nav-text">启动domoticz</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建过程中的常用工具"><span class="nav-number">7.</span> <span class="nav-text">搭建过程中的常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看系统端口被占用情况"><span class="nav-number">7.1.</span> <span class="nav-text">查看系统端口被占用情况</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -935,7 +978,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2020</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2021</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
