@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文主要介绍一些大数据相关的基础知识和基本概念。">
+<meta name="keywords" content="大数据技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据基础知识介绍">
+<meta property="og:url" content="http://yoursite.com/2021/04/29/bigdata/index.html">
+<meta property="og:site_name" content="WingTsun Cat">
+<meta property="og:description" content="本文主要介绍一些大数据相关的基础知识和基本概念。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2021/04/29/bigdata/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/04/29/bigdata/2.png">
+<meta property="og:updated_time" content="2021-04-29T15:28:33.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大数据基础知识介绍">
+<meta name="twitter:description" content="本文主要介绍一些大数据相关的基础知识和基本概念。">
+<meta name="twitter:image" content="http://yoursite.com/2021/04/29/bigdata/1.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WingTsun Cat" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/04/29/bigdata/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>大数据基础知识介绍 | WingTsun Cat</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7777c9b943c9708d23416af82661701a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WingTsun Cat</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Reading & Thinking & Writing</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/29/bigdata/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Pan">
+      <meta itemprop="description" content="沉淀下来的，才是精华！">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WingTsun Cat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">大数据基础知识介绍
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-04-29 23:16:31 / 修改时间：23:28:33" itemprop="dateCreated datePublished" datetime="2021-04-29T23:16:31+08:00">2021-04-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/大数据相关/" itemprop="url" rel="index"><span itemprop="name">大数据相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">本文主要介绍一些大数据相关的基础知识和基本概念。</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是数据洞察"><a href="#什么是数据洞察" class="headerlink" title="什么是数据洞察"></a>什么是数据洞察</h2><h3 id="基本定义"><a href="#基本定义" class="headerlink" title="基本定义"></a>基本定义</h3><p>在说数据洞察前，我们先来阐述下数据分析/数据挖掘/数据洞察这几个词的定义。</p>
+<ul>
+<li>数据分析（Business Analysis）：传统定义的数据分析，一般通过SQL/Python/Excel等工具汇总数据，结合对业务的理解和经验，主要是由人将数据转换为信息；</li>
+<li>数据挖掘：一般通过建模来挖掘数据内在的关联和信息，主要是机器从训练集中发现一定的规律，从而将数据转换为信息；</li>
+<li>数据洞察：通过数据分析/挖掘，将数据转换为信息，结合业务场景，梳理出影响业务结果的因素和作用链路，从而正确地对于问题进行归因和得出改进的方向。</li>
+</ul>
+<p>所以我们可以看出数据分析和数据挖掘是殊途同归的，最终都收归于数据洞察的体系中。</p>
+<h3 id="如何理解数据洞察"><a href="#如何理解数据洞察" class="headerlink" title="如何理解数据洞察"></a>如何理解数据洞察</h3><p>可能上面关于数据洞察的定义还有一些晦涩，不好理解，接下来我说说我个人的理解：</p>
+<ul>
+<li>数据分析和数据挖掘更加偏向于数据处理的手段，通过业务或者机器的方式将数据加工成一些信息 ，比如：啤酒和纸尿裤放在销售量比单卖要高；用户喜欢在夏天到来时才购买游泳装备等等。</li>
+<li>而数据洞察更强调的对多种信息的加工和处理 —— 结合业务场景，产出对于业务发展有价值的结论。</li>
+</ul>
+<p>既然数据洞察的目的是推动业务的发展，那么就需要我们以业务为导向，关注业务中实际遇到的需求或者问题。并且在得出结论后，能够产生可落地的action，去验证和迭代我们的结论，从而推动业务的发展。</p>
+<p>我们用一张图来描述下数据洞察的一个完整链路 ：</p>
+<p><img src="1.jpg" alt=""></p>
+<p><strong>数据洞察有三要素：数据、业务场景、标准</strong></p>
+<ul>
+<li><p>数据：我们得出的结论要基于数据，避免受到个案或者特例的影响 ；</p>
+</li>
+<li><p>业务场景：少了业务场景，就无法理解孤立的数据对于业务的实际意义；</p>
+</li>
+<li><p>标准：结合业务场景，我们才能对于数据的好与坏制定出标准，比如说身高150对于成年男性可能不算高，但是对于小学生来说却是很高了；</p>
+</li>
+</ul>
+<h3 id="如何做数据洞察"><a href="#如何做数据洞察" class="headerlink" title="如何做数据洞察"></a>如何做数据洞察</h3><p>以上我们了解了数据洞察的一些基本概念，接下来我们来讲讲如何实际操作。</p>
+<p><img src="2.png" alt=""></p>
+<p>图上步骤主要分为以下几个层级：</p>
+<p>1、业务层：结合业务的问题和需求，先定义需要哪些数据，以及这些数据在场景中的含义</p>
+<p>2、数据层：通过数据埋点上报、业务数据库同步等方式获取业务所需的数据，进行相应的数据清洗，避免脏数据的影响；将数据进行合并和整理，便于分析；</p>
+<p>3、分析层：通过数据分析或数据挖掘的手段从数据中获取规律、现象或者数据模型</p>
+<p>4、输出层：结合分析层得到的信息和业务场景，输出洞察结论，制定行动计划；在行动后根据新产生的数据验证之前得到的结论的有效性，进行迭代；</p>
+<p><strong>最终通过以上的循环，我们可以不断地积累不同业务场景下的洞察结论。</strong></p>
+<blockquote>
+<p>通过对数据洞察的了解 ，我们可以发现，数据洞察与业务的结合是非常紧密的 。每个洞察结论离开了其背后的业务场景可能都是无效的。所以数据洞察不存在“银弹“或者“万金油”，我们还是要通过不断地实操进行场景上的积累 ，从而提升数据洞察力。</p>
+</blockquote>
+<h2 id="闲聊OLTP-OLAP"><a href="#闲聊OLTP-OLAP" class="headerlink" title="闲聊OLTP/OLAP"></a>闲聊OLTP/OLAP</h2><p>企业日常的各个环节都会产生数据，一个企业从小到大的过程中，建设IT系统的时刻是一个分隔点。但在此之前，数据零散分布在邮箱、发票、单据、APP等各种地方。当企业规模达到一定程度时，则必须要建设IT系统，此时，数据开始在各种系统（ERP、CRM、MES等）中积累。</p>
+<p>数据自身的价值随着其体量不断的累积在一直增加，所以通常我们也会把企业自身产生的有价值的数据称之为企业数据资产。</p>
+<p>企业通过从数据中获取的知识，能够帮助企业发现问题与机遇并进行正确的决策，以达到赢得市场之目的，而数据分析则是实现以上目标的重要手段之一。</p>
+<p>数据分析体系的建设往往是在初次进行信息化建设后某个时间开始，数据分析体系与其他业务类系统有着显著的不同：</p>
+<p>1、业务类系统主要是供基层人员使用，进行一线业务操作，通常被称为OLTP（On-Line Transaction Processing，联机事务处理）。</p>
+<p>2、数据分析的目标则是探索并挖掘数据价值，作为企业高层进行决策的参考，通常被称为OLAP（On-Line Analytical Processing，联机分析处理）。</p>
+<p>3、从功能角度来看，OLTP负责基本业务的正常运转，而业务数据积累时所产生的价值信息则被OLAP不断呈现，企业高层通过参考这些信息会不断调整经营方针，也会促进基础业务的不断优化，这是OLTP与OLAP最根本的区别。</p>
+<p>4、一般来说，OLAP不应该对OLTP产生任何影响，在理想情况下，OLTP应该完全感觉不到OLAP的存在。</p>
+<h2 id="数据湖与数据中台"><a href="#数据湖与数据中台" class="headerlink" title="数据湖与数据中台"></a>数据湖与数据中台</h2><h3 id="先说数据湖"><a href="#先说数据湖" class="headerlink" title="先说数据湖"></a>先说数据湖</h3><p>数据湖（Data Lake）概念的提出时间仅次于大数据，可以说是一个很老的概念了，它最早是在2011年由CITO Research网站的CTO和作家Dan Woods所提出，其比喻是：如果我们把数据比作大自然的水，那么各个江川河流的水未经加工，源源不断地汇聚到数据湖中。</p>
+<p><strong>数据湖的定义</strong>（<em>来自维基百科</em>）：</p>
+<p>数据湖（Data Lake）是一个以原始格式存储数据的存储库或系统，它按原样存储数据，而无需事先对数据进行结构化处理。一个数据湖可以存储结构化数据（如关系型数据库中的表）、半结构化数据（如CSV、日志、XML、JSON）、非结构化数据（如电子邮件、文档、PDF）和二进制数据（如图形、音频、视频）。</p>
+<p>数据湖本质上就是一个大数据平台，它随着大数据技术的不断完善，目前成熟的数据湖体系已具备了大数据存储、大数据处理、机器学习、大数据分析等能力。国外公司像亚马逊的AWS、Informatica、IBM、微软等都有数据湖的相关产品和解决方案，而在国内，目前这方面的产品和方案还很少见。</p>
+<h3 id="再谈数据中台"><a href="#再谈数据中台" class="headerlink" title="再谈数据中台"></a>再谈数据中台</h3><p>其实数据中台是咱们中国人自己创造的一个概念，在国外并没有太多人谈数据中台。但即使如此，在国内目前也还没有对数据中台形成一个统一的认知和标准的定义。</p>
+<p>1、“中台”的鼻祖——阿里巴巴对数据中台的定义：</p>
+<p>数据中台是数据+技术+产品+组织的组合，是企业开展新型运营的一个中枢系统。具象地说，它是一套解决方案，抽象的理解，它是一种新的公司运营理念。</p>
+<p>2、数澜科技对数据中台的理解：</p>
+<p>数据中台是让数据持续用起来的一套机制，经过业务数据化、数据资产化、资产服务化，并在有权限管理的情况下以API的方式开放出去。</p>
+<h3 id="它们之间的关系"><a href="#它们之间的关系" class="headerlink" title="它们之间的关系"></a>它们之间的关系</h3><p>在大数据时代，随着数据量的不断增加，数据形式也越来越复杂，而以数据仓库为代表的、现有的数据存储和处理方式已无法满足海量、多样的数据处理需求，在这样的背景下产生了“数据湖”，数据湖是将复杂的事物具象化，以一个形象的名字，来反应它在大数据存储和处理方面的优势和能力。</p>
+<p>数据湖作为一个<strong>集中的存储库</strong>，可以在其中存储任何形式、任意规模的数据。在数据湖中，可以不对存储的数据进行结构化，只有在使用数据的时候，再利用数据湖强大的数据查询、处理、分析等能力组件对数据进行处理和应用。因此，数据湖具备运行不同类型数据分析的能力。</p>
+<p>而数据中台<strong>从技术层面承接了数据湖</strong>，它通过数据技术，对海量、多源、多样的数据进行采集、处理、存储、计算，同时统一标准，以标准形式进行数据存储，<strong>形成大数据资产</strong>，以满足前台数据分析和应用的需求。</p>
+<p>总的来说，<strong>数据中台更强调应用，离业务更近，强调服务于前台的能力</strong>，实现逻辑、算法、标签、模型、数据资产的沉淀与复用，能够更快速的响应业务和应用开发的需求，且可追溯、更精准。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/大数据技术/" rel="tag"><i class="fa fa-tag"></i> 大数据技术</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/04/powershell/" rel="next" title="更改Windows系统PowerShell的界面配色">
+                <i class="fa fa-chevron-left"></i> 更改Windows系统PowerShell的界面配色
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/04/29/ml/" rel="prev" title="人工智能之常见机器学习算法介绍">
+                人工智能之常见机器学习算法介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+  <div>
+
+  <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
+
+</div>
+
+  </div>
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
+              <p class="site-author-name" itemprop="name">Peter Pan</p>
+              <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/pgz100" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.zhihu.com/" title="知乎" target="_blank">知乎</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/" title="简书" target="_blank">简书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是数据洞察"><span class="nav-number">1.</span> <span class="nav-text">什么是数据洞察</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本定义"><span class="nav-number">1.1.</span> <span class="nav-text">基本定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何理解数据洞察"><span class="nav-number">1.2.</span> <span class="nav-text">如何理解数据洞察</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何做数据洞察"><span class="nav-number">1.3.</span> <span class="nav-text">如何做数据洞察</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闲聊OLTP-OLAP"><span class="nav-number">2.</span> <span class="nav-text">闲聊OLTP/OLAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据湖与数据中台"><span class="nav-number">3.</span> <span class="nav-text">数据湖与数据中台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先说数据湖"><span class="nav-number">3.1.</span> <span class="nav-text">先说数据湖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再谈数据中台"><span class="nav-number">3.2.</span> <span class="nav-text">再谈数据中台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#它们之间的关系"><span class="nav-number">3.3.</span> <span class="nav-text">它们之间的关系</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Pan</span>
+
+  
+
+  
+</div>
+
+
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.5.0</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
