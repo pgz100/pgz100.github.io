@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。">
+<meta name="keywords" content="linux,logrotate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用工具logrotate实现大日志文件的分割和转储">
+<meta property="og:url" content="http://yoursite.com/2021/05/19/logrotate/index.html">
+<meta property="og:site_name" content="WingTsun Cat">
+<meta property="og:description" content="本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-05-19T13:52:16.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用工具logrotate实现大日志文件的分割和转储">
+<meta name="twitter:description" content="本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WingTsun Cat" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/05/19/logrotate/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用工具logrotate实现大日志文件的分割和转储 | WingTsun Cat</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7777c9b943c9708d23416af82661701a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WingTsun Cat</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Reading & Thinking & Writing</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/19/logrotate/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Pan">
+      <meta itemprop="description" content="沉淀下来的，才是精华！">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WingTsun Cat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用工具logrotate实现大日志文件的分割和转储
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-05-19 21:48:55 / 修改时间：21:52:16" itemprop="dateCreated datePublished" datetime="2021-05-19T21:48:55+08:00">2021-05-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/linux系统相关/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="为什么需要用logrotate"><a href="#为什么需要用logrotate" class="headerlink" title="为什么需要用logrotate"></a>为什么需要用logrotate</h2><p>通常情况下，系统运行时所产生的日志文件，会记录系统中已发生的一些重要的事件信息，经常被用于系统排障或系统性能分析。而对于比较忙碌的服务器，其日志文件大小会快速增长，大量消耗服务器的磁盘空间，造成磁盘空间不足，这也就成了一个不可忽视的问题。除此之外，查阅和处理一个体积庞大的日志文件也常常是件十分棘手的事情。</p>
+<p>为了解决以上问题，自然而然的就想到了logrotate，它是linux系统自带的日志文件管理工具，它可以自动对日志进行截断（或轮循）、压缩以及删除旧的日志文件。例如，你可以设置logrotate，让/var/log/foo日志文件每30天轮循一次，并删除超过6个月的日志。配置完成后，logrotate的运作完全自动化，不必进行任何进一步的人为干预。另外，旧日志也可以通过电子邮件的方式发送到指定邮箱中。</p>
+<h2 id="安装logrotate（一般系统都会默认自动安装）"><a href="#安装logrotate（一般系统都会默认自动安装）" class="headerlink" title="安装logrotate（一般系统都会默认自动安装）"></a>安装logrotate（一般系统都会默认自动安装）</h2><p>主流Linux发行版上都默认安装有logrotate包。如果出于某种原因，logrotate没有被系统自动安装，那么你可以使用apt-get或yum命令来手动安装。</p>
+<p>在Debian或Ubuntu上：</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># apt-get install logrotate cron</span></span><br></pre></td></tr></table></figure>
+<p>在Fedora、CentOS或RHEL上：</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># yum install logrotate crontabs</span></span><br></pre></td></tr></table></figure>
+<p>logrotate的配置文件是/etc/logrotate.conf，我们通常不需要对它进行修改。每个应用程序的日志文件，其轮循策略被设置在独立的配置文件中，这些配置文件都会放在/etc/logrotate.d/目录下。</p>
+<h2 id="logrotate实现日志文件转储的工作原理"><a href="#logrotate实现日志文件转储的工作原理" class="headerlink" title="logrotate实现日志文件转储的工作原理"></a>logrotate实现日志文件转储的工作原理</h2><p>针对文章开头提出的因单个日志文件内容过大而导致的一系列问题，可以通过linux系统自带的logrotate来对系统生成的日志文件按照日期、大小等进行转储，让logrotate定期转储日志文件，并且保留指定数量的日志转储文件，以满足线上运维的需求。</p>
+<p>其实logrotate转储日志文件的工作机制比较简单，即在linux系统下，Crontab每天都会执行logrotate，而logrotate每执行一次，就可以把我们的日志文件转储一次。</p>
+<p>logrotate通过与定时任务Crontab结合来工作，就能满足定期，例如每天对日志文件进行转储的功能，<strong>其原理是：</strong></p>
+<p>Crontab在linux系统的/etc目录中有几个定时执行的脚本目录，例如：/etc/cron.daily，在该文件夹下保存了Crontab每天都会定时执行的脚本；目录/etc/cron.weekly下则是记录了Crontab每周都会定时执行的脚本。</p>
+<p>我们可以看到在目录/etc/cron.daily中有个脚本文件：logrotate，这个脚本的内容为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">/usr/sbin/logrotate /etc/logrotate.conf</span><br><span class="line">EXITVALUE=$?</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$EXITVALUE</span> != 0 ]; <span class="keyword">then</span></span><br><span class="line">/usr/bin/logger -t logrotate <span class="string">"ALERTexited abnormally with [<span class="variable">$EXITVALUE</span>]"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<p>从上面的脚本内容可以看出，它主要是执行程序logrotate，并且启动logrotate的时候加载了配置文件/etc/logrotate.conf。</p>
+<p>下面就是对这个配置文件 logrotate.conf 的内容进行简要说明：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># see <span class="string">"man logrotate"</span> fordetails</span><br><span class="line"># <span class="keyword">rotate</span> <span class="keyword">log</span> files <span class="built_in">weekly</span></span><br><span class="line"><span class="built_in">weekly</span></span><br><span class="line"># <span class="keyword">keep</span> 4 weeks worth of backlogs</span><br><span class="line"><span class="keyword">rotate</span> 4</span><br><span class="line"># create new (empty) <span class="keyword">log</span> files afterrotating old ones</span><br><span class="line">create</span><br><span class="line"># <span class="keyword">use</span> date <span class="keyword">as</span> a suffix of the rotated <span class="keyword">file</span></span><br><span class="line">dateext</span><br><span class="line"># uncomment this <span class="keyword">if</span> you want your logfiles compressed</span><br><span class="line">#<span class="keyword">compress</span></span><br><span class="line"></span><br><span class="line"># RPM packages <span class="keyword">drop</span> <span class="keyword">log</span> rotationinformation into this directory</span><br><span class="line"><span class="keyword">include</span> /etc/logrotate.<span class="built_in">d</span></span><br><span class="line"></span><br><span class="line"># <span class="keyword">no</span> packages own wtmp and btmp -- we'll <span class="keyword">rotate</span> them here</span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/wtmp &#123;</span><br><span class="line"><span class="built_in">monthly</span></span><br><span class="line">create 0664 root utmp</span><br><span class="line">minsize 1M</span><br><span class="line"><span class="keyword">rotate</span> 1</span><br><span class="line">&#125;</span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/btmp &#123;</span><br><span class="line">missingok</span><br><span class="line"><span class="built_in">monthly</span></span><br><span class="line">create 0600 root utmp</span><br><span class="line"><span class="keyword">rotate</span> 1</span><br><span class="line">&#125;</span><br><span class="line"># system-specific logs may be also beconfigured here.</span><br></pre></td></tr></table></figure>
+<p>该文件的前半部分内容都是默认配置项，这些配置项可以被后续的配置所覆盖，这里需要关注的是配置项：<strong>include /etc/logrotate.d</strong>，它表示logrotate在启动的时候还要把目录/etc/logrotate.d中的配置文件都执行一遍。</p>
+<p>实际上，为了便于使用，每个应用程序都可以编写自己的logrotate配置文件，然后把编写好的配置文件放在目录/etc/logrotate.d下，这样每个程序自己的配置项就会把上面的默认配置项给覆盖掉。</p>
+<p><strong>覆盖默认配置项的具体过程如下：</strong></p>
+<p>（1）logrotate的启动脚本被放在了Crontab每天执行的脚本目录中/etc/cron.daily，这样Crontab每天都会执行一次logrotate；</p>
+<p>（2）logrotate启动的时候，加载了配置文件/etc/logrotate.conf；</p>
+<p>（3）配置文件/etc/logrotate.conf 又引入了目录：/etc/logrotate.d；</p>
+<p>（4）我们在/etc/logrotate.d目录下新建了一个自己的logrotate配置文件；</p>
+<p>（5）这样，当logrotate每次启动的时候就会执行加载我们自己新建的logrotate配置文件，从而按照我们设定的配置项来转储我们指定的日志文件。</p>
+<h2 id="以mosquitto日志文件为例说明"><a href="#以mosquitto日志文件为例说明" class="headerlink" title="以mosquitto日志文件为例说明"></a>以mosquitto日志文件为例说明</h2><p>（1）在目录/etc/logrotate.d/下创建一个日志转储的配置文件（<em>名字可以自己定义，只要在该目录下就会被执行</em>）：mosquitto</p>
+<p>（2）配置文件mosquitto的内容如下：</p>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="meta-keyword">/home/</span>logs<span class="meta-keyword">/mosquitto/</span>mosquitto.<span class="class">log </span>&#123;</span><br><span class="line"> daily</span><br><span class="line"> dateext</span><br><span class="line"> copytruncate</span><br><span class="line"> nocompress</span><br><span class="line"> rotate <span class="number">15</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是该配置文件的内容说明：</p>
+<ul>
+<li><p>第一行左大括号之前的/home/logs/mosquitto/mosquitto.log 指出了要转储的日志文件的具体位置和文件名；</p>
+</li>
+<li><p>daily：按天去转储；</p>
+</li>
+<li><p>dateext：表示转储后的日志文件会附加上日期信息</p>
+</li>
+<li><p>copytruncate：对于正在open中的日志文件，会把当前日志备份并截断</p>
+</li>
+<li><p>nocompress：表示不要对转储的日志压缩</p>
+</li>
+<li><p>rotate 15：表示最多保留多少个转储之后的日志文件</p>
+</li>
+</ul>
+<p>（3）确保刚才新建的mosquitto配置文件的权限为：-rw-r–r–</p>
+<p><strong>注意：</strong>该配置文件的权限不能错，如果你修改为其他的，例如：-rwxrwxrwx，虽然你放开了权限，但是logrotate在运行时仍会报错：</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># <span class="regexp">/usr/</span>sbin<span class="regexp">/logrotate -vf /</span>etc<span class="regexp">/logrotate.d/</span></span><br><span class="line"> </span><br><span class="line">Ignoring mosquitto because of bad filemode.</span><br><span class="line"> </span><br><span class="line">进而造成logrotate读取你的配置文件失败！！！！</span><br></pre></td></tr></table></figure>
+<p>（4）查看log文件所在<strong>父目录的权限，确保group权限和other权限中没有“w”权限</strong>，否则在执行logrotate转储命令时会报错：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">logrotate执行轮询异常，“considering log /home/logs/mosquitto/mosquitto.log</span><br><span class="line">error: skipping “/home/logs/mosquitto/mosquitto.log” because parent directory has insecure permissions (It’s world writable <span class="keyword">or</span> writable by<span class="built_in"> group </span>which is <span class="keyword">not</span> “root”) <span class="builtin-name">Set</span> “su” directive <span class="keyword">in</span><span class="built_in"> config </span>file <span class="keyword">to</span> tell logrotate which user<span class="built_in">/group </span>should be used <span class="keyword">for</span> rotation.”</span><br></pre></td></tr></table></figure>
+<p>如果发现group权限和other权限中含有“w”权限，则需使用chmod命令删除“w”权限，具体命令如下：</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># chmod go-w /home/logs/mosquitto</span></span><br></pre></td></tr></table></figure>
+<p>（5）最后测试一下配置文件的配置内容是否有误。执行logrotate转储命令：</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># <span class="regexp">/usr/</span>sbin<span class="regexp">/logrotate -vf /</span>etc<span class="regexp">/logrotate.conf</span></span><br></pre></td></tr></table></figure>
+<p>可以看到新生成的转储文件与原日志文件在同一个目录下，如下所示：</p>
+<figure class="highlight tap"><table><tr><td class="code"><pre><span class="line">-rwxrwxrwx.<span class="number"> 1 </span>root root<span class="number"> 482 </span>5月 <span class="number"> 18 </span>15:36 mosquitto.log</span><br><span class="line">-rwxrwxrwx.<span class="number"> 1 </span>root root<span class="number"> 950 </span>5月 <span class="number"> 18 </span>15:25 mosquitto.log-20210518</span><br></pre></td></tr></table></figure>
+<p>这样后续每天原始日志文件的内容都会自动备份和截断，在当前目录下自动生成一个带有日期标签的日志转储文件。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/logrotate/" rel="tag"><i class="fa fa-tag"></i> logrotate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/29/ml/" rel="next" title="人工智能之常见机器学习算法介绍">
+                <i class="fa fa-chevron-left"></i> 人工智能之常见机器学习算法介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+  <div>
+
+  <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
+
+</div>
+
+  </div>
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
+              <p class="site-author-name" itemprop="name">Peter Pan</p>
+              <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/pgz100" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.zhihu.com/" title="知乎" target="_blank">知乎</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/" title="简书" target="_blank">简书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要用logrotate"><span class="nav-number">1.</span> <span class="nav-text">为什么需要用logrotate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装logrotate（一般系统都会默认自动安装）"><span class="nav-number">2.</span> <span class="nav-text">安装logrotate（一般系统都会默认自动安装）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logrotate实现日志文件转储的工作原理"><span class="nav-number">3.</span> <span class="nav-text">logrotate实现日志文件转储的工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以mosquitto日志文件为例说明"><span class="nav-number">4.</span> <span class="nav-text">以mosquitto日志文件为例说明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Pan</span>
+
+  
+
+  
+</div>
+
+
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.5.0</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

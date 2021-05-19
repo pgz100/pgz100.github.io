@@ -461,7 +461,7 @@
 <p><img src="1.png" alt=""></p>
 <p>然后保存退出。</p>
 <h3 id="2-配置rc-local文件"><a href="#2-配置rc-local文件" class="headerlink" title="2. 配置rc.local文件"></a>2. 配置rc.local文件</h3><p>因为Ubuntu18.04系统默认是没有 /etc/rc.local 文件的，所以需要我们手动创建，并赋予其可执行权限：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo touch /etc/rc.local</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo chmod 755 /etc/rc.local</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$ sudo touch /etc/rc.<span class="keyword">local</span></span><br><span class="line">$ sudo chmod <span class="number">755</span> /etc/rc.<span class="keyword">local</span></span><br></pre></td></tr></table></figure>
 <p>打开rc.local文件，添加以下内容：</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>接着就可以在里面添加我们所需要的开机启动程序命令，可以直接写命令，也可以执行Shell脚本文件sh。</p>
@@ -601,7 +601,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -745,7 +745,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">46</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
