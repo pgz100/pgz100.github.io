@@ -123,7 +123,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/11/02/githubpages-hexo-next-build/setting.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/02/githubpages-hexo-next-build/site.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/02/githubpages-hexo-next-build/onekey_copy.png">
-<meta property="og:updated_time" content="2020-02-06T09:21:20.956Z">
+<meta property="og:updated_time" content="2022-11-15T09:28:40.628Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用 Github Pages + Hexo + NexT 搭建私人博客">
 <meta name="twitter:description" content="本文主要分享如何在Win10环境下，使用 Github Pages、Hexo以及NexT来搭建属于自己的博客，以及我自己在搭建私人博客的过程中所踩的坑及相应的解决方案。">
@@ -390,7 +390,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-02-06 17:21:20" itemprop="dateModified" datetime="2020-02-06T17:21:20+08:00">2020-02-06</time>
+                <time title="修改时间：2022-11-15 17:28:40" itemprop="dateModified" datetime="2022-11-15T17:28:40+08:00">2022-11-15</time>
               
             
           </span>
@@ -463,21 +463,23 @@
 </blockquote>
 <p> <span id="inline-green"> 下面就让我们一步步的来搭建属于我们自己的博客吧！ </span></p>
 <h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><p>在 Windows 环境下安装 Node.js 非常简单，仅须到<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">官网下载</a>安装文件并执行即可完成安装。安装时，无脑下一步就行了，不需要配置环境变量。</p>
-<h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>去<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git官网</a>根据你的电脑参数，下载对应版本。</p>
+<h2 id="安装Git（可选）"><a href="#安装Git（可选）" class="headerlink" title="安装Git（可选）"></a>安装Git（可选）</h2><p>去<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git官网</a>根据你的电脑参数，下载对应版本。</p>
 <p>下载完成，通过在命令行输入 <code>git version</code> 查看是否安装成功，有输出版本号说明安装成功。</p>
 <p>此时鼠标右击后，菜单里就多了<code>Git GUI Here</code>和<code>Git Bash Here</code>两个按钮，前者是图形界面的Git操作，后者是命令行操作，这里我们选择使用<code>Git Bash Here</code>。</p>
 <p><strong>Git入门教程：</strong> <a href="http://git.oschina.net/progit/" target="_blank" rel="noopener">Pro Git（中文版）</a></p>
 <h2 id="安装和体验Hexo"><a href="#安装和体验Hexo" class="headerlink" title="安装和体验Hexo"></a>安装和体验Hexo</h2><p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
 <h3 id="1-安装Hexo"><a href="#1-安装Hexo" class="headerlink" title="1. 安装Hexo"></a>1. 安装Hexo</h3><p>在Windows桌面，右键鼠标，点击”Git Bash Here”，打开Git Bash，输入npm命令即可安装。</p>
-<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-<span class="keyword">cli</span> -g</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-cli -g</span></span><br></pre></td></tr></table></figure>
 <p>在安装过程中，控制台可能会出现一些Warning，可以不用过于在意。</p>
-<p>安装完毕后，输入：<code>hexo -v</code>，可能会报错：<code>bash: hexo: command not found</code>。</p>
-<p>这是因为没有配置hexo的环境变量导致。</p>
+<p>如果下载速度较慢，可以配置下镜像，在控制台中输入代码如下（接着再输入上述代码）：</p>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line">npm config <span class="keyword">set</span> registry <span class="comment">https:</span>//<span class="comment">registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<p>安装完毕后，输入：<code>hexo -v</code>。</p>
+<p>可能会报错：<code>bash: hexo: command not found</code>，这是因为没有配置hexo的环境变量导致。</p>
 <p><strong>解决方法</strong>：在系统变量Path里增加hexo的环境变量，具体路径在刚才安装Hexo的时候已经打印在控制台中了。比如我的路径是这样的：</p>
 <p><img src="hexo_path.jpg" alt=""></p>
 <p>配置完环境变量后，再输入<code>hexo -v</code>，会发现控制台上打印出一些hexo的版本信息，说明Hexo安装成功了。</p>
 <h3 id="2-Hexo初始化配置"><a href="#2-Hexo初始化配置" class="headerlink" title="2.  Hexo初始化配置"></a>2.  Hexo初始化配置</h3><h4 id="创建Hexo博客项目文件夹"><a href="#创建Hexo博客项目文件夹" class="headerlink" title="创建Hexo博客项目文件夹"></a>创建Hexo博客项目文件夹</h4><p>根据自己的喜好新建目录（如F:\Blog\Hexo），进入到F:\Blog\Hexo文件夹下，右键鼠标，点击Git Bash Here，进入Git命令框，执行以下操作。</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo init</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo init</span></span><br></pre></td></tr></table></figure>
 <p>这个命令会从Github上的官方Hexo项目拉取用于项目初始化的代码，其中包含名为package.json的描述性文件。初始化完毕后，可以看到Hexo文件夹下的目录如下：</p>
 <figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="string">|- node_modules</span></span><br><span class="line"><span class="string">|- scaffolds</span></span><br><span class="line"><span class="string">|- source</span></span><br><span class="line"><span class="string">|- themes</span></span><br><span class="line"><span class="string">|- .gitignore</span></span><br><span class="line"><span class="string">|- _config.yml</span></span><br><span class="line"><span class="string">|- package.json</span></span><br></pre></td></tr></table></figure>
 <p>其中_config.yml为Hexo的配置描述文件，source目录用于存放博客内容（ source/_posts目录下默认会生成一个hello-world.md文件），themes目录用于存放主题的样式（默认会生成一个landscaple主题目录）。</p>
@@ -518,19 +520,22 @@
 </li>
 <li><p>打开之前创建的Hexo博客文件夹（如F:\Blog\Hexo），用记事本打开该文件夹下的_config.yml文件，在文件底部找到<code>deploy</code>字段，并作如下修改：</p>
 <figure class="highlight less"><table><tr><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: git<span class="variable">@github</span>.<span class="attribute">com</span>:pgz100/pgz100.github.io.git</span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
-<p>其中repository是刚刚复制的github仓库地址，注意将上述repository的值改成自己的仓库地址。</p>
 </li>
+</ol>
+<p>   其中repository是刚刚复制的github仓库地址，注意将上述repository的值改成自己的仓库地址。</p>
+<ol start="4">
 <li><p>在Hexo目录下右键打开Git Bash Here，输入以下命令，将你的博客部署到你的Github上。</p>
 <p>注：hexo g 是 hexo generate的简写， hexo d 是 hexo deploy 的简写。</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo d</span><br></pre></td></tr></table></figure>
-<p>或直接执行</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo g -d</span><br></pre></td></tr></table></figure>
-<p>如果此时报错：ERROR Deployer not found: git，则说明deployer没有安装成功，需要执行如下命令再安装一次：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
-<p>然后再执行 <code>hexo g -d</code>，你的博客就成功部署到你的Github上了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo d</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>在浏览器上输入你的博客地址（比如我的博客地址：<a href="https://pgz100.github.io/" target="_blank" rel="noopener">https://pgz100.github.io/</a> ），就能看到刚刚部署上去的Hexo的主题效果了。</p>
-</li>
+</ol>
+<p>   或直接执行</p>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g -d</span></span><br></pre></td></tr></table></figure>
+<p>   如果此时报错：ERROR Deployer not found: git，则说明deployer没有安装成功，需要执行如下命令再安装一次：</p>
+   <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">$ npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+<p>   然后再执行 <code>hexo g -d</code>，你的博客就成功部署到你的Github上了。</p>
+<ol start="5">
+<li>在浏览器上输入你的博客地址（比如我的博客地址：<a href="https://pgz100.github.io/" target="_blank" rel="noopener">https://pgz100.github.io/</a> ），就能看到刚刚部署上去的Hexo的主题效果了。</li>
 </ol>
 <h2 id="使用NexT主题美化博客"><a href="#使用NexT主题美化博客" class="headerlink" title="使用NexT主题美化博客"></a>使用NexT主题美化博客</h2><p><a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">Next</a>的标语是<code>精于心，简于形</code>，说的很贴切。下面就来看看具体如何使用NexT来美化我们的博客吧。</p>
 <h3 id="1-安装主题"><a href="#1-安装主题" class="headerlink" title="1. 安装主题"></a>1. 安装主题</h3><p>进入我们之前创建的Hexo博客目录下，右键鼠标，打开Git Bash，输入以下命令：</p>
@@ -547,10 +552,10 @@
 </ul>
 </blockquote>
 <p>右键鼠标，选择Git Bash Here，打开Git Bash，输入以下命令：</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean  （最好每次本地预览或更新主题到github前都clean下，防止因为缓存问题，导致更新不及时）</span><br><span class="line"><span class="variable">$ </span>hexo g</span><br><span class="line"><span class="variable">$ </span>hexo s</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean  （最好每次本地预览或更新主题到github前都clean下，防止因为缓存问题，导致更新不及时）</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s</span></span><br></pre></td></tr></table></figure>
 <p>打开浏览器，输入 <code>localhost:4000</code> 预览主题效果。</p>
 <p>如果觉得效果满意，可以执行以下命令，将它部署到你的Github上。</p>
-<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>hexo clean</span><br><span class="line"><span class="variable">$ </span>hexo g -d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g -d</span></span><br></pre></td></tr></table></figure>
 <h3 id="4-主题的其它相关配置"><a href="#4-主题的其它相关配置" class="headerlink" title="4. 主题的其它相关配置"></a>4. 主题的其它相关配置</h3><p>在Hexo/themes/next目录下，我们会发现也有一个<code>_config.yml</code>文件，这个文件是由主题作者提供，用于配置主题相关的选项，这里我们把它叫做<span id="inline-purple"> 主题配置文件 </span>。</p>
 <p>其实，NexT官网有个专业的说明文档，里面详细介绍了NexT的使用和配置方法。更多的NexT主题配置，请进入Next官网，<a href="https://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">查看Next使用文档</a>。另外还有一位大佬写的博客，内容也非常的全面：<a href="https://www.cnblogs.com/php-linux/p/8416122.html" target="_blank" rel="noopener">https://www.cnblogs.com/php-linux/p/8416122.html</a></p>
 <p>再次提醒一下，在配置主题时，要注意区分下我们的NexT主题是从 <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> 下载的，还是从 <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">https://github.com/theme-next/hexo-theme-next</a> 下载的。截止到<code>2018年11月2号</code>，NexT官网的使用文档是根据<code>iissnan/hexo-theme-next</code>版本来编写的。</p>
@@ -560,9 +565,11 @@
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在本地Hexo目录下（如F:\Blog\Hexo），右键鼠标，打开Git Bash，执行命令</p>
-<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> my_article</span><br></pre></td></tr></table></figure>
-<p>此时会在source/_posts/目录下生成my_article.md 和 同名文件夹my_article。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo new my_article</span></span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<p>  此时会在source/_posts/目录下生成my_article.md 和 同名文件夹my_article。</p>
+<ul>
 <li><p>将需要使用的图片资源放在my_article目录下，在文章中就可以使用相对路径来引用图片资源了，例如：</p>
 <figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line">图片资源路径：<span class="variable">_posts</span>/my_article/<span class="built_in">image</span>.jpg</span><br><span class="line">文章引用图片资源的写法：![](<span class="built_in">image</span>.jpg)</span><br></pre></td></tr></table></figure>
 </li>
@@ -715,7 +722,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -754,7 +761,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -863,7 +872,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">48</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -942,7 +955,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择Github-Page"><span class="nav-number">1.</span> <span class="nav-text">为什么选择Github Page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择Hexo，而不是Jekyll"><span class="nav-number">2.</span> <span class="nav-text">为什么选择Hexo，而不是Jekyll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Node-js"><span class="nav-number">3.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git"><span class="nav-number">4.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和体验Hexo"><span class="nav-number">5.</span> <span class="nav-text">安装和体验Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装Hexo"><span class="nav-number">5.1.</span> <span class="nav-text">1. 安装Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hexo初始化配置"><span class="nav-number">5.2.</span> <span class="nav-text">2.  Hexo初始化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Hexo博客项目文件夹"><span class="nav-number">5.2.1.</span> <span class="nav-text">创建Hexo博客项目文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地查看效果"><span class="nav-number">5.2.2.</span> <span class="nav-text">本地查看效果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将本地Hexo博客部署到Github-Pages上"><span class="nav-number">6.</span> <span class="nav-text">将本地Hexo博客部署到Github Pages上</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-准备工作"><span class="nav-number">6.1.</span> <span class="nav-text">1. 准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-新建Github仓库"><span class="nav-number">6.2.</span> <span class="nav-text">2. 新建Github仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将本地的Hexo博客提交到Github仓库中"><span class="nav-number">6.3.</span> <span class="nav-text">3. 将本地的Hexo博客提交到Github仓库中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用NexT主题美化博客"><span class="nav-number">7.</span> <span class="nav-text">使用NexT主题美化博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装主题"><span class="nav-number">7.1.</span> <span class="nav-text">1. 安装主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-启用主题"><span class="nav-number">7.2.</span> <span class="nav-text">2. 启用主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置语言为简体中文"><span class="nav-number">7.3.</span> <span class="nav-text">3. 设置语言为简体中文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-主题的其它相关配置"><span class="nav-number">7.4.</span> <span class="nav-text">4. 主题的其它相关配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Hexo博客上写文章"><span class="nav-number">8.</span> <span class="nav-text">在Hexo博客上写文章</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-用hexo创建文章"><span class="nav-number">8.1.</span> <span class="nav-text">1. 用hexo创建文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用Markdown写文章"><span class="nav-number">8.2.</span> <span class="nav-text">2. 用Markdown写文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将文章push到Github上"><span class="nav-number">8.3.</span> <span class="nav-text">3. 将文章push到Github上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题和解决方案"><span class="nav-number">9.</span> <span class="nav-text">遇到的问题和解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-本地博客部署到Github后，Github站点没有更新"><span class="nav-number">9.1.</span> <span class="nav-text">1. 本地博客部署到Github后，Github站点没有更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hexo部署博客到Github时，没有生成README-md文件"><span class="nav-number">9.2.</span> <span class="nav-text">2. Hexo部署博客到Github时，没有生成README.md文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-如何在博客首页设置文章显示-阅读全文-？"><span class="nav-number">9.3.</span> <span class="nav-text">3. 如何在博客首页设置文章显示 [阅读全文] ？</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择Github-Page"><span class="nav-number">1.</span> <span class="nav-text">为什么选择Github Page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择Hexo，而不是Jekyll"><span class="nav-number">2.</span> <span class="nav-text">为什么选择Hexo，而不是Jekyll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Node-js"><span class="nav-number">3.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git（可选）"><span class="nav-number">4.</span> <span class="nav-text">安装Git（可选）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和体验Hexo"><span class="nav-number">5.</span> <span class="nav-text">安装和体验Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装Hexo"><span class="nav-number">5.1.</span> <span class="nav-text">1. 安装Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hexo初始化配置"><span class="nav-number">5.2.</span> <span class="nav-text">2.  Hexo初始化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Hexo博客项目文件夹"><span class="nav-number">5.2.1.</span> <span class="nav-text">创建Hexo博客项目文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地查看效果"><span class="nav-number">5.2.2.</span> <span class="nav-text">本地查看效果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将本地Hexo博客部署到Github-Pages上"><span class="nav-number">6.</span> <span class="nav-text">将本地Hexo博客部署到Github Pages上</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-准备工作"><span class="nav-number">6.1.</span> <span class="nav-text">1. 准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-新建Github仓库"><span class="nav-number">6.2.</span> <span class="nav-text">2. 新建Github仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将本地的Hexo博客提交到Github仓库中"><span class="nav-number">6.3.</span> <span class="nav-text">3. 将本地的Hexo博客提交到Github仓库中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用NexT主题美化博客"><span class="nav-number">7.</span> <span class="nav-text">使用NexT主题美化博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装主题"><span class="nav-number">7.1.</span> <span class="nav-text">1. 安装主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-启用主题"><span class="nav-number">7.2.</span> <span class="nav-text">2. 启用主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置语言为简体中文"><span class="nav-number">7.3.</span> <span class="nav-text">3. 设置语言为简体中文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-主题的其它相关配置"><span class="nav-number">7.4.</span> <span class="nav-text">4. 主题的其它相关配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Hexo博客上写文章"><span class="nav-number">8.</span> <span class="nav-text">在Hexo博客上写文章</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-用hexo创建文章"><span class="nav-number">8.1.</span> <span class="nav-text">1. 用hexo创建文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用Markdown写文章"><span class="nav-number">8.2.</span> <span class="nav-text">2. 用Markdown写文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将文章push到Github上"><span class="nav-number">8.3.</span> <span class="nav-text">3. 将文章push到Github上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题和解决方案"><span class="nav-number">9.</span> <span class="nav-text">遇到的问题和解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-本地博客部署到Github后，Github站点没有更新"><span class="nav-number">9.1.</span> <span class="nav-text">1. 本地博客部署到Github后，Github站点没有更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hexo部署博客到Github时，没有生成README-md文件"><span class="nav-number">9.2.</span> <span class="nav-text">2. Hexo部署博客到Github时，没有生成README.md文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-如何在博客首页设置文章显示-阅读全文-？"><span class="nav-number">9.3.</span> <span class="nav-text">3. 如何在博客首页设置文章显示 [阅读全文] ？</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -969,7 +982,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2021</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

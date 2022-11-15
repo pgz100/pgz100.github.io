@@ -504,7 +504,7 @@
 <p>通过apt安装polipo</p>
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">$ sudo apt-<span class="builtin-name">get</span> install polipo</span><br></pre></td></tr></table></figure>
 <h4 id="2-配置polipo"><a href="#2-配置polipo" class="headerlink" title="2. 配置polipo"></a>2. 配置polipo</h4><p>打开 /etc/polipo/config 文件</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">$ sudo vi /etc/polipo/<span class="built_in">config</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo vi /etc/polipo/config</span></span><br></pre></td></tr></table></figure>
 <p>作如下修改，主要是设置socksParentProxy 和 socksProxyType的字段值。</p>
 <figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"># This <span class="keyword">file</span> only needs to list configuration <span class="keyword">variables</span> that <span class="comment">deviate</span></span><br><span class="line"># from <span class="comment">the default values.  See</span> /usr/<span class="comment">share</span>/doc/<span class="comment">polipo</span>/examples/<span class="comment">config.sample</span></span><br><span class="line"># and <span class="comment">"polipo -v"</span><span class="comment"> for variables you can tweak and further information.</span></span><br><span class="line"></span><br><span class="line">logSyslog <span class="comment">= true</span></span><br><span class="line">logFile <span class="comment">=</span> /var/<span class="comment">log</span>/polipo/<span class="comment">polipo.log</span></span><br><span class="line">socksParentProxy <span class="comment">=</span> <span class="comment">"localhost:1080"</span></span><br><span class="line">socksProxyType <span class="comment">= socks5</span></span><br><span class="line">loglevel <span class="comment">= 4</span></span><br></pre></td></tr></table></figure>
 <p>重启polipo</p>
@@ -521,7 +521,7 @@
 <p><img src="5.png" alt=""></p>
 <p>如果想要关闭SS代理，则直接在终端执行 <code>disproxy</code>命令即可。</p>
 <h3 id="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"><a href="#Windows环境下，如何让MinGW使用Shadowsocks进行科学上网" class="headerlink" title="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"></a>Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</h3><h4 id="1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录："><a href="#1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录：" class="headerlink" title="1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录："></a>1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录：</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/</span></span><br></pre></td></tr></table></figure>
-<h4 id="2-创建-bash-profile-文件，并打开它。"><a href="#2-创建-bash-profile-文件，并打开它。" class="headerlink" title="2. 创建 .bash_profile 文件，并打开它。"></a>2. 创建 .bash_profile 文件，并打开它。</h4><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>vi .bash_profile</span><br></pre></td></tr></table></figure>
+<h4 id="2-创建-bash-profile-文件，并打开它。"><a href="#2-创建-bash-profile-文件，并打开它。" class="headerlink" title="2. 创建 .bash_profile 文件，并打开它。"></a>2. 创建 .bash_profile 文件，并打开它。</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vi .bash_profile</span></span><br></pre></td></tr></table></figure>
 <p>添加以下内容：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># add alias</span></span><br><span class="line"><span class="built_in">alias</span> goproxy=<span class="string">"export http_proxy=127.0.0.1:1080 https_proxy=127.0.0.1:1080; echo 'complete proxy settings'"</span></span><br><span class="line"><span class="built_in">alias</span> disproxy=<span class="string">"unset http_proxy https_proxy; echo 'unset proxy'"</span></span><br></pre></td></tr></table></figure>
 <p>保存退出，重启MinGW。</p>
@@ -659,7 +659,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -698,7 +698,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -807,7 +809,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">48</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -913,7 +919,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2021</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
