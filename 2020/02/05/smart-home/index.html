@@ -580,10 +580,10 @@
 <p><a href="https://github.com/domoticz/domoticz/tree/3.8153" target="_blank" rel="noopener">https://github.com/domoticz/domoticz/tree/3.8153</a></p>
 <h2 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
 <h2 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>cmake -DCMAKE_BUILD_TYPE=Release .</span><br><span class="line"><span class="variable">$ </span>make</span><br></pre></td></tr></table></figure>
 <p><strong>说明：</strong>在低配电脑上进行编译可能需要10-15分钟。如果你的电脑拥有多核CPU，可以通过给<code>make</code>命令增加’-j’标识来使用更多核心，这样会快很多。四核CPU可以使用<code>make -j4</code>代替<code>make</code>。</p>
 <h2 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./domoticz</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ </span>./domoticz</span><br></pre></td></tr></table></figure>
 <p>然后在浏览器中输入IP:8080即可访问domoticz的Web控制界面，会发现Web前端的版本号是v3.5876，而本次下载的domoticz源码版本号是v3.8153，注意不要把这两者弄混淆了。</p>
 <p><img src="7.jpg" alt=""></p>
 <p><strong>说明：</strong>domoticz默认使用的端口是8080，如果需要更改端口号，可在启动domoticz时，使用参数 <code>-www</code> 来指定端口号，如：<code>./domoticz -www 8090</code></p>
@@ -596,7 +596,7 @@
 <li><a href="https://www.domoticz.cn/wiki/Install.txt" target="_blank" rel="noopener">https://www.domoticz.cn/wiki/Install.txt</a></li>
 </ul>
 <h1 id="搭建过程中的常用工具"><a href="#搭建过程中的常用工具" class="headerlink" title="搭建过程中的常用工具"></a>搭建过程中的常用工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">$ apt-get install net-tools ##安装netstat</span><br><span class="line">$ netstat -nultp            ##查看所有tcp、udp的端口使用情况</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>各参数说明：</p>
 <ul>
@@ -608,7 +608,7 @@
 </ul>
 </blockquote>
 <p>例如查看 8000 端口的情况，使用以下命令：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">$ netstat -nultp <span class="string">| grep 8000</span></span><br></pre></td></tr></table></figure>
 <h2 id="如何对正在运行的docker容器增加端口映射"><a href="#如何对正在运行的docker容器增加端口映射" class="headerlink" title="如何对正在运行的docker容器增加端口映射"></a>如何对正在运行的docker容器增加端口映射</h2><p>通常在docker run创建并运行容器的时候，可以通过-p指定端口映射规则。但是，我们经常会遇到刚开始忘记设置端口映射或者设置错了需要修改。当docker start运行容器后并没有提供一个-p选项或设置，让你来修改指定端口映射规则。那么这种情况我们该怎么处理呢？</p>
 <blockquote>
 <p>方法一：删掉当前的容器，重新创建一个新容器（加上新的端口映射）。</p>

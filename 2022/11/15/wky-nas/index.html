@@ -139,6 +139,8 @@
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/21.png">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/22.jpg">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/23.jpg">
+<meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/32.jpg">
+<meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/31.png">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/24.jpg">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/25.jpg">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/26.jpg">
@@ -146,7 +148,7 @@
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/28.png">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/29.png">
 <meta property="og:image" content="http://yoursite.com/2022/11/15/wky-nas/30.png">
-<meta property="og:updated_time" content="2022-11-15T09:40:29.187Z">
+<meta property="og:updated_time" content="2022-11-16T08:39:20.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="低成本搭建家用轻NAS系统-玩客云">
 <meta name="twitter:description" content="利用玩客云实现低成本搭建家用轻NAS系统，总体方案：玩客云+ArmBian+可道云+移动硬盘。">
@@ -396,12 +398,24 @@
                 
               
 
-              <time title="创建时间：2022-11-15 17:30:25 / 修改时间：17:40:29" itemprop="dateCreated datePublished" datetime="2022-11-15T17:30:25+08:00">2022-11-15</time>
+              <time title="创建时间：2022-11-15 17:30:25" itemprop="dateCreated datePublished" datetime="2022-11-15T17:30:25+08:00">2022-11-15</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-11-16 16:39:20" itemprop="dateModified" datetime="2022-11-16T16:39:20+08:00">2022-11-16</time>
               
             
           </span>
@@ -555,12 +569,12 @@
 <h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">apt-<span class="builtin-name">get</span> -y install nginx</span><br></pre></td></tr></table></figure>
 <p>安装完成后，使用电脑或手机浏览器访问 玩客云IP ，例如我的 192.168.2.194。如果显示了Welcome to nginx! 则表示nginx安装完成！</p>
 <p><img src="16.jpg" alt=""></p>
-<h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><p>刚开始我是打算通过命令<code>apt install -y mysql-server</code>来安装mysql，但系统一直提示找不到相应的软件包，所以后来改用了MariaDB。</p>
+<h3 id="安装php及其常用组件"><a href="#安装php及其常用组件" class="headerlink" title="安装php及其常用组件"></a>安装php及其常用组件</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">apt</span> <span class="selector-tag">install</span> <span class="selector-tag">-y</span> <span class="selector-tag">php</span> <span class="selector-tag">php-fpm</span> <span class="selector-tag">php7</span><span class="selector-class">.0-mysql</span> <span class="selector-tag">php7</span><span class="selector-class">.0-gd</span> <span class="selector-tag">php7</span><span class="selector-class">.0-curl</span> <span class="selector-tag">php7</span><span class="selector-class">.0-mbstring</span></span><br></pre></td></tr></table></figure>
+<p>同样，可以通过命令<code>php -v</code>查看php的版本号。</p>
+<h3 id="安装mysql-（可选，kodexplorer不依赖它）"><a href="#安装mysql-（可选，kodexplorer不依赖它）" class="headerlink" title="安装mysql （可选，kodexplorer不依赖它）"></a>安装mysql （可选，kodexplorer不依赖它）</h3><p>刚开始我是打算通过命令<code>apt install -y mysql-server</code>来安装mysql，但系统一直提示找不到相应的软件包，所以后来改用了MariaDB。</p>
 <p>MariaDB数据库管理系统是MySQL的一个分支，是由MySQL之父Michael开发的。开发这个分支的原因之一是：甲骨文公司收购了MySQL后，有将MySQL闭源的潜在风险，因此社区采用分支的方式来避开这个风险，所以mariadb就是mysql的替代品。</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">apt <span class="keyword">install</span> -y mariadb-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
 <p>然后可以通过命令<code>mysql -V</code>查看mysql的版本号。</p>
-<h3 id="安装php及其常用组件"><a href="#安装php及其常用组件" class="headerlink" title="安装php及其常用组件"></a>安装php及其常用组件</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">apt</span> <span class="selector-tag">install</span> <span class="selector-tag">-y</span> <span class="selector-tag">php</span> <span class="selector-tag">php-fpm</span> <span class="selector-tag">php7</span><span class="selector-class">.0-mysql</span> <span class="selector-tag">php7</span><span class="selector-class">.0-gd</span> <span class="selector-tag">php7</span><span class="selector-class">.0-curl</span> <span class="selector-tag">php7</span><span class="selector-class">.0-mbstring</span></span><br></pre></td></tr></table></figure>
-<p>同样，可以通过命令<code>php -v</code>查看php的版本号。</p>
 <h3 id="配置nginx环境"><a href="#配置nginx环境" class="headerlink" title="配置nginx环境"></a>配置nginx环境</h3><p>这里使用到一个系统自带的文本编辑器nano，就像windows里的记事本，它比vi/vim要简单得多。想深入了解的同学可以使用<code>nano --help</code> 或 <code>man nano</code> 命令查看。</p>
 <p><strong>这里简单说下基本用法：</strong></p>
 <blockquote>
@@ -595,7 +609,7 @@
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">echo <span class="string">"&lt;?php phpinfo(); ?&gt;"</span>&gt;<span class="regexp">/var/</span>www<span class="regexp">/html/i</span>nfo.php</span><br></pre></td></tr></table></figure>
 <p>然后使用电脑或手机浏览器访问 “玩客云IP/info.php”，比如：192.168.2.194/info.php。如果出现以下内容，表示nginx配置的没有问题。</p>
 <p><img src="21.png" alt=""></p>
-<h3 id="配置mysql-mariadb"><a href="#配置mysql-mariadb" class="headerlink" title="配置mysql/mariadb"></a>配置mysql/mariadb</h3><h4 id="使用配置向导"><a href="#使用配置向导" class="headerlink" title="使用配置向导"></a>使用配置向导</h4><p>输入命令 <code>mysql_secure_installation</code> 进行配置。</p>
+<h3 id="配置mysql-mariadb（可选，若无需安装mysql，则跳过）"><a href="#配置mysql-mariadb（可选，若无需安装mysql，则跳过）" class="headerlink" title="配置mysql/mariadb（可选，若无需安装mysql，则跳过）"></a>配置mysql/mariadb（可选，若无需安装mysql，则跳过）</h3><h4 id="使用配置向导"><a href="#使用配置向导" class="headerlink" title="使用配置向导"></a>使用配置向导</h4><p>输入命令 <code>mysql_secure_installation</code> 进行配置。</p>
 <p><img src="22.jpg" alt=""></p>
 <p>此时会出现一些交互事项：</p>
 <blockquote>
@@ -614,13 +628,32 @@
 <p>将bind-address = 127.0.0.1 改为 bind-address = 0.0.0.0，然后ctrl + o 保存，ctrl + x 退出。</p>
 <p><strong>至此，WEB环境搭建完成。</strong></p>
 <hr>
-<h2 id="安装可道云"><a href="#安装可道云" class="headerlink" title="安装可道云"></a>安装可道云</h2><p>可道云依据用户群体不同，划分为两个分支版本：KodExplorer 与 KodBox。</p>
-<p>KodBox 是在 KodExplorer 基础上进行了系统重构的全新产品。为满足系统更强性能、更安全、更多特性的拓展需求，Kodbox 对底层架构、存储方式、权限机制等进行了重构，同时继承并升级了 KodExplorer 优秀前端体验。</p>
-<p>整体而言，KodExplorer 适用于个人用户或小型团队和企业；KodBox 更多针对企业级的应用需求，可支撑高并发、更多用户数、更高协作和安全要求，同时KodBox还支持配置第三方云存储。</p>
+<p><strong>可道云是最常用的搭建私人云盘的软件之一，分为kod explorer和kodbox两个版本，属于不同产品，适用的场景也不相同。</strong></p>
+<h2 id="kod-explorer简介"><a href="#kod-explorer简介" class="headerlink" title="kod explorer简介"></a>kod explorer简介</h2><p><strong>kod explorer无需数据库就可以运行</strong>，适用于个人用户或小型团队和企业。它本质上是一个在线的文件管理器，可以用来管理指定文件夹的文件，和File Browser有点类似，可以理解成是一个在线的“我的电脑”。通过kod explorer看到的文件跟我们通过WINSCP或者SSH看到的文件是一样的，说白了就是<strong>kod explorer的文件目录结构与磁盘中存储的文件目录结构是一样的，因而比较适合那些对文件管理有强烈需求的用户。</strong></p>
+<h2 id="kodbox简介"><a href="#kodbox简介" class="headerlink" title="kodbox简介"></a>kodbox简介</h2><p>kodbox 是在 kod explorer 基础上进行了系统重构的全新产品。为满足系统更强性能、更安全、更多特性的拓展需求，Kodbox 对底层架构、存储方式、权限机制等进行了重构，同时继承并升级了 kod explorer 优秀前端体验。KodBox 更多针对企业级的应用需求，可支撑高并发、更多用户数、更高协作和安全要求。</p>
+<p>同时，<strong>kodbox是需要数据库支持的</strong>，它会将你上传的文件分成一个一个的小文件进行存储。在kodbox里面看到的是完整的文件，而通过WINSCP或SSH看到的则是一个一个的小文件，无法正常读取。同样的，通过WINSCP或者FTP上传的文件也不能被kodbox识别，所以kodbox的安全性会更高，更适合用来分享文件，但是不适合做文件的管理，因为kodbox在磁盘中存储的文件是按照日期分类存储的，与kodbox看到的文件目录结构完全不一致。</p>
 <blockquote>
-<p>本次我选用KodBox作为家用的私有云存储系统。</p>
+<p>我搭建可道云私有化环境，主要是用来对我个人家庭的日常文件，如图片、视频等，进行文件的管理和维护，所以我选用了kod explorer作为家用的私有云存储系统。</p>
 </blockquote>
-<p>（1）用命令wget获取可道云KodBox安装包或前往<a href="https://kodcloud.com/download/" target="_blank" rel="noopener">可道云官网</a>自行下载。</p>
+<h2 id="安装可道云"><a href="#安装可道云" class="headerlink" title="安装可道云"></a>安装可道云</h2><p>下面将分别介绍 kod explorer 和 kodbox 的具体安装过程，我们可以根据自身需求，<strong>选择其中一个来安装和使用。</strong></p>
+<h3 id="安装kod-explorer"><a href="#安装kod-explorer" class="headerlink" title="安装kod explorer"></a>安装kod explorer</h3><p>（1）用命令wget获取kodexplorer安装包或前往<a href="https://kodcloud.com/download/" target="_blank" rel="noopener">可道云官网</a>自行下载。</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">wget http<span class="variable">s:</span>//static.kodcloud.<span class="keyword">com</span>/<span class="keyword">update</span>/download/kodexplorer4.<span class="number">49</span>.zip</span><br></pre></td></tr></table></figure>
+<p>（2）解压kodexplorer到/var/www/html/kode目录下，并赋予kode目录读写权限。</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">unzip -d <span class="regexp">/var/</span>www<span class="regexp">/html/</span>kodb kodexplorer4.<span class="number">49</span>.zip </span><br><span class="line">chmod -R <span class="number">777</span> <span class="regexp">/var/</span>www<span class="regexp">/html/</span>kode<span class="regexp">/</span></span><br></pre></td></tr></table></figure>
+<p>（3）使用手机或电脑浏览器访问：玩客云IP/kode，例如我的是：192.168.2.194/kode，根据系统提示新建管理员密码，即可进入系统。</p>
+<p><img src="32.jpg" alt=""></p>
+<h4 id="修改kod-explorer的默认存储位置"><a href="#修改kod-explorer的默认存储位置" class="headerlink" title="修改kod explorer的默认存储位置"></a>修改kod explorer的默认存储位置</h4><p>kod explorer登录进去之后的默认存储位置（主文件夹）是在玩客云的内部存储，所以我们上传文件时默认上传到了玩客云的内部存储。由于玩客云的内部存储空间小，且存放着系统文件，可谓一寸空间一寸金。因此，将默认存储位置修改到外部存储设备就显得十分有必要了。</p>
+<h5 id="准备外接存储设备"><a href="#准备外接存储设备" class="headerlink" title="准备外接存储设备"></a>准备外接存储设备</h5><p>外接存储设备必须是ext4格式的，否则将会挂载失败。如果外接存储设备不是ext4格式，则需要进行格式转化，具体步骤如下：</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># 查看你的U盘序号，通常是/dev/sda或/dev/sdb之类的</span></span><br><span class="line">fdisk -l </span><br><span class="line"><span class="meta"># 格式化为ext4分区</span></span><br><span class="line">mkfs.ext4 /dev/sda1</span><br></pre></td></tr></table></figure>
+<p>然后将U盘挂载到系统上，并将kod explorer现有数据迁移到U盘</p>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="meta"># 建立挂载点，netdisk为挂载点名称，可以自定义</span></span><br><span class="line">mkdir <span class="meta-keyword">/var/</span>www/netdisk</span><br><span class="line"><span class="meta"># 挂载U盘</span></span><br><span class="line">mount -t ext4 <span class="meta-keyword">/dev/</span>sda1 <span class="meta-keyword">/var/</span>www/netdisk</span><br><span class="line"><span class="meta"># 迁移数据</span></span><br><span class="line">cp -r <span class="meta-keyword">/var/</span>www<span class="meta-keyword">/html/</span>kode/data <span class="meta-keyword">/var/</span>www<span class="meta-keyword">/netdisk/</span></span><br><span class="line"><span class="meta"># 赋予挂载目录读写权限</span></span><br><span class="line">chmod -R <span class="number">777</span> <span class="meta-keyword">/var/</span>www<span class="meta-keyword">/netdisk/</span></span><br></pre></td></tr></table></figure>
+<h5 id="修改默认存储位置"><a href="#修改默认存储位置" class="headerlink" title="修改默认存储位置"></a>修改默认存储位置</h5><p>在/var/www/html/kode/config目录下新建一个define.php文件，</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">nano -c <span class="regexp">/var/</span>www<span class="regexp">/html/</span>kode<span class="regexp">/config/</span>define.php</span><br></pre></td></tr></table></figure>
+<p>并输入如下内容：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">define(<span class="string">'DATA_PATH'</span>,<span class="string">'/var/www/netdisk/data/'</span>);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>保存文件后，重新登录kod explorer，会发现默认存储位置或主文件夹已经变成了修改后的路径了。</p>
+<p><img src="31.png" alt=""></p>
+<h3 id="安装kodbox"><a href="#安装kodbox" class="headerlink" title="安装kodbox"></a>安装kodbox</h3><p>（1）用命令wget获取可道云KodBox安装包或前往<a href="https://kodcloud.com/download/" target="_blank" rel="noopener">可道云官网</a>自行下载。</p>
 <figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">wget http<span class="variable">s:</span>//static.kodcloud.<span class="keyword">com</span>/<span class="keyword">update</span>/download/kodbox.<span class="number">1.35</span>.zip</span><br></pre></td></tr></table></figure>
 <p>（2）解压kodbox到/var/www/html/kodb目录下，并赋予kodb目录读写权限。</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">unzip -d <span class="regexp">/var/</span>www<span class="regexp">/html/</span>kodb kodbox.<span class="number">1.35</span>.zip </span><br><span class="line">chmod -R <span class="number">777</span> <span class="regexp">/var/</span>www<span class="regexp">/html/</span>kodb<span class="regexp">/</span></span><br></pre></td></tr></table></figure>
@@ -628,7 +661,7 @@
 <figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">apt-<span class="builtin-name">get</span> install -y php-redis</span><br><span class="line">apt-<span class="builtin-name">get</span> install -y redis-server</span><br></pre></td></tr></table></figure>
 <p>（4）重启 php7.0-fpm</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">service</span> <span class="selector-tag">php7</span><span class="selector-class">.0-fpm</span> <span class="selector-tag">restart</span></span><br></pre></td></tr></table></figure>
-<h2 id="使用可道云"><a href="#使用可道云" class="headerlink" title="使用可道云"></a>使用可道云</h2><p>使用手机或电脑浏览器访问：玩客云IP/kodb，例如我的是：192.168.2.194/kodb，会出现安装向导。</p>
+<p>（5）使用手机或电脑浏览器访问：玩客云IP/kodb，例如我的是：192.168.2.194/kodb，会出现安装向导。</p>
 <p><strong>环境检测：</strong> 由于玩客云s805不是64位CPU，所以只能支持32位，所以在环境检测中选择跳过。</p>
 <p><img src="24.jpg" alt=""></p>
 <p><strong>数据库配置：</strong> 数据库类型，选择mysql，并填写mysql 的用户名与密码。系统缓存，选择 Redis ，然后点击“确定”即可。</p>
@@ -637,6 +670,7 @@
 <p><img src="26.jpg" alt=""></p>
 <p>最后可前往可道云官网下载移动端APP，在手机上访问可道云。注意需要配置下服务器站点，如：192.168.2.194/kodb，才能正常访问，且要保证手机与玩客云连接的是同一个路由器。</p>
 <p><img src="27.jpg" alt=""></p>
+<hr>
 <p><strong>到这里，利用玩客云来搭建家用轻NAS系统的操作就全部完成了。</strong></p>
 <h2 id="遇到的问题及解决方案"><a href="#遇到的问题及解决方案" class="headerlink" title="遇到的问题及解决方案"></a>遇到的问题及解决方案</h2><h3 id="使用putty时报错：tput-unknown-terminal-“xterm”"><a href="#使用putty时报错：tput-unknown-terminal-“xterm”" class="headerlink" title="使用putty时报错：tput: unknown terminal “xterm”"></a>使用putty时报错：tput: unknown terminal “xterm”</h3><p><strong>问题描述：</strong> 在使用putty过程中，报错 tput: unknown terminal “xterm”，此时按后退键和上下左右键都会出现乱码。</p>
 <p><strong>解决方案：</strong> 输入以下命令，重装<strong>ncurses-base</strong>即可。</p>
@@ -1027,7 +1061,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩客云拆机"><span class="nav-number">2.</span> <span class="nav-text">玩客云拆机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工具"><span class="nav-number">2.1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拆机"><span class="nav-number">2.2.</span> <span class="nav-text">拆机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩客云刷机"><span class="nav-number">3.</span> <span class="nav-text">玩客云刷机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备软件工具包"><span class="nav-number">3.1.</span> <span class="nav-text">准备软件工具包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#刷入Armbian系统"><span class="nav-number">3.2.</span> <span class="nav-text">刷入Armbian系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用双公头的USB线把电脑和主板连起来"><span class="nav-number">3.2.1.</span> <span class="nav-text">用双公头的USB线把电脑和主板连起来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将主板短接"><span class="nav-number">3.2.2.</span> <span class="nav-text">将主板短接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通电刷机"><span class="nav-number">3.2.3.</span> <span class="nav-text">通电刷机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动Armbian"><span class="nav-number">3.2.4.</span> <span class="nav-text">启动Armbian</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建WEB环境-LNMP"><span class="nav-number">4.</span> <span class="nav-text">搭建WEB环境-LNMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nginx"><span class="nav-number">4.1.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mysql"><span class="nav-number">4.2.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装php及其常用组件"><span class="nav-number">4.3.</span> <span class="nav-text">安装php及其常用组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx环境"><span class="nav-number">4.4.</span> <span class="nav-text">配置nginx环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mysql-mariadb"><span class="nav-number">4.5.</span> <span class="nav-text">配置mysql/mariadb</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用配置向导"><span class="nav-number">4.5.1.</span> <span class="nav-text">使用配置向导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置mariadb远程访问权限"><span class="nav-number">4.5.2.</span> <span class="nav-text">配置mariadb远程访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改MariaDB配置文件，允许远程访问"><span class="nav-number">4.5.3.</span> <span class="nav-text">修改MariaDB配置文件，允许远程访问</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装可道云"><span class="nav-number">5.</span> <span class="nav-text">安装可道云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用可道云"><span class="nav-number">6.</span> <span class="nav-text">使用可道云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题及解决方案"><span class="nav-number">7.</span> <span class="nav-text">遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用putty时报错：tput-unknown-terminal-“xterm”"><span class="nav-number">7.1.</span> <span class="nav-text">使用putty时报错：tput: unknown terminal “xterm”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies"><span class="nav-number">7.2.</span> <span class="nav-text">安装mysql或mariadb时报错：The following packages have unmet dependencies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SD卡刷机后，如何恢复SD卡的原始存储空间"><span class="nav-number">7.3.</span> <span class="nav-text">使用SD卡刷机后，如何恢复SD卡的原始存储空间</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩客云拆机"><span class="nav-number">2.</span> <span class="nav-text">玩客云拆机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工具"><span class="nav-number">2.1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拆机"><span class="nav-number">2.2.</span> <span class="nav-text">拆机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩客云刷机"><span class="nav-number">3.</span> <span class="nav-text">玩客云刷机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备软件工具包"><span class="nav-number">3.1.</span> <span class="nav-text">准备软件工具包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#刷入Armbian系统"><span class="nav-number">3.2.</span> <span class="nav-text">刷入Armbian系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用双公头的USB线把电脑和主板连起来"><span class="nav-number">3.2.1.</span> <span class="nav-text">用双公头的USB线把电脑和主板连起来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将主板短接"><span class="nav-number">3.2.2.</span> <span class="nav-text">将主板短接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通电刷机"><span class="nav-number">3.2.3.</span> <span class="nav-text">通电刷机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动Armbian"><span class="nav-number">3.2.4.</span> <span class="nav-text">启动Armbian</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建WEB环境-LNMP"><span class="nav-number">4.</span> <span class="nav-text">搭建WEB环境-LNMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nginx"><span class="nav-number">4.1.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装php及其常用组件"><span class="nav-number">4.2.</span> <span class="nav-text">安装php及其常用组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mysql-（可选，kodexplorer不依赖它）"><span class="nav-number">4.3.</span> <span class="nav-text">安装mysql （可选，kodexplorer不依赖它）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx环境"><span class="nav-number">4.4.</span> <span class="nav-text">配置nginx环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mysql-mariadb（可选，若无需安装mysql，则跳过）"><span class="nav-number">4.5.</span> <span class="nav-text">配置mysql/mariadb（可选，若无需安装mysql，则跳过）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用配置向导"><span class="nav-number">4.5.1.</span> <span class="nav-text">使用配置向导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置mariadb远程访问权限"><span class="nav-number">4.5.2.</span> <span class="nav-text">配置mariadb远程访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改MariaDB配置文件，允许远程访问"><span class="nav-number">4.5.3.</span> <span class="nav-text">修改MariaDB配置文件，允许远程访问</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kod-explorer简介"><span class="nav-number">5.</span> <span class="nav-text">kod explorer简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kodbox简介"><span class="nav-number">6.</span> <span class="nav-text">kodbox简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装可道云"><span class="nav-number">7.</span> <span class="nav-text">安装可道云</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装kod-explorer"><span class="nav-number">7.1.</span> <span class="nav-text">安装kod explorer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改kod-explorer的默认存储位置"><span class="nav-number">7.1.1.</span> <span class="nav-text">修改kod explorer的默认存储位置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备外接存储设备"><span class="nav-number">7.1.1.1.</span> <span class="nav-text">准备外接存储设备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改默认存储位置"><span class="nav-number">7.1.1.2.</span> <span class="nav-text">修改默认存储位置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装kodbox"><span class="nav-number">7.2.</span> <span class="nav-text">安装kodbox</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题及解决方案"><span class="nav-number">8.</span> <span class="nav-text">遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用putty时报错：tput-unknown-terminal-“xterm”"><span class="nav-number">8.1.</span> <span class="nav-text">使用putty时报错：tput: unknown terminal “xterm”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies"><span class="nav-number">8.2.</span> <span class="nav-text">安装mysql或mariadb时报错：The following packages have unmet dependencies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SD卡刷机后，如何恢复SD卡的原始存储空间"><span class="nav-number">8.3.</span> <span class="nav-text">使用SD卡刷机后，如何恢复SD卡的原始存储空间</span></a></li></ol></li></ol></div>
             
 
           </div>
