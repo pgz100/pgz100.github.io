@@ -15,7 +15,7 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -190,7 +190,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -200,7 +200,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -318,20 +318,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/19/logrotate/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="WingTsun Cat">
     </span>
 
@@ -387,7 +387,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/linux系统相关/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux系统相关/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a></span>
 
                 
                 
@@ -446,7 +446,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">/usr/sbin/logrotate /etc/logrotate.conf</span><br><span class="line">EXITVALUE=$?</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$EXITVALUE</span> != 0 ]; <span class="keyword">then</span></span><br><span class="line">/usr/bin/logger -t logrotate <span class="string">"ALERTexited abnormally with [<span class="variable">$EXITVALUE</span>]"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
 <p>从上面的脚本内容可以看出，它主要是执行程序logrotate，并且启动logrotate的时候加载了配置文件/etc/logrotate.conf。</p>
 <p>下面就是对这个配置文件 logrotate.conf 的内容进行简要说明：</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># see <span class="string">"man logrotate"</span> fordetails</span><br><span class="line"># <span class="keyword">rotate</span> <span class="keyword">log</span> files <span class="built_in">weekly</span></span><br><span class="line"><span class="built_in">weekly</span></span><br><span class="line"># <span class="keyword">keep</span> 4 weeks worth of backlogs</span><br><span class="line"><span class="keyword">rotate</span> 4</span><br><span class="line"># create new (empty) <span class="keyword">log</span> files afterrotating old ones</span><br><span class="line">create</span><br><span class="line"># <span class="keyword">use</span> date <span class="keyword">as</span> a suffix of the rotated <span class="keyword">file</span></span><br><span class="line">dateext</span><br><span class="line"># uncomment this <span class="keyword">if</span> you want your logfiles compressed</span><br><span class="line">#<span class="keyword">compress</span></span><br><span class="line"></span><br><span class="line"># RPM packages <span class="keyword">drop</span> <span class="keyword">log</span> rotationinformation into this directory</span><br><span class="line"><span class="keyword">include</span> /etc/logrotate.<span class="built_in">d</span></span><br><span class="line"></span><br><span class="line"># <span class="keyword">no</span> packages own wtmp and btmp -- we'll <span class="keyword">rotate</span> them here</span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/wtmp &#123;</span><br><span class="line"><span class="built_in">monthly</span></span><br><span class="line">create 0664 root utmp</span><br><span class="line">minsize 1M</span><br><span class="line"><span class="keyword">rotate</span> 1</span><br><span class="line">&#125;</span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/btmp &#123;</span><br><span class="line">missingok</span><br><span class="line"><span class="built_in">monthly</span></span><br><span class="line">create 0600 root utmp</span><br><span class="line"><span class="keyword">rotate</span> 1</span><br><span class="line">&#125;</span><br><span class="line"># system-specific logs may be also beconfigured here.</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment"># see "man logrotate" fordetails</span></span><br><span class="line"><span class="comment"># rotate log files weekly</span></span><br><span class="line">weekly</span><br><span class="line"><span class="comment"># keep 4 weeks worth of backlogs</span></span><br><span class="line">rotate 4</span><br><span class="line"><span class="comment"># create new (empty) log files afterrotating old ones</span></span><br><span class="line"><span class="keyword">create</span></span><br><span class="line"><span class="comment"># use date as a suffix of the rotated file</span></span><br><span class="line">dateext</span><br><span class="line"><span class="comment"># uncomment this if you want your logfiles compressed</span></span><br><span class="line"><span class="comment">#compress</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># RPM packages drop log rotationinformation into this directory</span></span><br><span class="line"><span class="keyword">include</span> /etc/logrotate.d</span><br><span class="line"></span><br><span class="line"><span class="comment"># no packages own wtmp and btmp -- we'll rotate them here</span></span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/wtmp &#123;</span><br><span class="line">monthly</span><br><span class="line"><span class="keyword">create</span> <span class="number">0664</span> root utmp</span><br><span class="line">minsize <span class="number">1</span>M</span><br><span class="line">rotate <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">/<span class="keyword">var</span>/<span class="keyword">log</span>/btmp &#123;</span><br><span class="line">missingok</span><br><span class="line">monthly</span><br><span class="line"><span class="keyword">create</span> <span class="number">0600</span> root utmp</span><br><span class="line">rotate <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># system-specific logs may be also beconfigured here.</span></span><br></pre></td></tr></table></figure>
 <p>该文件的前半部分内容都是默认配置项，这些配置项可以被后续的配置所覆盖，这里需要关注的是配置项：<strong>include /etc/logrotate.d</strong>，它表示logrotate在启动的时候还要把目录/etc/logrotate.d中的配置文件都执行一遍。</p>
 <p>实际上，为了便于使用，每个应用程序都可以编写自己的logrotate配置文件，然后把编写好的配置文件放在目录/etc/logrotate.d下，这样每个程序自己的配置项就会把上面的默认配置项给覆盖掉。</p>
 <p><strong>覆盖默认配置项的具体过程如下：</strong></p>
@@ -483,7 +483,7 @@
 <p>（5）最后测试一下配置文件的配置内容是否有误。执行logrotate转储命令：</p>
 <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># <span class="regexp">/usr/</span>sbin<span class="regexp">/logrotate -vf /</span>etc<span class="regexp">/logrotate.conf</span></span><br></pre></td></tr></table></figure>
 <p>可以看到新生成的转储文件与原日志文件在同一个目录下，如下所示：</p>
-<figure class="highlight tap"><table><tr><td class="code"><pre><span class="line">-rwxrwxrwx.<span class="number"> 1 </span>root root<span class="number"> 482 </span>5月 <span class="number"> 18 </span>15:36 mosquitto.log</span><br><span class="line">-rwxrwxrwx.<span class="number"> 1 </span>root root<span class="number"> 950 </span>5月 <span class="number"> 18 </span>15:25 mosquitto.log-20210518</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">-rwxrwxrwx.</span> <span class="number">1</span> <span class="string">root</span> <span class="string">root</span> <span class="number">482</span> <span class="number">5</span><span class="string">月</span>  <span class="number">18</span> <span class="number">15</span><span class="string">:36</span> <span class="string">mosquitto.log</span></span><br><span class="line"><span class="string">-rwxrwxrwx.</span> <span class="number">1</span> <span class="string">root</span> <span class="string">root</span> <span class="number">950</span> <span class="number">5</span><span class="string">月</span>  <span class="number">18</span> <span class="number">15</span><span class="string">:25</span> <span class="string">mosquitto.log-20210518</span></span><br></pre></td></tr></table></figure>
 <p>这样后续每天原始日志文件的内容都会自动备份和截断，在当前目录下自动生成一个带有日期标签的日志转储文件。</p>
 
       
@@ -597,7 +597,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
             
@@ -612,7 +612,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -653,7 +653,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">14</span>
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -766,7 +768,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">50</span>
+                      
+                    
+                    <span class="site-state-item-count">51</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -872,7 +876,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2022</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -887,7 +891,7 @@
 
 <!--
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.9.0</div>
 
 
 

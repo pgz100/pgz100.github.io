@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="采用docker部署rasa服务，包括rasa项目创建、开发、部署、测试等一系列操作。">
+<meta name="keywords" content="docker,python,rasa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在docker中部署rasa服务">
+<meta property="og:url" content="http://yoursite.com/2023/04/27/rasa-docker/index.html">
+<meta property="og:site_name" content="WingTsun Cat">
+<meta property="og:description" content="采用docker部署rasa服务，包括rasa项目创建、开发、部署、测试等一系列操作。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-04-27T07:47:01.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在docker中部署rasa服务">
+<meta name="twitter:description" content="采用docker部署rasa服务，包括rasa项目创建、开发、部署、测试等一系列操作。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="WingTsun Cat" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2023/04/27/rasa-docker/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>在docker中部署rasa服务 | WingTsun Cat</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7777c9b943c9708d23416af82661701a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WingTsun Cat</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Reading & Thinking & Writing</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/04/27/rasa-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Peter Pan">
+      <meta itemprop="description" content="沉淀下来的，才是精华！">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WingTsun Cat">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在docker中部署rasa服务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2023-04-27 15:21:21 / 修改时间：15:47:01" itemprop="dateCreated datePublished" datetime="2023-04-27T15:21:21+08:00">2023-04-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/rasa相关/" itemprop="url" rel="index"><span itemprop="name">rasa相关</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">采用docker部署rasa服务，包括rasa项目创建、开发、部署、测试等一系列操作。</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基础环境搭建"><a href="#基础环境搭建" class="headerlink" title="基础环境搭建"></a>基础环境搭建</h2><p>1、拉取python:3.9-slim 镜像</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">docker</span> <span class="selector-tag">pull</span> <span class="selector-tag">python</span><span class="selector-pseudo">:3.9-slim</span></span><br></pre></td></tr></table></figure>
+<p>2、配置docker容器的网络环境</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首先查看、创建一个网络 rasa-network </span></span><br><span class="line">docker<span class="built_in"> network </span>ls </span><br><span class="line">docker<span class="built_in"> network </span>create rasa-network</span><br><span class="line"><span class="comment">#将容器加入网络当中</span></span><br><span class="line">方法一：</span><br><span class="line">docker<span class="built_in"> network </span>connect rasa-netwrk 容器名称</span><br><span class="line">方法二：启动容器的时候加入：（本文选择此种方法）</span><br><span class="line">docker <span class="builtin-name">run</span> -itd --network rasa-network 容器名称</span><br><span class="line"><span class="comment"># 在外面查看各个容器的IP地址 </span></span><br><span class="line">docker<span class="built_in"> network </span>inspect rasa-network</span><br></pre></td></tr></table></figure>
+<p>3、创建rasa容器</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置容器名称、网络桥接、端口号、镜像名称</span></span><br><span class="line">docker <span class="built_in">run</span> -<span class="built_in">id</span> <span class="comment">--name=rasa-test --network rasa-network -p 5005:5005 python:3.9-slim</span></span><br><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line">docker exec -<span class="keyword">it</span> rasa-test /bin/bash</span><br></pre></td></tr></table></figure>
+<p>4、将容器的源更改为官方源（阿里源）</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"># 更新apt</span><br><span class="line">apt-get update</span><br><span class="line"># 下载gnupg</span><br><span class="line">apt-get install gnupg1</span><br><span class="line"># 设置公钥，否则无法使用阿里源</span><br><span class="line">apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <span class="number">3B</span>4FE6ACC0B21F32</span><br><span class="line"># 原文件备份</span><br><span class="line">cp /etc/apt/sources.<span class="built_in">list</span> /etc/apt/sources.<span class="built_in">list</span>.bak</span><br><span class="line"># 更改为阿里源并更新apt-get</span><br><span class="line">echo <span class="string">"deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span></span><br><span class="line"><span class="string">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse"</span>&gt;/etc/apt/sources.<span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+<p>5、更新apt</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">apt-<span class="builtin-name">get</span> clean &amp;&amp; apt-<span class="builtin-name">get</span> update</span><br></pre></td></tr></table></figure>
+<p>5、将pip源更改为国内源（清华源）</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">pip config <span class="keyword">set</span> <span class="keyword">global</span>.<span class="built_in">index</span>-url http<span class="variable">s:</span>//pypi.tuna.tsinghua.edu.<span class="keyword">cn</span>/simple</span><br></pre></td></tr></table></figure>
+<h2 id="安装rasa"><a href="#安装rasa" class="headerlink" title="安装rasa"></a>安装rasa</h2><p>1、安装rasa</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">安装最新版：</span><br><span class="line">pip <span class="keyword">install</span> rasa</span><br><span class="line">也可在安装时指定版本号：</span><br><span class="line">pip <span class="keyword">install</span> rasa==<span class="number">3.4</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>2、rasa相关命令介绍，rasa的官方文档：<a href="https://rasa.com/docs/rasa/" target="_blank" rel="noopener">https://rasa.com/docs/rasa/</a></p>
+<ul>
+<li>rasa init：创建一个新的项目，包含示例训练数据，actions和配置文件。</li>
+<li>rasa train：使用NLU数据和stories训练模型，模型保存在./models中。</li>
+<li>rasa test：使用测试NLU数据和stories来测试Rasa模型。</li>
+<li>rasa shell：通过命令行的方式加载训练模型，然后同聊天机器人进行对话。</li>
+<li>rasa run：使用训练模型开启一个Rasa服务。</li>
+<li>rasa run actions：使用Rasa SDK开启action服务器。</li>
+<li>rasa interactive：开启一个交互式的学习会话，通过会话的方式，为Rasa模型创建一个新的训练数据。</li>
+<li>telemetry：Configuration of Rasa Open Source telemetry reporting.</li>
+<li>rasa visualize：可视化stories。</li>
+<li>rasa data：训练数据的工具。</li>
+<li>rasa export：通过一个event broker导出会话。</li>
+<li>rasa evaluate：评估模型的工具。</li>
+<li>rasa x：在本地启动Rasa X。</li>
+<li>-h, –help：帮助命令。</li>
+<li>–version：查看Rasa版本信息。</li>
+</ul>
+<h2 id="创建rasa项目"><a href="#创建rasa项目" class="headerlink" title="创建rasa项目"></a>创建rasa项目</h2><p>1、初始化rasa项目</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mkdir</span> rasa-<span class="keyword">test</span></span><br><span class="line"><span class="keyword">cd</span> rasa-<span class="keyword">test</span></span><br><span class="line">rasa init</span><br></pre></td></tr></table></figure>
+<p>2、如果要实现中文分词、意图分类和实体识别，则还需要安装 jieba、transformers组件</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">install </span><span class="keyword">jieba</span></span><br><span class="line"><span class="keyword">pip </span><span class="keyword">install </span>transformers</span><br></pre></td></tr></table></figure>
+<p>3、编写nlu.yml文件，准备自定义的NLU训练数据，主要用于意图分类模型训练。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="attribute">version</span>: "3.1"</span><br><span class="line"></span><br><span class="line"><span class="attribute">nlu:</span></span><br><span class="line">- intent: greet</span><br><span class="line">  examples: |</span><br><span class="line">    - hey</span><br><span class="line">    - hello</span><br><span class="line">    - hi</span><br></pre></td></tr></table></figure>
+<p>其中<code>intent: greet</code>表示意图为greet，<code>examples</code>是具体的简单例子。稍微复杂点的例子格式是：[实体值]（实体类型名），比如[明天]（日期）[上海]（城市）的天气如何？其中的日期和城市就是NLP中实体识别中的实体了。除了intent之外，该文件还可以包含同义词synonym、正则表达式regex和查找表lookup等。</p>
+<p>4、修改config.yml文件，配置NLU模型，主要是配置pipeline。</p>
+<p>（1）其中pipeline主要是分词组件、特征提取组件、NER组件和意图分类组件等，通过NLP模型进行实现，并且组件都是可插拔可替换的。</p>
+<p>（2）如果LanguageModelFeaturizer配置了bert-base-chinese，则需要事先下载tf_model.h5文件，该文件是基于tensorflow的中文bert预训练模型，下载链接如下：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">链接：http<span class="variable">s:</span>//pan.baidu.<span class="keyword">com</span>/s/<span class="number">1</span>QLdmfxGJJE_xsPgaplhcOQ?<span class="keyword">pwd</span>=oo14 </span><br><span class="line">提取码：oo14</span><br></pre></td></tr></table></figure>
+<p>5、根据实际需要编写 story 故事数据（stories.yml文件）和 rule 规则数据（rules.yml文件）。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="attribute">version</span>: "3.1"</span><br><span class="line"></span><br><span class="line"><span class="attribute">stories:</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line">- story: happy path</span><br><span class="line">  steps:</span><br><span class="line">  - intent: greet</span><br><span class="line">  - action: utter_greet</span><br><span class="line">  - intent: mood_great</span><br><span class="line">  - action: utter_happy</span><br><span class="line"></span><br><span class="line">- story: sad path 1</span><br><span class="line">  steps:</span><br><span class="line">  - intent: greet</span><br><span class="line">  - action: utter_greet</span><br><span class="line">  - intent: mood_unhappy</span><br><span class="line">  - action: utter_cheer_up</span><br><span class="line">  - action: utter_did_that_help</span><br><span class="line">  - intent: affirm</span><br><span class="line">  - action: utter_happy</span><br><span class="line"></span><br><span class="line">- story: sad path 2</span><br><span class="line">  steps:</span><br><span class="line">  - intent: greet</span><br><span class="line">  - action: utter_greet</span><br><span class="line">  - intent: mood_unhappy</span><br><span class="line">  - action: utter_cheer_up</span><br><span class="line">  - action: utter_did_that_help</span><br><span class="line">  - intent: deny</span><br><span class="line">  - action: utter_goodbye</span><br></pre></td></tr></table></figure>
+<p>上述内容可看做是用户和机器人一个完整的真实的对话流程，对话策略可通过机器学习或者深度学习的方式从其中进行学习。</p>
+<p>6、编写domain.yml文件，定义领域domain，包含了聊天机器人的所有信息，包括意图(intent)、实体(entity)、词槽(slot)、动作(action)、表单(form)和回复(response)等。</p>
+<p>7、配置Rasa Core模型，主要是配置policies。policies主要是对话策略的配置，常用的包括TEDPolicy、UnexpecTEDIntentPolicy、MemoizationPolicy、AugmentedMemoizationPolicy、RulePolicy和Custom Policies等，并且策略之间也是有优先级顺序的。</p>
+<p>8、使用rasa train训练模型</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">rasa</span> train</span><br><span class="line">或者</span><br><span class="line">rasa train nlu</span><br><span class="line">rasa train core</span><br></pre></td></tr></table></figure>
+<p>如果在配置pipeline时，作了如下配置，则表示rasa会从pre-models目录下加载bert-base-chinese预训练模型，所以需要将刚才下载的tf_model.h5文件拷贝到pre-models目录（例如：pre-models/models–bert-base-chinese/snapshots/8d2a91f91cc38c96bb8b4556ba70c392f8d5ee55），然后再启动模型训练。</p>
+<figure class="highlight sml"><table><tr><td class="code"><pre><span class="line">- name: <span class="type">LanguageModelFeaturizer</span></span><br><span class="line">  model_name: <span class="symbol">'bert'</span></span><br><span class="line">  model_weights: <span class="symbol">'bert</span>-base-chinese'</span><br><span class="line">  cache_dir: <span class="symbol">'pre</span>-models'</span><br></pre></td></tr></table></figure>
+<p>rasa的模型训练会使用data目录中的数据作为训练数据，使用config.yml作为配置文件，并将训练后的模型保存到models目录中。</p>
+<p>9、使用rasa test测试模型</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rasa <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>10、让用户使用聊天机器人</p>
+<p>可以通过shell用指定的模型进行交互：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">rasa <span class="keyword">shell</span><span class="bash"> -m models/nlu-xxx.tar.gz</span></span><br><span class="line">也可不指定模型，默认使用最新一次训练的模型：</span><br><span class="line">rasa <span class="keyword">shell</span></span><br></pre></td></tr></table></figure>
+<p>此外，还可以通过api的方式，进行交互验证：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">rasa <span class="keyword">run</span><span class="bash"> --<span class="built_in">enable</span>-api</span></span><br><span class="line">也可同时指定服务端口号：</span><br><span class="line">rasa <span class="keyword">run</span><span class="bash"> --<span class="built_in">enable</span>-api --port 8080</span></span><br></pre></td></tr></table></figure>
+<p>然后用户可通过API访问聊天机器人，也可通过postman访问，api请求格式如下：</p>
+<blockquote>
+<p>仅解析意图</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">请求地址：localhost:5005/model/parse</span><br><span class="line">命令行：curl -X POST localhost:5005/model/parse -d ‘&#123;“text”: “hello”&#125;’</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>代码示例</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://localhost:5005/model/parse"</span></span><br><span class="line">data = &#123;<span class="string">"text"</span>: <span class="string">"hello"</span>&#125;</span><br><span class="line">data = json.dumps(data, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">data = data.encode(encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">r = requests.post(url=url, data=data)</span><br><span class="line">print(json.loads(r.text))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>完整对话</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">请求地址：localhost:5005/webhooks/rest/webhook</span><br><span class="line">命令行：curl -X POST localhost:5005/webhooks/rest/webhook -d &#123;“sender”: <span class="string">"user1"</span>, “message”: <span class="string">"hello"</span>&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>代码示例</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">```<span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> secrets</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(url, data=None)</span>:</span></span><br><span class="line">    data = json.dumps(data, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    data = data.encode(encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">    r = requests.post(url=url, data=data)</span><br><span class="line">    r = json.loads(r.text)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line">sender = secrets.token_urlsafe(<span class="number">16</span>)</span><br><span class="line">url = <span class="string">"http://localhost:5005/webhooks/rest/webhook"</span></span><br><span class="line">message = input(<span class="string">"Your input -&gt; "</span>)</span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">"sender"</span>: sender,</span><br><span class="line">    <span class="string">"message"</span>: message</span><br><span class="line">&#125;</span><br><span class="line">print(post(url, data))</span><br></pre></td></tr></table></figure>
+<h2 id="rasa服务部署"><a href="#rasa服务部署" class="headerlink" title="rasa服务部署"></a>rasa服务部署</h2><p>采用shell脚本文件，实现rasa服务的一键启停。</p>
+<p>1、新建start-rasa.sh文件，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"starting rasa-server..."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /root/rasa-server</span><br><span class="line">nohup rasa run actions &gt; /root/actions.log 2&gt;&amp;1 &amp;</span><br><span class="line">nohup rasa run --<span class="built_in">enable</span>-api &gt; /root/server.log 2&gt;&amp;1 &amp;</span><br><span class="line"><span class="built_in">cd</span> /root</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"rasa-server started!"</span></span><br></pre></td></tr></table></figure>
+<p>在start-rasa.sh所在目录下，运行命令<code>source start-rasa.sh</code>即可启动rasa服务。</p>
+<p>上述脚本中，2&gt;&amp;1是用来将标准错误2重定向到标准输出1中，1前面的&amp;是为了让bash将1解释成标准输出而不是文件1，而最后一个&amp;是为了让bash在后台执行。</p>
+<p>2、新建stop-rasa.sh文件，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#根据进程名杀死进程</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -lt 1 ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"缺少参数：pro_name"</span></span><br><span class="line">  <span class="built_in">return</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">PROCESS=`ps -ef | grep <span class="variable">$1</span> | grep -v grep | grep -v PPID | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$PROCESS</span></span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Kill the <span class="variable">$1</span> process [ <span class="variable">$i</span> ]"</span></span><br><span class="line">    <span class="built_in">kill</span> -9 <span class="variable">$i</span></span><br><span class="line">  <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>在stop-rasa.sh所在目录下，运行命令<code>source stop-rasa.sh rasa</code>即可停止所有rasa服务。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+            <a href="/tags/rasa/" rel="tag"><i class="fa fa-tag"></i> rasa</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/11/15/wky-nas/" rel="next" title="低成本搭建家用轻NAS系统-玩客云">
+                <i class="fa fa-chevron-left"></i> 低成本搭建家用轻NAS系统-玩客云
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+  <div>
+
+  <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">------------- 本文结束 <i class="fa fa-paw"></i> 感谢您的阅读 -------------</div>
+
+</div>
+
+  </div>
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
+            
+              <p class="site-author-name" itemprop="name">Peter Pan</p>
+              <p class="site-description motion-element" itemprop="description">沉淀下来的，才是精华！</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">51</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/pgz100" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/pgz100" target="_blank" title="CSDN"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.zhihu.com/" title="知乎" target="_blank">知乎</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.csdn.net/" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/" title="简书" target="_blank">简书</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础环境搭建"><span class="nav-number">1.</span> <span class="nav-text">基础环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装rasa"><span class="nav-number">2.</span> <span class="nav-text">安装rasa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建rasa项目"><span class="nav-number">3.</span> <span class="nav-text">创建rasa项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rasa服务部署"><span class="nav-number">4.</span> <span class="nav-text">rasa服务部署</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Peter Pan</span>
+
+  
+
+  
+</div>
+
+
+
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.5.0</div>
+
+-->
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

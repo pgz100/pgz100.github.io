@@ -15,7 +15,7 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -109,7 +109,7 @@
 
 
   <meta name="description" content="利用python编写自动化处理脚本，包括模拟鼠标点击、模拟键盘输入，适用在windows和linux的图形化桌面上，如：Win10、Ubuntu桌面版。">
-<meta name="keywords" content="python,自动化脚本">
+<meta name="keywords" content="自动化脚本,python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python自动化脚本实现模拟鼠标和键盘输入">
 <meta property="og:url" content="http://yoursite.com/2020/02/18/python-auto-operation/index.html">
@@ -192,7 +192,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -202,7 +202,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -320,20 +320,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/18/python-auto-operation/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="WingTsun Cat">
     </span>
 
@@ -401,7 +401,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/python相关/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/python相关/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a></span>
 
                 
                 
@@ -485,7 +485,7 @@
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向下滚动一次，即一个轮击</span></span><br><span class="line">win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, <span class="number">0</span>, <span class="number">0</span>, <span class="number">-120</span>, win32con.WHEEL_DELTA)</span><br></pre></td></tr></table></figure>
 <p><strong>以下是模拟鼠标点击的关键代码：</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> win32gui</span><br><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动鼠标到指定位置</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_move</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    win32api.SetCursorPos((x, y))  <span class="comment"># 设置鼠标位置(x, y)</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标单击左键</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_click</span><span class="params">(x=None,y=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标双击左键</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_dclick</span><span class="params">(x=None,y=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标滚轮向下滑动</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_slide</span><span class="params">(slide_times)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(slide_times):</span><br><span class="line">        win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL,<span class="number">0</span>,<span class="number">0</span>,<span class="number">-120</span>,win32con.WHEEL_DELTA)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">mouse_click(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_dclick(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_slide(<span class="number">3</span>) <span class="comment"># 鼠标滚轮向下滑动3次</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> win32gui</span><br><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动鼠标到指定位置</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_move</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    win32api.SetCursorPos((x, y))  <span class="comment"># 设置鼠标位置(x, y)</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标单击左键</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_click</span><span class="params">(x=None,y=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标双击左键</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_dclick</span><span class="params">(x=None,y=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标滚轮向下滑动</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mouse_slide</span><span class="params">(slide_times)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(slide_times):</span><br><span class="line">        win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL,<span class="number">0</span>,<span class="number">0</span>,<span class="number">-120</span>,win32con.WHEEL_DELTA)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">mouse_click(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_dclick(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_slide(<span class="number">3</span>) <span class="comment"># 鼠标滚轮向下滑动3次</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参考链接：</p>
 </blockquote>
@@ -566,7 +566,7 @@
 <p>安装pyHook</p>
 </blockquote>
 <p>pyHook通过pip命令无法安装，所以需要下载whl格式的安装包（whl格式本质上是一个压缩包，里面包含了py文件，以及经过编译的pyd文件），可以通过这里下载到pyHook安装包：<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
-<p><img src="1.png" alt=""></p>
+<p><img src="1.png" alt></p>
 <p>选择适合自己环境的安装包。这里由于我的电脑是Win10 64位系统，使用的是Python3.7，所以我选择的是</p>
 <p>pyHook‑1.5.1‑cp37‑cp37m‑win_amd64.whl</p>
 <p>然后使用pip命令安装pyHook：</p>
@@ -587,7 +587,7 @@
 </ul>
 <h3 id="linux环境下安装PyUserInput"><a href="#linux环境下安装PyUserInput" class="headerlink" title="linux环境下安装PyUserInput"></a>linux环境下安装PyUserInput</h3><p>##################################待补充</p>
 <h2 id="使用pymouse模拟鼠标点击"><a href="#使用pymouse模拟鼠标点击" class="headerlink" title="使用pymouse模拟鼠标点击"></a>使用pymouse模拟鼠标点击</h2><p>pymouse模块的基本用法：</p>
-<figure class="highlight capnproto"><table><tr><td class="code"><pre><span class="line"><span class="comment"># import the module</span></span><br><span class="line"><span class="keyword">from</span> pymouse <span class="keyword">import</span> PyMouse</span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate an mouse object</span></span><br><span class="line">m = PyMouse()</span><br><span class="line"></span><br><span class="line"><span class="comment"># move the mouse to int x and int y (these are absolute positions)</span></span><br><span class="line">m.move(<span class="number">200</span>, <span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># click works about the same, except for int button possible values are 1: left, 2: right, 3: middle</span></span><br><span class="line">m.click(<span class="number">500</span>, <span class="number">300</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># get the screen size</span></span><br><span class="line">m.screen_size()</span><br><span class="line"><span class="comment"># (1024, 768)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># get the mouse position</span></span><br><span class="line">m.position()</span><br><span class="line"><span class="comment"># (500, 300)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># import the module</span></span><br><span class="line"><span class="string">from</span> <span class="string">pymouse</span> <span class="string">import</span> <span class="string">PyMouse</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate an mouse object</span></span><br><span class="line"><span class="string">m</span> <span class="string">=</span> <span class="string">PyMouse()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># move the mouse to int x and int y (these are absolute positions)</span></span><br><span class="line"><span class="string">m.move(200,</span> <span class="number">200</span><span class="string">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># click works about the same, except for int button possible values are 1: left, 2: right, 3: middle</span></span><br><span class="line"><span class="string">m.click(500,</span> <span class="number">300</span><span class="string">,</span> <span class="number">1</span><span class="string">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># get the screen size</span></span><br><span class="line"><span class="string">m.screen_size()</span></span><br><span class="line"><span class="comment"># (1024, 768)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># get the mouse position</span></span><br><span class="line"><span class="string">m.position()</span></span><br><span class="line"><span class="comment"># (500, 300)</span></span><br></pre></td></tr></table></figure>
 <p>是不是感觉用起来很简单？其实就是这么简单哈。<strong>不过这里有个地方可能需要稍微注意一下，</strong>就是click这个函数。</p>
 <p>通过看pymouse的源码我们可以知道，click的函数原型其实是这样的：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">click</span><span class="params">(self, x, y, button=<span class="number">1</span>, n=<span class="number">1</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Click a mouse button n times on a given x, y.</span></span><br><span class="line"><span class="string">        Button is defined as 1 = left, 2 = right, 3 = middle.</span></span><br><span class="line"><span class="string">        """</span></span><br></pre></td></tr></table></figure>
@@ -621,7 +621,7 @@
 <figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">def</span> release(<span class="keyword">self, </span>x, y, <span class="keyword">button=1):</span></span><br><span class="line"><span class="keyword"> </span>       <span class="keyword">buttonAction </span>= <span class="number">2</span> ** ((<span class="number">2</span> * <span class="keyword">button))</span></span><br><span class="line"><span class="keyword"> </span>       <span class="symbol">#self</span>.<span class="keyword">move(x, </span>y)</span><br><span class="line">        win32api.mouse_event(<span class="keyword">buttonAction, </span>x, y)</span><br></pre></td></tr></table></figure>
 <p>这样修改之后，会显得逻辑上更顺一点，可能也是自我感觉顺一点吧，也许pymouse作者觉得他那种方式更好，这个就仁者见仁智者见智了，凡事没有绝对的对错好坏之分，只要合适就好，哈哈。</p>
 <h2 id="使用pykeyboard模拟键盘输入"><a href="#使用pykeyboard模拟键盘输入" class="headerlink" title="使用pykeyboard模拟键盘输入"></a>使用pykeyboard模拟键盘输入</h2><p>pykeyboard模块的基本用法：</p>
-<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pykeyboard <span class="keyword">import</span> PyKeyboard</span><br><span class="line"></span><br><span class="line">k = PyKeyboard()</span><br><span class="line"></span><br><span class="line"><span class="comment"># pressing a key</span></span><br><span class="line">k.press_key(<span class="string">'H'</span>)</span><br><span class="line"><span class="comment"># which you then follow with a release of the key</span></span><br><span class="line">k.release_key(<span class="string">'H'</span>)</span><br><span class="line"><span class="comment"># or you can 'tap' a key which does both</span></span><br><span class="line">k.tap_key(<span class="string">'e'</span>)</span><br><span class="line"><span class="comment"># note that that tap_key does support a way of repeating keystrokes with a interval time between each</span></span><br><span class="line">k.tap_key(<span class="string">'l'</span>,n=<span class="number">2</span>,interval=<span class="number">5</span>)</span><br><span class="line"><span class="comment"># and you can send a string if needed too</span></span><br><span class="line">k.type_string(<span class="string">'o World!'</span>)</span><br><span class="line"><span class="comment">### Hello World!</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pykeyboard import PyKeyboard</span><br><span class="line"></span><br><span class="line">k = PyKeyboard()</span><br><span class="line"></span><br><span class="line"><span class="comment"># pressing a key</span></span><br><span class="line">k.press_key(<span class="string">'H'</span>)</span><br><span class="line"><span class="comment"># which you then follow with a release of the key</span></span><br><span class="line">k.release_key(<span class="string">'H'</span>)</span><br><span class="line"><span class="comment"># or you can 'tap' a key which does both</span></span><br><span class="line">k.tap_key(<span class="string">'e'</span>)</span><br><span class="line"><span class="comment"># note that that tap_key does support a way of repeating keystrokes with a interval time between each</span></span><br><span class="line">k.tap_key(<span class="string">'l'</span>,<span class="attribute">n</span>=2,interval=5)</span><br><span class="line"><span class="comment"># and you can send a string if needed too</span></span><br><span class="line">k.type_string(<span class="string">'o World!'</span>)</span><br><span class="line"><span class="comment">### Hello World!</span></span><br></pre></td></tr></table></figure>
 <p>pykeyboard也支持输入各种功能键和数字键：</p>
 <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">k.tap_key(k.function_keys[<span class="number">5</span>])  <span class="comment"># Tap F5</span></span><br><span class="line">k.tap_key(k.numpad_keys[<span class="string">'Home'</span>])  <span class="comment"># Tap 'Home' on the numpad</span></span><br><span class="line">k.tap_key(k.numpad_keys[<span class="number">5</span>], n=<span class="number">3</span>)  <span class="comment"># Tap 5 on the numpad, thrice</span></span><br></pre></td></tr></table></figure>
 <p>pykeyboard还支持各种组合键的输入：</p>
@@ -663,9 +663,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
-          
             <a href="/tags/自动化脚本/" rel="tag"><i class="fa fa-tag"></i> 自动化脚本</a>
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
           
         </div>
       
@@ -755,7 +755,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
             
@@ -770,7 +770,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -811,7 +811,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">14</span>
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -924,7 +926,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">50</span>
+                      
+                    
+                    <span class="site-state-item-count">51</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1030,7 +1034,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2022</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -1045,7 +1049,7 @@
 
 <!--
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.9.0</div>
 
 
 

@@ -15,7 +15,7 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -192,7 +192,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -202,7 +202,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	<a href="https://github.com/pgz100" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -320,20 +320,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/16/docker-usage/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Peter Pan">
       <meta itemprop="description" content="沉淀下来的，才是精华！">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="WingTsun Cat">
     </span>
 
@@ -401,7 +401,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/docker相关/" itemprop="url" rel="index"><span itemprop="name">docker相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/docker相关/" itemprop="url" rel="index"><span itemprop="name">docker相关</span></a></span>
 
                 
                 
@@ -460,7 +460,7 @@
 <p>删除镜像</p>
 <figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker</span> rmi 镜像ID</span><br></pre></td></tr></table></figure>
 <p>删除所有镜像</p>
-<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
+<figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
 <h3 id="docker容器操作"><a href="#docker容器操作" class="headerlink" title="docker容器操作"></a>docker容器操作</h3><h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><p>查看正在运行的容器</p>
 <figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker ps</span></span><br></pre></td></tr></table></figure>
 <p>查看所有容器（包含正在运行的容器以及之前启动过的容器）</p>
@@ -484,7 +484,7 @@
 <h4 id="容器删除"><a href="#容器删除" class="headerlink" title="容器删除"></a>容器删除</h4><p>删除单个容器</p>
 <figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">docker</span> rm 容器名称/容器ID</span><br></pre></td></tr></table></figure>
 <p>删除所有容器</p>
-<figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">docker rm `docker ps -a -q`</span><br></pre></td></tr></table></figure>
+<figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line">docker rm `docker ps -a -q`</span><br></pre></td></tr></table></figure>
 <p><em>注意：只能删除已经关闭的容器</em></p>
 <h3 id="docker部署操作"><a href="#docker部署操作" class="headerlink" title="docker部署操作"></a>docker部署操作</h3><h4 id="docker文件拷贝"><a href="#docker文件拷贝" class="headerlink" title="docker文件拷贝"></a>docker文件拷贝</h4><p>将需要放在docker容器内的文件拷贝到容器中，在宿主机命令行中输入：</p>
 <figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">docker</span> <span class="meta">cp</span> 宿主机待拷贝的文件 容器名称:容器目录</span><br><span class="line">如：docker <span class="meta">cp</span> ./test.txt ubuntu01:/home</span><br></pre></td></tr></table></figure>
@@ -498,7 +498,7 @@
 <p>第二步：将镜像打包备份</p>
 <figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">save</span> 镜像名称 -o 打包后的文件名称</span><br><span class="line">如：docker <span class="keyword">save</span> iamge_name -o ./pack_name.tar</span><br></pre></td></tr></table></figure>
 <p>将镜像打包后就可以进行迁移和部署了。</p>
-<h4 id="镜像加载-部署"><a href="#镜像加载-部署" class="headerlink" title="镜像加载/部署"></a>镜像加载/部署</h4><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">docker load -<span class="selector-tag">i</span> 镜像文件名称</span><br></pre></td></tr></table></figure>
+<h4 id="镜像加载-部署"><a href="#镜像加载-部署" class="headerlink" title="镜像加载/部署"></a>镜像加载/部署</h4><figure class="highlight gauss"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">load</span> -i 镜像文件名称</span><br></pre></td></tr></table></figure>
 <h3 id="推送自己的镜像"><a href="#推送自己的镜像" class="headerlink" title="推送自己的镜像"></a>推送自己的镜像</h3><p>首先检查按照镜像仓库的规定修改镜像名称和镜像TAG：</p>
 <figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">tag</span> <span class="title">镜像ID</span> 镜像名称:<span class="keyword">TAG</span>名称</span><br><span class="line">如：docker <span class="keyword">tag</span> <span class="title">ba5877dc9bec</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5000</span>/ubuntu:v0.<span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>然后登录镜像仓库，根据提示输入用户名和密码：</p>
@@ -583,7 +583,7 @@
 <p>1、在docker-compose.yml文件所在目录下执行docker-compose命令：</p>
 <figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">docker-compose up    ##前台运行</span><br><span class="line">或</span><br><span class="line">docker-compose up -d ##后台运行</span><br></pre></td></tr></table></figure>
 <p>2、使用 <code>-f</code> 参数指定compose文件，例如：</p>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">docker-compose -f <span class="regexp">/opt/</span>test-compose.yml up    <span class="comment">##前台运行</span></span><br><span class="line">或</span><br><span class="line">docker-compose -f <span class="regexp">/opt/</span>test-compose.yml up -d <span class="comment">##后台运行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">docker<span class="literal">-compose</span> <span class="operator">-f</span> /opt/<span class="built_in">test-compose</span>.yml up    <span class="comment">##前台运行</span></span><br><span class="line">或</span><br><span class="line">docker<span class="literal">-compose</span> <span class="operator">-f</span> /opt/<span class="built_in">test-compose</span>.yml up <span class="literal">-d</span> <span class="comment">##后台运行</span></span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -692,14 +692,14 @@
 <p>2、往<code>docker-compose.yml</code>文件中写入如下内容：</p>
 <figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="symbol">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="symbol">services:</span> </span><br><span class="line"><span class="symbol">    mynginx:</span> </span><br><span class="line"><span class="symbol">        image:</span> nginx:$&#123;TAG&#125;</span><br><span class="line"><span class="symbol">        ports:</span> </span><br><span class="line">            - <span class="number">80</span>:<span class="number">80</span></span><br></pre></td></tr></table></figure>
 <p>3、如果我们此时直接启动<code>docker-compose config</code> 我们会得到如下输出：</p>
-<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line"><span class="symbol">WARNING: </span>The TAG variable is not set. Defaulting to a blank string.</span><br><span class="line">services:</span><br><span class="line"><span class="code">  mynginx:</span></span><br><span class="line"><span class="code">    image: 'nginx:'</span></span><br><span class="line"><span class="code">    ports:</span></span><br><span class="line"><span class="code">    - 80:80/tcp</span></span><br><span class="line">version: <span class="emphasis">'3.0'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line">WARNING: The TAG variable is <span class="keyword">not</span> set. Defaulting <span class="keyword">to</span> a blank string.</span><br><span class="line">services:</span><br><span class="line">  mynginx:</span><br><span class="line">    image: <span class="string">'nginx:'</span></span><br><span class="line">    ports:</span><br><span class="line">    - 80:80/tcp</span><br><span class="line">version: <span class="string">'3.0'</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>如你所见，由于引用的变量TAG不存在，而被当成空字符串进行赋值。</p>
 </blockquote>
 <p>4、创建<code>.env</code>文件并在文件中添加如下内容：</p>
 <figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .env the default environment config file</span></span><br><span class="line"><span class="attr">TAG</span>=<span class="number">1.7</span>.<span class="number">9</span></span><br></pre></td></tr></table></figure>
 <p>5、再次启动<code>docker-compose config</code></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">$</span> <span class="string">docker-compose</span> <span class="string">config</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mynginx:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">nginx:1.7.9</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">80</span><span class="string">:80/tcp</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3.0'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line">services:</span><br><span class="line">  mynginx:</span><br><span class="line">    image: nginx:1.7.9</span><br><span class="line">    ports:</span><br><span class="line">    - 80:80/tcp</span><br><span class="line">version: <span class="string">'3.0'</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>此时会发现变量TAG被.env文件中的字符串赋值。</p>
 </blockquote>
@@ -723,7 +723,7 @@
 <figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">docker exec -<span class="keyword">it</span> 容器名称 sh</span><br></pre></td></tr></table></figure>
 <h4 id="在Alpine中安装软件包"><a href="#在Alpine中安装软件包" class="headerlink" title="在Alpine中安装软件包"></a>在Alpine中安装软件包</h4><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">apk <span class="built_in">add</span> --<span class="keyword">no</span>-cache <span class="symbol">&lt;package&gt;</span></span><br></pre></td></tr></table></figure>
 <h4 id="如何清除docker镜像列表中带有-lt-none-lt-none-的镜像"><a href="#如何清除docker镜像列表中带有-lt-none-lt-none-的镜像" class="headerlink" title="如何清除docker镜像列表中带有&lt;none>:&lt;none>的镜像"></a>如何清除docker镜像列表中带有&lt;none>:&lt;none>的镜像</h4><p>我们在构建过Docker镜像的电脑上查看本地镜像列表，有可能看到下图红框中的镜像，即在列表中展示为&lt;none>:&lt;none>，如下图所示：</p>
-<p><img src="1.jpg" alt=""></p>
+<p><img src="1.jpg" alt></p>
 <p>这种镜像在Docker官方文档中被称作dangling images，指的是没有标签并且没有被容器使用的镜像。</p>
 <blockquote>
 <p>下面我们来简单梳理下dangling images是怎么产生的，结合上面那张图来看：</p>
@@ -849,7 +849,7 @@
 
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Peter Pan">
             
@@ -864,7 +864,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -905,7 +905,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">14</span>
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -1018,7 +1020,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">50</span>
+                      
+                    
+                    <span class="site-state-item-count">51</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1124,7 +1128,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2022</span>
+        <div class="copyright"> &copy; 2018 – <span itemprop="copyrightYear">2023</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
@@ -1139,7 +1143,7 @@
 
 <!--
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.9.0</div>
 
 
 
