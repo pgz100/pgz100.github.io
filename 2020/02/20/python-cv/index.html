@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="图像比对功能的开发主要会涉及到aircv模块和PIL&#x2F;Pillow模块的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于python-opencv的图像比对功能">
+<meta property="og:url" content="https://panzhe.cn/2020/02/20/python-cv/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="图像比对功能的开发主要会涉及到aircv模块和PIL&#x2F;Pillow模块的使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2020/02/20/python-cv/1.jpg">
+<meta property="og:image" content="https://panzhe.cn/2020/02/20/python-cv/2.jpg">
+<meta property="og:image" content="https://panzhe.cn/2020/02/20/python-cv/3.jpg">
+<meta property="article:published_time" content="2020-02-20T03:12:07.000Z">
+<meta property="article:modified_time" content="2020-02-21T16:03:06.760Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="pyscreenshot">
+<meta property="article:tag" content="Pillow">
+<meta property="article:tag" content="opencv">
+<meta property="article:tag" content="aircv">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2020/02/20/python-cv/1.jpg">
+
+<link rel="canonical" href="https://panzhe.cn/2020/02/20/python-cv/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于python-opencv的图像比对功能 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2020/02/20/python-cv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于python-opencv的图像比对功能
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-20 11:12:07" itemprop="dateCreated datePublished" datetime="2020-02-20T11:12:07+08:00">2020-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 00:03:06" itemprop="dateModified" datetime="2020-02-22T00:03:06+08:00">2020-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+            <div class="post-description">图像比对功能的开发主要会涉及到aircv模块和PIL/Pillow模块的使用。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有时我们在编写自动化脚本时，会用到图片比对功能，比如：我们需要做一个游戏的辅助脚本，不管是网页游戏还是PC客户端游戏，会需要能够实现自动点击游戏中的一系列图标或图片，达到脚本辅助的目的。</p>
+<p>本文介绍的图像比对大概思路是先通过截屏的方式保存完整的屏幕图片，然后再截取需要对比的图标或图片，最后调用python-opencv的相关函数实现图像比对，并输出比对结果（待比对的图标或图片的中心坐标以及置信度）。</p>
+<p>实现图像比对需要事先安装的模块有：</p>
+<ul>
+<li>Pillow （python3.x）或 PIL（python2.x）</li>
+<li>pyscreenshot</li>
+<li>opencv-python</li>
+<li>aircv</li>
+</ul>
+<p>下面先来介绍下Pillow和PIL，以及它们之间的关系。</p>
+<h1 id="关于Pillow与PIL"><a href="#关于Pillow与PIL" class="headerlink" title="关于Pillow与PIL"></a>关于Pillow与PIL</h1><h2 id="PIL简介"><a href="#PIL简介" class="headerlink" title="PIL简介"></a>PIL简介</h2><p>PIL(Python Imaging Library)是Python一个强大方便的图像处理库，名气也比较大。支持的版本为Python 2.5, 2.6, 2.7。</p>
+<p>PIL官方网站：<a target="_blank" rel="noopener" href="http://www.pythonware.com/products/pil/">http://www.pythonware.com/products/pil/</a></p>
+<h2 id="Pillow简介"><a href="#Pillow简介" class="headerlink" title="Pillow简介"></a>Pillow简介</h2><p>Pillow是PIL的一个派生分支，但如今已经发展成为比PIL本身更具活力的图像处理库，目前的最新版本是7.0.0。由于PIL只支持到Python2.7，所以在Python3上，我们使用Pillow来代替PIL。</p>
+<p>Pillow的Github主页：<a target="_blank" rel="noopener" href="https://github.com/python-pillow/Pillow">https://github.com/python-pillow/Pillow</a><br>Pillow的英文文档：<a target="_blank" rel="noopener" href="https://pillow.readthedocs.io/en/stable/">https://pillow.readthedocs.io/en/stable/</a><br>Pillow的文档中文翻译(对应版本v6.0.0)：<a target="_blank" rel="noopener" href="https://www.osgeo.cn/pillow/">https://www.osgeo.cn/pillow/</a></p>
+<h3 id="Python-3-x-安装Pillow"><a href="#Python-3-x-安装Pillow" class="headerlink" title="Python 3.x 安装Pillow"></a>Python 3.x 安装Pillow</h3><p>因为我电脑上同时安装了python2和python3，所以需要使用pip2或pip3来安装python2或python3的模块。如果你的电脑上只安装了一个python版本，那么直接使用<code>pip</code>来安装模块就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install Pillow</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用<code>from PIL import Image</code>就完成库的导入了。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.<span class="built_in">open</span>(<span class="string">&quot;bride.jpg&quot;</span>)</span><br><span class="line"><span class="comment"># 加载图像，将其旋转45度，并使用外部查看器（通常是UNIX上的xv，以及Windows上的paint程序）显示它。</span></span><br><span class="line">im.rotate(<span class="number">45</span>).show() </span><br></pre></td></tr></table></figure>
+
+<h1 id="关于pyscreenshot"><a href="#关于pyscreenshot" class="headerlink" title="关于pyscreenshot"></a>关于pyscreenshot</h1><p>在本文一开始的时候，介绍说除了需要安装Pillow或PIL模块之外，还需要安装pyscreenshot。通过名称我们可以大致猜出来，这个模块是一个专门用来截屏的。而在Pillow或PIL模块中，有个ImageGrab模块，该模块主要用于将屏幕或剪贴板的内容复制到PIL图像存储器中，ImageGrab模块内部有个grab函数，功能也是截屏。</p>
+<p>这时候你可能会问，既然ImageGrab.grab函数可以截屏，那为什么还要装个pyscreenshot来截屏呢？</p>
+<p>要解答这个问题，我们需要看一眼Pillow的官方文档。</p>
+<p><img src="/2020/02/20/python-cv/1.jpg"></p>
+<p><a target="_blank" rel="noopener" href="https://pillow.readthedocs.io/en/stable/reference/ImageGrab.html">Pillow官方文档</a>中写到，ImageGrab模块仅支持在MacOS和Windows上运行，所以如果我们想跨平台，比如在Linux上也能够截屏的话，就不能使用ImageGrab模块了。</p>
+<p>那如果想在Linux上截屏的话，就要使用pyscreenshot模块了，而且pyscreenshot模块下也有个grab函数，其用法与Pillow中的ImageGrab.grab()基本一致，也支持全屏幕截图和指定区域截图。</p>
+<p><strong>简单来说，就是pyscreenshot支持跨Windows和Linux平台。</strong></p>
+<p>目前pyscreenshot的最新版本是1.0，2020年1月26日发布的。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://pyscreenshot.readthedocs.io/en/latest/">pyscreenshot官方文档</a>，安装该模块之前，需要事先安装下列模块之一：</p>
+<p><img src="/2020/02/20/python-cv/2.jpg"></p>
+<h2 id="Windows上安装pyscreenshot"><a href="#Windows上安装pyscreenshot" class="headerlink" title="Windows上安装pyscreenshot"></a>Windows上安装pyscreenshot</h2><p>需要先安装一下Pillow模块，然后再安装pyscreenshot就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install pyscreenshot</span><br></pre></td></tr></table></figure>
+
+<h2 id="Linux上安装pyscreenshot"><a href="#Linux上安装pyscreenshot" class="headerlink" title="Linux上安装pyscreenshot"></a>Linux上安装pyscreenshot</h2><p>需要先安装PyQt4模块，以在 Ubuntu18.04&#x2F;Python3.7 环境下安装为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br><span class="line">sudo pip install pyscreenshot</span><br><span class="line">sudo apt-get install python-imaging</span><br><span class="line"># optional back-ends</span><br><span class="line">sudo apt-get install scrot</span><br><span class="line">sudo apt-get install imagemagick</span><br><span class="line">sudo apt-get install python-gtk2</span><br><span class="line">sudo apt-get install python-qt4</span><br><span class="line"># optional for examples</span><br><span class="line">sudo pip install entrypoint2</span><br></pre></td></tr></table></figure>
+
+<h2 id="pyscreenshot核心函数"><a href="#pyscreenshot核心函数" class="headerlink" title="pyscreenshot核心函数"></a>pyscreenshot核心函数</h2><p>这里介绍一下我们接下来需要用到的grab函数。</p>
+<h3 id="grab"><a href="#grab" class="headerlink" title="grab"></a>grab</h3><p>源码位于：Python37\Lib\site-packages\pyscreenshot目录下的 init.py 文件</p>
+<p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">grab(bbox=None, childprocess=True, backend=None)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>将屏幕内容复制到PIL图像存储器中，可全屏幕复制，也可以指定区域复制。</p>
+</blockquote>
+<p>参数说明</p>
+<blockquote>
+<p><em>本来准备翻译成中文的，结果发现可能翻译的不标准，所以直接贴上官方文档原文</em></p>
+</blockquote>
+<ul>
+<li><strong>bbox</strong> – optional bounding box (x1,y1,x2,y2)</li>
+<li><strong>childprocess</strong> – run back-end in new process using popen. This can isolate back-ends from each other and from main process.</li>
+<li><strong>backend</strong> – back-end can be forced if set (examples:scrot, wx,..), otherwise back-end is automatic</li>
+</ul>
+<h2 id="pyscreenshot截屏示例代码"><a href="#pyscreenshot截屏示例代码" class="headerlink" title="pyscreenshot截屏示例代码"></a>pyscreenshot截屏示例代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pyscreenshot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录的绝对路径</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全屏截图</span></span><br><span class="line">im = pyscreenshot.grab() <span class="comment">#返回的是一个Image对象</span></span><br><span class="line">im.show() <span class="comment"># 调用的是Pillow模块中的show函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 截取指定区域的图片</span></span><br><span class="line">im = pyscreenshot.grab(bbox=(<span class="number">10</span>,<span class="number">10</span>,<span class="number">510</span>,<span class="number">510</span>)) <span class="comment"># X1,Y1,X2,Y2</span></span><br><span class="line"><span class="comment"># 将截图保存在当前文件所在目录下，并将图片文件命名为screen.png</span></span><br><span class="line">filepath = os.path.join(rootDir, <span class="string">&#x27;screen.png&#x27;</span>)</span><br><span class="line">im.save(filepath) <span class="comment"># 调用的是Pillow模块中的save函数</span></span><br><span class="line"><span class="comment"># 显示截图内容到屏幕上</span></span><br><span class="line">im.show()</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中的save函数和show函数，由于它们都属于Pillow模块，所以其源码位于：Python37\Lib\site-packages\PIL\Image.py</p>
+<p><strong>由此也可以看出pyscreenshot引入了Pillow作为其支撑模块之一。</strong></p>
+<blockquote>
+<p>参考资料：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pypi.org/project/pyscreenshot/1.0/">pyscreenshot官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.oschina.net/p/pyscreenshot">Python 截屏模块 pyscreenshot</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.sohu.com/a/237921685_797291">Python截屏扩展库pyscreenshot安装与使用</a></li>
+</ul>
+<p>截屏功能搞定之后，图片比对的功能就已经实现一半了。按照思路，接下来需要再将待比对的两张图片读取出来，然后调用一个图片比对的函数，来实现比对功能，并输出比对结果。</p>
+<p>首先介绍下 OpenCV 和 AirCV 这两个东西。</p>
+<h1 id="OpenCV"><a href="#OpenCV" class="headerlink" title="OpenCV"></a>OpenCV</h1><p>OpenCV并不是python所独有的一个模块。<a target="_blank" rel="noopener" href="https://opencv.org/">OpenCV</a>是一个基于BSD许可（开源）发行的跨平台计算机视觉库，可以运行在Linux、Windows、Android和Mac OS操作系统上，提供了Python、Ruby、MATLAB等语言的接口，实现了图像处理和计算机视觉方面的很多通用算法。</p>
+<h2 id="OpenCV的版本演化史-From-1-x-To-4-0"><a href="#OpenCV的版本演化史-From-1-x-To-4-0" class="headerlink" title="OpenCV的版本演化史- From 1.x To 4.0"></a>OpenCV的版本演化史- From 1.x To 4.0</h2><h3 id="OpenCV-1-x"><a href="#OpenCV-1-x" class="headerlink" title="OpenCV 1.x"></a>OpenCV 1.x</h3><p>OpenCV 最初基于<strong>C语言</strong>开发，API也都是基于C的，面临内存管理、指针等C语言固有的麻烦。</p>
+<p><strong>2006年10月1.0</strong>发布时，部分使用了C++，同时支持Python，其中已经有了random trees、boosted trees、neural nets等机器学习方法，完善对图形界面的支持。</p>
+<h3 id="OpenCV-2-x"><a href="#OpenCV-2-x" class="headerlink" title="OpenCV 2.x"></a>OpenCV 2.x</h3><p>当C++流行起来，OpenCV 2.x发布，其尽量使用C++而不是C，但是为了向前兼容，仍保留了对C API的支持。从2010年开始，2.x决定不再频繁支持和更新C API，而是focus在<strong>C++ API</strong>，C API仅作备份。</p>
+<p>在2.0时代，opencv增加了新的平台支持，包括iOS和Android，通过CUDA和openGL实现了GPU加速，为Python和Java用户提供了接口。</p>
+<h3 id="OpenCV-3-x"><a href="#OpenCV-3-x" class="headerlink" title="OpenCV 3.x"></a>OpenCV 3.x</h3><p>随着3.x的发布，1.x的C API将被淘汰不再被支持，以后C API可能通过C++源代码自动生成。3.x与2.x不完全兼容，与2.x相比，主要的不同之处在于OpenCV 3.x 的大部分方法都使用了<strong>OpenCL加速</strong>。</p>
+<p>从<strong>2017年12月开始的3.4.x</strong>版本，opencv_dnn从opencv_contrib移至opencv，同时OpenCV开始支持C++ 11构建，之后明显感到对<strong>神经网络</strong>的支持在加强，opencv_dnn被持续改进和扩充。</p>
+<h3 id="OpenCV-4-0"><a href="#OpenCV-4-0" class="headerlink" title="OpenCV 4.0"></a>OpenCV 4.0</h3><p><strong>2018年10月4.0.0</strong>发布，OpenCV开始需要支持<strong>C++11</strong>的编译器才能编译，同时对几百个基础函数使用 **”wide universal intrinsics”**重写，这些内联函数可以根据目标平台和编译选项映射为SSE2、 SSE4、 AVX2、NEON 或者 VSX 内联函数，获得性能提升。此外，还加入了QR code的检测和识别，以及Kinect Fusion algorithm，DNN也在持续改善和扩充。</p>
+<h2 id="安装opencv-python模块"><a href="#安装opencv-python模块" class="headerlink" title="安装opencv-python模块"></a>安装opencv-python模块</h2><p>安装方式比较简单，只需一行命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install opencv-python</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://opencv.org/">OpenCV官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.opencv.org/4.2.0/">OpenCV官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/opencv/opencv/wiki/ChangeLog">OpenCV Change Logs</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1375617">一文看懂OpenCV 4.0 所有新特性</a></li>
+</ul>
+<h1 id="AirCV"><a href="#AirCV" class="headerlink" title="AirCV"></a>AirCV</h1><p>AirCV是一个基于<strong>Python-opencv2</strong>的目标定位模块，支持<em>python2.7及以上版本</em>。网上关于Aircv的介绍资料相对较少，我在这里做个简单的整理和汇总。</p>
+<h2 id="安装AirCV模块"><a href="#安装AirCV模块" class="headerlink" title="安装AirCV模块"></a>安装AirCV模块</h2><p>我的电脑环境：Win10&#x2F;Python3.7</p>
+<p>由于AirCV是基于<strong>Python-opencv2</strong>开发的（对opencv2中的函数做了一层封装），所以需要先安装好opencv-python模块，然后再安装AirCV，安装命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install aircv</span><br></pre></td></tr></table></figure>
+
+<p>安装完毕后，可通过<code>pip3 list</code>来查看当前所有已安装的模块。</p>
+<p><img src="/2020/02/20/python-cv/3.jpg"></p>
+<p>然后在python代码中使用<code>import aircv</code>就可以导入aircv模块了。</p>
+<p><strong>FAQ：</strong>import aircv 出现no module named cv2的解决方案</p>
+<blockquote>
+<p>重新安装下opencv-python模块即可。</p>
+<p>打开cmd，输入pip install opencv-python。</p>
+</blockquote>
+<h2 id="AirCV的几个核心函数"><a href="#AirCV的几个核心函数" class="headerlink" title="AirCV的几个核心函数"></a>AirCV的几个核心函数</h2><p>AirCV模块的源码就一个文件 init.py，位于：Python37\Lib\site-packages\aircv目录下。</p>
+<h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a>imread</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">imread(filename)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>图片读取</p>
+</blockquote>
+<p>参数说明</p>
+<blockquote>
+<p>filename：待读取图片的文件路径</p>
+</blockquote>
+<p>返回值</p>
+<blockquote>
+<p>返回的是一个含（图片高度、宽度、通道数）的三维元组，其实就是numpy.array类型。</p>
+</blockquote>
+<p>兴趣延展：<strong>关于返回值的 “一探到底”</strong></p>
+<p>我们可以将imread的返回值，使用shape函数打印出来，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import aircv</span><br><span class="line">img = aircv.imread(&#x27;test.png&#x27;) # 读入一张彩色图片</span><br><span class="line">print(img.shape) </span><br></pre></td></tr></table></figure>
+
+<p>运行后，会打印出类似下面的结果：</p>
+<p>(220, 1000, 3)</p>
+<p>上面这个就是一个三维数组，其前面两个值分别是图片的高度和宽度，最后面那个数字3，是代表每个像素点是由BGR三个元素组成。</p>
+<h3 id="find-template"><a href="#find-template" class="headerlink" title="find_template"></a>find_template</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find_template(im_source, im_search, threshold=0.5, rgb=False, bgremove=False)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>查找匹配的图片，并返回目标图片的中心点坐标和相似度</p>
+</blockquote>
+<p>参数说明</p>
+<ul>
+<li>im_source：源图片</li>
+<li>im_search：待查找的图片</li>
+<li>threshold：阈值，当相似度小于该阈值时，就会被忽略掉，即返回值为None</li>
+</ul>
+<p>返回值</p>
+<ul>
+<li>如果匹配到，则返回目标图片的中心点坐标和相似度，如：(294.3, 13.6), 0.999765。这里可能要注意下，返回的中心点坐标不一定是整数。</li>
+<li>如果未匹配到相似图片或相似度小于设定的阈值，则返回None。</li>
+</ul>
+<h3 id="find-all-template"><a href="#find-all-template" class="headerlink" title="find_all_template"></a>find_all_template</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find_all_template(im_source, im_search, threshold=0.5, maxcnt=0, rgb=False, bgremove=False)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>查找多个相同的图片，并返回这些相同图片的中心点坐标和相似度</p>
+</blockquote>
+<p>参数说明</p>
+<ul>
+<li>im_source：源图片</li>
+<li>im_search：待查找的图片</li>
+<li>threshold：阈值，当相似度小于该阈值时，就会被忽略掉，即返回值为None</li>
+<li>maxcnt：设置最多匹配图片的数量，若设为0，则不限制数量。</li>
+</ul>
+<p>返回值</p>
+<ul>
+<li><p>如果匹配到多个相同图片，则返回包含多个目标图片的中心点坐标和相似度的列表，</p>
+<p>例如：[((294.3, 13.6), 0.999765), …]</p>
+</li>
+<li><p>如果未匹配到相似图片或相似度小于设定的阈值，则返回空列表[]。</p>
+</li>
+</ul>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/NetEaseGame/aircv">aircv源码</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/NetEaseGame/aircv/tags">aircv-tags</a></li>
+</ul>
+<hr>
+<p>至此，我们就把Pillow(PIL)、pyscreenshot、opencv、aircv这几个核心模块介绍完了，最后我们一起来利用这几个模块来实现图像比对功能。</p>
+<h1 id="基于python的图像比对功能代码"><a href="#基于python的图像比对功能代码" class="headerlink" title="基于python的图像比对功能代码"></a>基于python的图像比对功能代码</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import os</span><br><span class="line">import aircv as ac</span><br><span class="line">import pyscreenshot as ImageGrab</span><br><span class="line"></span><br><span class="line"># 当前文件所在目录的绝对路径</span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[0]</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot; 设置截屏区域坐标 &quot;&quot;&quot;</span><br><span class="line"># 截屏左上角坐标</span><br><span class="line">left_up_x = 300</span><br><span class="line">left_up_y = 194</span><br><span class="line"># 截屏右下角坐标</span><br><span class="line">right_down_x = 1300</span><br><span class="line">right_down_y = 804</span><br><span class="line"></span><br><span class="line"># 图片截屏</span><br><span class="line">def screenshot(filepath):</span><br><span class="line">    im = ImageGrab.grab((left_up_x, left_up_y, right_down_x, right_down_y))</span><br><span class="line">    im.save(filepath)</span><br><span class="line"></span><br><span class="line"># 图像比对，并设置阈值为0.7</span><br><span class="line">def matchImg(imgsrc_filepath, imgobj_filepath, threshold=0.7):</span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_result = ac.find_template(imsrc, imobj, threshold)</span><br><span class="line">    if match_result is None:</span><br><span class="line">        return None, None</span><br><span class="line">    x = match_result[&#x27;result&#x27;][0]</span><br><span class="line">    y = match_result[&#x27;result&#x27;][1]</span><br><span class="line">    # 当前x y为识别图片的中心点，是相对截图坐标的偏移量，所以需要再加上截屏左上角坐标</span><br><span class="line">    return x+left_up_x, y+left_up_y</span><br><span class="line"></span><br><span class="line"># 匹配多个相同图片，并设置阈值为0.9</span><br><span class="line">def matchMultipleImg(imgsrc_filepath, imgobj_filepath, threshold=0.9):</span><br><span class="line">    imsrc = ac.imread(imgsrc_filepath)</span><br><span class="line">    imobj = ac.imread(imgobj_filepath)</span><br><span class="line">    match_all_result = ac.find_all_template(imsrc, imobj, threshold)</span><br><span class="line">    if not match_all_result:</span><br><span class="line">    	return None</span><br><span class="line">    return match_all_result</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">imgsrc_filepath = os.path.join(rootDir, &#x27;screen.png&#x27;) # 截屏文件路径</span><br><span class="line">imgobj_filepath = os.path.join(rootDir, &#x27;search.png&#x27;) # 待查找图片文件路径</span><br><span class="line">screenshot(imgsrc_filepath)</span><br><span class="line">x, y = matchImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line">if x is None or y is None:</span><br><span class="line">    print(&#x27;未匹配到图片：%s&#x27; % imgobj_filepath)</span><br><span class="line">else:</span><br><span class="line">	print(&#x27;匹配到图片：%s&#x27; % imgobj_filepath)</span><br><span class="line">	print(&#x27;x: %s, y: %s&#x27; % (x,y))</span><br><span class="line">	</span><br><span class="line">all_result = matchMultipleImg(imgsrc_filepath, imgobj_filepath)</span><br><span class="line">if all_result is None:</span><br><span class="line">    print(&#x27;未匹配到图片：%s&#x27; % imgobj_filepath)</span><br><span class="line">else:</span><br><span class="line">    print(&#x27;匹配到图片：%s&#x27; % imgobj_filepath)</span><br><span class="line">    print(all_result)</span><br><span class="line">    for result in all_result:</span><br><span class="line">        x = result[&#x27;result&#x27;][0]</span><br><span class="line">        y = result[&#x27;result&#x27;][1]</span><br><span class="line">        # 此时的x，y是相对坐标，打印的时候别忘了加上截屏的左上角坐标，变成绝对坐标</span><br><span class="line">        print(&#x27;(%s, %s)&#x27; % (x+left_up_x,y+left_up_y)) </span><br></pre></td></tr></table></figure>
+
+<p>运行后，会得到类似下面的结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">匹配到图片：D:\python_demo\search.png</span><br><span class="line">x: 344.0, y: 646.5</span><br><span class="line">匹配到图片：D:\python_demo\search.png</span><br><span class="line">[&#123;&#x27;result&#x27;: (44.0, 452.5), &#x27;rectangle&#x27;: ((9, 423), (9, 482), (79, 423), (79, 482)), &#x27;confidence&#x27;: 0.9926632046699524&#125;, &#123;&#x27;result&#x27;: (120.0, 452.5), &#x27;rectangle&#x27;: ((85, 423), (85, 482), (155, 423), (155, 482)), &#x27;confidence&#x27;: 0.9902418255805969&#125;, &#123;&#x27;result&#x27;: (44.0, 555.5), &#x27;rectangle&#x27;: ((9, 526), (9, 585), (79, 526), (79, 585)), &#x27;confidence&#x27;: 0.9793710112571716&#125;]</span><br><span class="line">(344.0, 646.5)</span><br><span class="line">(420.0, 646.5)</span><br><span class="line">(344.0, 749.5)</span><br></pre></td></tr></table></figure>
+
+<p>上述演示了查找目标图片和找出多个相同图片位置的方法，其实使用aircv不仅可以实现在大图中找小图，而且还可以识别小图中的信息，比如识别出图片中的文字信息。这个功能可以用来识别一些网站上的动态验证码，关于这块，网上有个现成的帖子，供大家学习和参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37550440/article/details/87364362">aircv 大图找小图 并识别小图中信息</a></p>
+<hr>
+<p>到这里，本文的介绍就全部结束了。其实本文介绍的图像比对功能，我在很久之前做项目的时候就已经实现过，只是当时没有进行及时的梳理和总结，所以一直对这个功能里面所涉及到的知识点不那么清晰，在脑子里基本上是一团浆糊。</p>
+<p>这次通过写博客的方式，我将所有涉及到的知识点以及可以延展的点都重新梳理了一遍，发现比之前要清晰很多，而且所有的知识点也都能串起来了。</p>
+<p>虽然写博客往往需要花费大量的时间和精力，真正坐下来、静下心来写，但是我觉得写博客是一个利人利己、能够双赢的做法：一方面尽可能的给后来者一些参考，略尽绵薄之力，尽可能缩短他们走弯路的时间，加快学习效率；另一方面对自己脑袋中的知识点做个规整，把它们尽可能多的串起来，把思路都理顺，变成自己真正掌握了的知识点。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/pyscreenshot/" rel="tag"># pyscreenshot</a>
+              <a href="/tags/Pillow/" rel="tag"># Pillow</a>
+              <a href="/tags/opencv/" rel="tag"># opencv</a>
+              <a href="/tags/aircv/" rel="tag"># aircv</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/20/python-log/" rel="prev" title="Python logging模块使用">
+      <i class="fa fa-chevron-left"></i> Python logging模块使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/20/python-config/" rel="next" title="Python configparser用法">
+      Python configparser用法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EPillow%E4%B8%8EPIL"><span class="nav-number">1.</span> <span class="nav-text">关于Pillow与PIL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PIL%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">PIL简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pillow%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.</span> <span class="nav-text">Pillow简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-3-x-%E5%AE%89%E8%A3%85Pillow"><span class="nav-number">1.2.1.</span> <span class="nav-text">Python 3.x 安装Pillow</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Epyscreenshot"><span class="nav-number">2.</span> <span class="nav-text">关于pyscreenshot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E4%B8%8A%E5%AE%89%E8%A3%85pyscreenshot"><span class="nav-number">2.1.</span> <span class="nav-text">Windows上安装pyscreenshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E4%B8%8A%E5%AE%89%E8%A3%85pyscreenshot"><span class="nav-number">2.2.</span> <span class="nav-text">Linux上安装pyscreenshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pyscreenshot%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">pyscreenshot核心函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#grab"><span class="nav-number">2.3.1.</span> <span class="nav-text">grab</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pyscreenshot%E6%88%AA%E5%B1%8F%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">2.4.</span> <span class="nav-text">pyscreenshot截屏示例代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV"><span class="nav-number">3.</span> <span class="nav-text">OpenCV</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenCV%E7%9A%84%E7%89%88%E6%9C%AC%E6%BC%94%E5%8C%96%E5%8F%B2-From-1-x-To-4-0"><span class="nav-number">3.1.</span> <span class="nav-text">OpenCV的版本演化史- From 1.x To 4.0</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV-1-x"><span class="nav-number">3.1.1.</span> <span class="nav-text">OpenCV 1.x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV-2-x"><span class="nav-number">3.1.2.</span> <span class="nav-text">OpenCV 2.x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV-3-x"><span class="nav-number">3.1.3.</span> <span class="nav-text">OpenCV 3.x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenCV-4-0"><span class="nav-number">3.1.4.</span> <span class="nav-text">OpenCV 4.0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85opencv-python%E6%A8%A1%E5%9D%97"><span class="nav-number">3.2.</span> <span class="nav-text">安装opencv-python模块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AirCV"><span class="nav-number">4.</span> <span class="nav-text">AirCV</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85AirCV%E6%A8%A1%E5%9D%97"><span class="nav-number">4.1.</span> <span class="nav-text">安装AirCV模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AirCV%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">AirCV的几个核心函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#imread"><span class="nav-number">4.2.1.</span> <span class="nav-text">imread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find-template"><span class="nav-number">4.2.2.</span> <span class="nav-text">find_template</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find-all-template"><span class="nav-number">4.2.3.</span> <span class="nav-text">find_all_template</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Epython%E7%9A%84%E5%9B%BE%E5%83%8F%E6%AF%94%E5%AF%B9%E5%8A%9F%E8%83%BD%E4%BB%A3%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">基于python的图像比对功能代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

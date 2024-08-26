@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文主要介绍一些人工智能常见的机器学习算法，以及个人对当前人工智能的理解和思考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能之常见机器学习算法介绍">
+<meta property="og:url" content="https://panzhe.cn/2021/04/29/ml/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="本文主要介绍一些人工智能常见的机器学习算法，以及个人对当前人工智能的理解和思考。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2021/04/29/ml/1.png">
+<meta property="og:image" content="https://panzhe.cn/2021/04/29/ml/2.jpg">
+<meta property="og:image" content="https://panzhe.cn/2021/04/29/ml/3.png">
+<meta property="article:published_time" content="2021-04-29T15:16:49.000Z">
+<meta property="article:modified_time" content="2021-04-29T15:29:32.475Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="人工智能技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2021/04/29/ml/1.png">
+
+<link rel="canonical" href="https://panzhe.cn/2021/04/29/ml/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人工智能之常见机器学习算法介绍 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2021/04/29/ml/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人工智能之常见机器学习算法介绍
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-29 23:16:49 / 修改时间：23:29:32" itemprop="dateCreated datePublished" datetime="2021-04-29T23:16:49+08:00">2021-04-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">人工智能相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+            <div class="post-description">本文主要介绍一些人工智能常见的机器学习算法，以及个人对当前人工智能的理解和思考。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>近些年，互联网成为人类日常生活中不可或缺的元素，无处不在。同时，人工智能、大数据、云计算、物联网、区块链等新兴技术也被人们炒的火热，正逐渐融入到我们的日常生活中，其中大数据代表着人类新一代的生产要素，云计算和人工智能作为新一代生产力的典型代表，而物联网和区块链则促进着人类未来生产关系的改变。</p>
+<p>我们知道，当前人工智能的算法大多数是基于概率的，会涉及到概率论、统计学等各种数学理论体系。同时我们也知道，人工智能离不开数据，从理论上来说，数据越多，人工智能算法效果越好，会无限趋近于99.999999…….%，但因为是基于概率的，所以永远不可能达到100%，这也是当前人工智能大多只能用来辅助人类决策，而不能代替人类做决策的原因。当然随着科技的进步和人工智能的不断发展，未来也可能真的可以代替人类来做一些决策。</p>
+<p><strong>下面将逐一介绍深度学习、迁移学习和强化学习。</strong></p>
+<h2 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h2><p>大数据造就了深度学习，通过大量的数据训练，我们能够轻易的发现数据的规律，从而实现基于监督学习的数据预测。</p>
+<p>基于神经网络的深度学习（包括CNN、RNN、DNN），主要解决的领域是图像、文本、语音等，问题聚焦在分类、回归。然而这里并没有提到推理，显然我们用之前的这些深度学习的知识无法造一个AlphaGo出来。</p>
+<p><img src="/2021/04/29/ml/1.png"></p>
+<p>上面这张图是在2016年的 NIPS 会议上，吴恩达 给出了一个未来 AI方向的技术发展图，还是很客观的。</p>
+<p>毋庸置疑，监督学习是目前成熟度最高的，可以说已经成功商用，而下一个商用的技术 将会是迁移学习（Transfer Learning），这也是Andrew预测未来五年最有可能走向商用的 AI技术。</p>
+<h2 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h2><p>迁移学习也可看作是举一反三，它本质上是<strong>用相关的、类似的数据来做训练，然后通过迁移学习来实现该模型本身的泛化能力</strong>，它所要解决的问题是如何将学习到的知识从一个场景迁移到另一个场景。</p>
+<p>就拿图像识别来说，迁移学习是指从识别自行车到识别汽车，从识别中国人到 识别外国人……</p>
+<p><img src="/2021/04/29/ml/2.jpg"></p>
+<p>下面再借用一张示意图（<em>图片来源：A Survey on Transfer Learning</em>）来进行说明：</p>
+<p><img src="/2021/04/29/ml/3.png"></p>
+<p>实际上，你可能在不知不觉中使用到了迁移学习，比如所用到的预训练模型，在此基础所做的Fine-Turning，再比如你做目标跟踪Tracking所用的online learning。</p>
+<p><strong>迁移学习的价值体现在：</strong></p>
+<p>1、一些场景的数据根本无法采集，这时迁移学习就很有价值；</p>
+<p>2、复用现有知识域数据，已有的大量工作不至于完全丢弃；</p>
+<p>3、不需要再去花费巨大代价去重新采集和标定庞大的新数据集；</p>
+<p>4、对于快速出现的新领域，能够快速迁移和应用，体现时效性优势；</p>
+<p><strong>关于迁移学习算法的实践总结：</strong></p>
+<p>1、通过原有数据和少量新领域数据混淆训练；</p>
+<p>2、将原训练模型进行分割，保留基础模型（数据）部分作为新领域的迁移基础；</p>
+<p>3、通过三维仿真来得到新的场景图像（OpenAI的Universe平台借助赛车游戏来训练）；</p>
+<p>4、借助对抗网络 GAN 进行迁移学习 的方法；</p>
+<h2 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h2><p>强化学习的全称是 Deep Reinforcement Learning（DRL），其所带来的推理能力，是智能的一个关键特征衡量，真正的让机器有了自我学习、自我思考的能力。目前强化学习主要用在游戏 AI 领域，最出名的案例应该是AlphaGo的围棋大战。</p>
+<p>实际上，强化学习是一种探索式的学习方法，通过不断地 “试错” 来得到改进，<strong>不同于监督学习</strong>的地方是，强化学习本身没有Label，每一步的 Action 之后它无法得到明确的反馈（在这一点上，监督学习每一步都能进行Label 比对，得到 <strong>True</strong> or <strong>False</strong>）。</p>
+<p>强化学习中由环境提供的<strong>强化信号</strong>是Agent对所产生动作的好坏作一种评价（通常为标量信号），而不是告诉 Agent 如何去产生正确的动作。由于外部环境提供了很少的信息，Agent 必须靠自身的经历进行学习。通过这种方式，Agent在行动逐一评价的环境中不断获得知识，改进行动方案以适应环境。</p>
+<p><strong>基本原理：</strong></p>
+<p>首先Agent选择一个动作用于环境，环境接受该动作后状态发生变化，同时产生一个强化信号(奖或惩)反馈给Agent，Agent根据强化信号和环境当前状态再选择下一个动作，选择的原则是使受到正强化(奖)的概率增大。如果Agent的某个行为策略导致环境正的奖赏(强化信号)，那么Agent以后产生这个行为策略的趋势便会加强。</p>
+<p>Agent学习的目标是通过<strong>动态地调整参数</strong>，以达到强化信号最大，也就是在每个离散状态发现最优策略以使期望的折扣奖赏和最大。</p>
+<p>强化学习是通过以下几个元素来进行组合描述的：</p>
+<blockquote>
+<p><strong>对象（Agent）</strong></p>
+</blockquote>
+<p>也就是我们的智能主题，比如 AlphaGo。</p>
+<blockquote>
+<p><strong>环境（Environment）</strong></p>
+</blockquote>
+<p>Agent 所处的场景－比如下围棋的棋盘，以及其所对应的状态（State）－比如当前所对应的棋局。</p>
+<p>Agent 需要从 Environment 感知来获取反馈（当前局势对我是否更有利）。</p>
+<blockquote>
+<p><strong>动作 (Actions)</strong></p>
+</blockquote>
+<p>在每个State下，可以采取什么行动，针对每一个 Action 分析其影响。</p>
+<blockquote>
+<p><strong>奖励 (Rewards)</strong></p>
+</blockquote>
+<p>执行 Action 之后，得到的奖励或惩罚，Reward 是通过对环境的观察得到。</p>
+<p>通过强化学习，我们得到的输出就是：Next Action，也就是下一步该怎么走，这其实就是 AlphaGo 的棋局。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%8A%80%E6%9C%AF/" rel="tag"># 人工智能技术</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/29/bigdata/" rel="prev" title="大数据基础知识介绍">
+      <i class="fa fa-chevron-left"></i> 大数据基础知识介绍
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/19/logrotate/" rel="next" title="使用工具logrotate实现大日志文件的分割和转储">
+      使用工具logrotate实现大日志文件的分割和转储 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">深度学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">3.</span> <span class="nav-text">迁移学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">强化学习</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

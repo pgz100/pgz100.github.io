@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker基本用法">
+<meta property="og:url" content="https://panzhe.cn/2019/07/16/docker-usage/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2019/07/16/docker-usage/1.jpg">
+<meta property="article:published_time" content="2019-07-16T04:52:39.000Z">
+<meta property="article:modified_time" content="2020-02-08T11:06:51.930Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="docker-compose">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2019/07/16/docker-usage/1.jpg">
+
+<link rel="canonical" href="https://panzhe.cn/2019/07/16/docker-usage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker基本用法 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2019/07/16/docker-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker基本用法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-07-16 12:52:39" itemprop="dateCreated datePublished" datetime="2019-07-16T12:52:39+08:00">2019-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-08 19:06:51" itemprop="dateModified" datetime="2020-02-08T19:06:51+08:00">2020-02-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">docker相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">介绍docker基本用法，从docker启动到docker容器创建、docker镜像制作、部署以及镜像推送等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="docker基本操作"><a href="#docker基本操作" class="headerlink" title="docker基本操作"></a>docker基本操作</h3><h4 id="查看docker概要"><a href="#查看docker概要" class="headerlink" title="查看docker概要"></a>查看docker概要</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看docker帮助文档"><a href="#查看docker帮助文档" class="headerlink" title="查看docker帮助文档"></a>查看docker帮助文档</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker -help</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看docker状态"><a href="#查看docker状态" class="headerlink" title="查看docker状态"></a>查看docker状态</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动docker"><a href="#启动docker" class="headerlink" title="启动docker"></a>启动docker</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="关闭docker"><a href="#关闭docker" class="headerlink" title="关闭docker"></a>关闭docker</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl stop docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="重启docker"><a href="#重启docker" class="headerlink" title="重启docker"></a>重启docker</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker镜像操作"><a href="#docker镜像操作" class="headerlink" title="docker镜像操作"></a>docker镜像操作</h3><h4 id="查看镜像列表"><a href="#查看镜像列表" class="headerlink" title="查看镜像列表"></a>查看镜像列表</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h4 id="搜索镜像"><a href="#搜索镜像" class="headerlink" title="搜索镜像"></a>搜索镜像</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker search 镜像名称</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置docker镜像加速器"><a href="#配置docker镜像加速器" class="headerlink" title="配置docker镜像加速器"></a>配置docker镜像加速器</h4><p>拉取镜像 默认是从 Docker Hub 镜像仓库上进行获取的，即 <a target="_blank" rel="noopener" href="https://hub.docker.com/%EF%BC%8C">https://hub.docker.com/，</a> 由于国内无法拉取或者会非常慢，我们可以修改拉取地址为一些国内的镜像。<br>关于拉取地址的配置在：etc&#x2F;docker&#x2F;daemon.json</p>
+<p>我们修改其即可</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> </span><br><span class="line">	<span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">		<span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span></span><br><span class="line"> 	<span class="punctuation">]</span> </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="docker镜像拉取、删除"><a href="#docker镜像拉取、删除" class="headerlink" title="docker镜像拉取、删除"></a>docker镜像拉取、删除</h4><p>拉取镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull 镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>删除镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi 镜像ID</span><br></pre></td></tr></table></figure>
+
+<p>删除所有镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker容器操作"><a href="#docker容器操作" class="headerlink" title="docker容器操作"></a>docker容器操作</h3><h4 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h4><p>查看正在运行的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<p>查看所有容器（包含正在运行的容器以及之前启动过的容器）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<p>查看最后一次运行的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker ps -l</span><br></pre></td></tr></table></figure>
+
+<p>查看停止的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker ps -f status=exited</span><br></pre></td></tr></table></figure>
+
+<h4 id="容器创建"><a href="#容器创建" class="headerlink" title="容器创建"></a>容器创建</h4><p>创建交互式容器：当退出容器（如输入Ctrl + C 或 exit）时，容器就关闭了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -it --name=容器名称 镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>如果需要做端口映射（比如将宿主机的某个端口映射到容器中的某个端口上），则要加上-p参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -it --name=容器名称 -p 8888:8080 镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>如果要映射多个端口，则加上多个-p参数即可，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -it --name=容器名称 -p 8888:8080 -p 1080:1080 镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>创建守护式容器：当退出容器（如输入Ctrl + C 或 exit）时，容器依然处于运行状态。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -id --name=容器名称 -p 8888:8080 镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>在创建完守护式容器后，并未直接进入到容器中，所以需要再输入下面的命令来进入容器内。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker exec -it 容器名称 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="容器启动"><a href="#容器启动" class="headerlink" title="容器启动"></a>容器启动</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker start 容器名称/容器ID</span><br></pre></td></tr></table></figure>
+
+<h4 id="容器停止"><a href="#容器停止" class="headerlink" title="容器停止"></a>容器停止</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker stop 容器名称/容器ID</span><br></pre></td></tr></table></figure>
+
+<h4 id="容器删除"><a href="#容器删除" class="headerlink" title="容器删除"></a>容器删除</h4><p>删除单个容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rm 容器名称/容器ID</span><br></pre></td></tr></table></figure>
+
+<p>删除所有容器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rm `docker ps -a -q`</span><br></pre></td></tr></table></figure>
+
+<p><em>注意：只能删除已经关闭的容器</em></p>
+<h3 id="docker部署操作"><a href="#docker部署操作" class="headerlink" title="docker部署操作"></a>docker部署操作</h3><h4 id="docker文件拷贝"><a href="#docker文件拷贝" class="headerlink" title="docker文件拷贝"></a>docker文件拷贝</h4><p>将需要放在docker容器内的文件拷贝到容器中，在宿主机命令行中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker cp 宿主机待拷贝的文件 容器名称:容器目录</span><br><span class="line">如：docker cp ./test.txt ubuntu01:/home</span><br></pre></td></tr></table></figure>
+
+<h4 id="docker目录挂载"><a href="#docker目录挂载" class="headerlink" title="docker目录挂载"></a>docker目录挂载</h4><p>在创建容器的时候，我们可以将宿主机的某个目录映射到容器内的目录，这样如果修改宿主机某个目录的文件内容，容器内对应的文件内容也会随之改变。</p>
+<p>在创建容器时添加参数 <code>--privileged=true</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -id -v 宿主机目录:容器目录 --name=容器名称 --privileged=true 镜像名称</span><br><span class="line">如：docker run -id -v /home/test:/root/test --name=ubuntu01 --privileged=true ubuntu_image</span><br></pre></td></tr></table></figure>
+
+<h4 id="docker备份"><a href="#docker备份" class="headerlink" title="docker备份"></a>docker备份</h4><p>第一步：将容器保存为镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker commit 容器名称 保存的新镜像名称</span><br></pre></td></tr></table></figure>
+
+<p>如需修改TAG，则输入以下命令，然后用<code>docker images</code>会发现有两个镜像ID一样但镜像名称不同的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker tag 镜像ID 镜像名称:TAG名称</span><br></pre></td></tr></table></figure>
+
+<p>第二步：将镜像打包备份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker save 镜像名称 -o 打包后的文件名称</span><br><span class="line">如：docker save iamge_name -o ./pack_name.tar</span><br></pre></td></tr></table></figure>
+
+<p>将镜像打包后就可以进行迁移和部署了。</p>
+<h4 id="镜像加载-部署"><a href="#镜像加载-部署" class="headerlink" title="镜像加载&#x2F;部署"></a>镜像加载&#x2F;部署</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker load -i 镜像文件名称</span><br></pre></td></tr></table></figure>
+
+<h3 id="推送自己的镜像"><a href="#推送自己的镜像" class="headerlink" title="推送自己的镜像"></a>推送自己的镜像</h3><p>首先检查按照镜像仓库的规定修改镜像名称和镜像TAG：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker tag 镜像ID 镜像名称:TAG名称</span><br><span class="line">如：docker tag ba5877dc9bec 127.0.0.1:5000/ubuntu:v0.1</span><br></pre></td></tr></table></figure>
+
+<p>然后登录镜像仓库，根据提示输入用户名和密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker login 镜像仓库IP</span><br></pre></td></tr></table></figure>
+
+<p>最后将自己的镜像push到镜像仓库：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker push 镜像名称:镜像TAG</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意事项：</strong></p>
+<p>如果你不想使用 <code>127.0.0.1:5000</code> 作为仓库地址，比如想让本网段的其他主机也能把镜像推送到私有仓库。你就得把例如 <code>192.168.199.100:5000</code> 这样的内网地址作为私有仓库地址，这时你会发现无法成功推送镜像。</p>
+<p>这是因为 docker 默认不允许非 <code>HTTPS</code> 方式推送镜像。我们可以通过 Docker 的配置选项来取消这个限制。</p>
+<p>如果您的宿主机系统是Ubuntu、Debian、Centos等系统，请在 <code>/etc/docker/daemon.json</code> 中写入如下内容（如果文件不存在请新建该文件），此处以 <code>192.168.199.100:5000</code> 为例：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirror&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://registry.docker-cn.com&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;insecure-registries&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;192.168.199.100:5000&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后输入<code>systemctl restart docker</code>重启docker。</p>
+<p>对于Windows、MacOS系统，则可在Docker for Windows 、Docker for Mac客户端软件的设置中编辑 <code>daemon.json</code>文件， 增加和上述一样的仓库地址即可。</p>
+<h3 id="Dockerfile的基本用法"><a href="#Dockerfile的基本用法" class="headerlink" title="Dockerfile的基本用法"></a>Dockerfile的基本用法</h3><h4 id="Dockerfile文件格式说明"><a href="#Dockerfile文件格式说明" class="headerlink" title="Dockerfile文件格式说明"></a>Dockerfile文件格式说明</h4><ol>
+<li>Dockerfile整体就两类语句组成：<ul>
+<li># Comment 注释信息</li>
+<li>Instruction arguments 指令 参数，一行一个指令。</li>
+</ul>
+</li>
+<li>Dockerfile文件名首字母必须大写。</li>
+<li>Dockerfile指令不区分大小写，但是为方便和参数做区分，通常指令使用大写字母。</li>
+<li>Dockerfile中指令按顺序从上至下依次执行。</li>
+<li>Dockerfile中第一个非注释行必须是FROM指令，用来指定制作当前镜像依据的是哪个基础镜像。</li>
+<li>Dockerfile中需要调用的文件必须跟Dockerfile文件在同一目录下，或者在其子目录下，父目录或者其它路径无效。</li>
+</ol>
+<h4 id="用Dockerfile构建镜像"><a href="#用Dockerfile构建镜像" class="headerlink" title="用Dockerfile构建镜像"></a>用Dockerfile构建镜像</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker build -t 镜像名称:TAG名称 .</span><br></pre></td></tr></table></figure>
+
+<p>命令说明：</p>
+<ul>
+<li>build -t 指定通过Dockerfile来创建镜像</li>
+<li>. 表示在当前路径寻找Dockerfile文件</li>
+</ul>
+<p>创建完成后，可用<code>docker images</code>查看新创建的镜像。</p>
+<h4 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run -<span class="built_in">id</span> --name=容器名称 -p 8888:8080 镜像名称:镜像TAG</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker <span class="built_in">exec</span> -it 容器名称 /bin/bash</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong>此时是将宿主机的8888端口映射到容器中的8080端口上。</p>
+<blockquote>
+<p>如果是临时测试，可以在运行容器时加上<code>--rm</code>参数，这样在退出容器以后，容器就被自动删除了。如果不加<code>--rm</code> ，则退出容器后，容器只是停止运行，而数据依然被保留。</p>
+</blockquote>
+<p>更多关于Dockerfile的详细介绍，请参考链接：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ccbloom/p/11174186.html%EF%BC%8C%E8%BF%99%E9%87%8C%E5%86%99%E7%9A%84%E9%9D%9E%E5%B8%B8%E8%AF%A6%E7%BB%86%E3%80%82">https://www.cnblogs.com/ccbloom/p/11174186.html，这里写的非常详细。</a></p>
+<h3 id="Docker-Compose基本用法"><a href="#Docker-Compose基本用法" class="headerlink" title="Docker Compose基本用法"></a>Docker Compose基本用法</h3><p>Docker Compose是一个定义和运行多容器应用的单机编排工具。通过Docker Compose你可以使用一个单一的YAML文件来配置多个应用服务，通过一条命令，就可以将所有配置的服务全部启动起来。</p>
+<p>在介绍docker compose之前，我们先简单了解下YAML文件：</p>
+<p><strong>YAML（Yet Another Markup Language）</strong>（发音 &#x2F;ˈjæməl&#x2F; ）是一种基于Unicode容易阅读，容易和脚本语言交互的，用来表达资料序列的编程语言。</p>
+<h4 id="yml的基本语法"><a href="#yml的基本语法" class="headerlink" title="yml的基本语法"></a>yml的基本语法</h4><p>1、yml文件以缩进代表层级关系</p>
+<p>2、缩进不允许使用tab，只能使用空格</p>
+<p>3、空格的个数不重要，只要相同层级的元素左对齐即可</p>
+<p>4、大小写敏感</p>
+<p>5、数据格式为，名称:(空格)值</p>
+<p>6、‘#’表示注释，且只能单行注释，注释内容是从#开始处到行尾</p>
+<p>7、破折号后面跟一个空格（a dash and space）表示列表。</p>
+<h4 id="yml支持的数据格式"><a href="#yml支持的数据格式" class="headerlink" title="yml支持的数据格式"></a>yml支持的数据格式</h4><p>1、对象：键值对的集合(key:value)</p>
+<ul>
+<li>字符串不用使用双引号或单引号圈起来</li>
+<li>双引号圈住时不会转义字符串中的特殊字符</li>
+<li>单引号圈住时会转义字符串中的特殊字符</li>
+</ul>
+<p>2、数组：一组按顺序排列的值</p>
+<blockquote>
+<p>多行写法</p>
+</blockquote>
+<p>数组名:</p>
+<p>​       - 元素1</p>
+<p>​       - 元素2</p>
+<p>​       - 元素3</p>
+<blockquote>
+<p>单行写法：</p>
+</blockquote>
+<p>数组名: [元素1,元素2,元素3]</p>
+<p>3、字面量：单个的、不可再分的值（数字、字符串、布尔值）</p>
+<blockquote>
+<p>以上内容的参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wingsb/article/details/85270529">https://blog.csdn.net/wingsb/article/details/85270529</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyp1376308302/article/details/81223890">https://blog.csdn.net/zyp1376308302/article/details/81223890</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hellxz/p/11039514.html">https://www.cnblogs.com/hellxz/p/11039514.html</a></li>
+</ul>
+<p>关于docker compose的用法，在网上有很多的介绍，具体可以参考这个：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/breezey/p/9426085.html">https://www.cnblogs.com/breezey/p/9426085.html</a></p>
+<p>这里只简单介绍下常用的一些命令以及我自己在使用过程中的一些经验。</p>
+<h4 id="docker-compose-常用命令"><a href="#docker-compose-常用命令" class="headerlink" title="docker-compose 常用命令"></a>docker-compose 常用命令</h4><p>说明：<strong>docker-compose命令必须运行在，docker-compose.yml文件所在的目录才有效</strong></p>
+<blockquote>
+<p>有两种方式可以有效运行docker-compose命令</p>
+</blockquote>
+<p>1、在docker-compose.yml文件所在目录下执行docker-compose命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker-compose up    ##前台运行</span><br><span class="line">或</span><br><span class="line">docker-compose up -d ##后台运行</span><br></pre></td></tr></table></figure>
+
+<p>2、使用 <code>-f</code> 参数指定compose文件，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker-compose -f /opt/test-compose.yml up    ##前台运行</span><br><span class="line">或</span><br><span class="line">docker-compose -f /opt/test-compose.yml up -d ##后台运行</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker-compose up -d</td>
+<td>构建并启动所有容器</td>
+</tr>
+<tr>
+<td>docker-compose up -d --build</td>
+<td>在dockerfile更新后，会自动更新image</td>
+</tr>
+<tr>
+<td>docker-compose up -d nginx</td>
+<td>构建并启动nignx容器</td>
+</tr>
+<tr>
+<td>docker-compose exec nginx bash</td>
+<td>登录到nginx容器中</td>
+</tr>
+<tr>
+<td>docker-compose down</td>
+<td>删除所有容器,镜像</td>
+</tr>
+<tr>
+<td>docker-compose ps</td>
+<td>显示所有容器</td>
+</tr>
+<tr>
+<td>docker-compose restart nginx</td>
+<td>重启nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose run nginx ping <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></td>
+<td>在nginx容器上执行ping命令</td>
+</tr>
+<tr>
+<td>docker-compose build nginx</td>
+<td>构建nginx镜像</td>
+</tr>
+<tr>
+<td>docker-compose build –no-cache nginx</td>
+<td>构建nginx镜像过程中不使用缓存</td>
+</tr>
+<tr>
+<td>docker-compose logs nginx</td>
+<td>查看nginx容器的日志</td>
+</tr>
+<tr>
+<td>docker-compose logs -f nginx</td>
+<td>查看nginx容器的实时日志</td>
+</tr>
+<tr>
+<td>docker-compose config  -q</td>
+<td>验证（docker-compose.yml）文件配置。<br>配置正确时，不输出任何内容；<br>文件配置错误，输出错误信息。</td>
+</tr>
+<tr>
+<td>docker-compose pause nginx</td>
+<td>暂停nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose unpause nginx</td>
+<td>恢复nginx容器</td>
+</tr>
+<tr>
+<td>docker-compose rm nginx</td>
+<td>删除容器（删除前必须关闭容器）</td>
+</tr>
+<tr>
+<td>docker-compose stop nginx</td>
+<td>停止nignx容器</td>
+</tr>
+<tr>
+<td>docker-compose start nginx</td>
+<td>启动nignx容器</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/minseo/p/11548177.html">https://www.cnblogs.com/minseo/p/11548177.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30546933/article/details/96719086">https://blog.csdn.net/weixin_30546933/article/details/96719086</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yanxilou/article/details/99648359">https://blog.csdn.net/yanxilou/article/details/99648359</a></p>
+</li>
+</ul>
+<h4 id="docker-compose-yml配置文件说明"><a href="#docker-compose-yml配置文件说明" class="headerlink" title="docker-compose.yml配置文件说明"></a>docker-compose.yml配置文件说明</h4><p>其实网上有很多关于配置文件的说明，这里就不再做详细介绍。这里介绍一下docker-compose如何通过文件来声明默认的docker容器环境变量。</p>
+<blockquote>
+<p>Docker Compose支持使用声明默认环境变量的<code>.env</code>文件启动，这个文件的位置需要与docker-compose.yml同级目录。我们只需要在同级目录下创建<code>.env</code>文件来指定默认的环境变量，这些变量可以部分或完整作为配置的内容，大大简化我们的配置，以及一处修改多处生效的目的。</p>
+</blockquote>
+<h5 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h5><ul>
+<li>.env文件中的每一行都是<code>KEY=VAL</code>格式</li>
+<li>以<code>#</code>开头的内容将被注释</li>
+<li>忽略空白行</li>
+<li><code>.env</code>中的KEY可以在<code>docker-compose.yml</code>中作为某个<code>VAL</code>的一部分</li>
+</ul>
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>这里拿个nginx做测试吧，我们最后使用<code>docker-compose config</code>进行查看当前环境生效的配置。</p>
+<p>1、新建并进入目录<code>test</code>，创建<code>docker-compose.yml</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ mkdir test</span><br><span class="line">$ cd test</span><br><span class="line">$ vim docker-compose.yml</span><br></pre></td></tr></table></figure>
+
+<p>2、往<code>docker-compose.yml</code>文件中写入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line">services: </span><br><span class="line">    mynginx: </span><br><span class="line">        image: nginx:$&#123;TAG&#125;</span><br><span class="line">        ports: </span><br><span class="line">            - 80:80</span><br></pre></td></tr></table></figure>
+
+<p>3、如果我们此时直接启动<code>docker-compose config</code> 我们会得到如下输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line">WARNING: The TAG variable is not set. Defaulting to a blank string.</span><br><span class="line">services:</span><br><span class="line">  mynginx:</span><br><span class="line">    image: &#x27;nginx:&#x27;</span><br><span class="line">    ports:</span><br><span class="line">    - 80:80/tcp</span><br><span class="line">version: &#x27;3.0&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如你所见，由于引用的变量TAG不存在，而被当成空字符串进行赋值。</p>
+</blockquote>
+<p>4、创建<code>.env</code>文件并在文件中添加如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># .env the default environment config file</span><br><span class="line">TAG=1.7.9</span><br></pre></td></tr></table></figure>
+
+<p>5、再次启动<code>docker-compose config</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ docker-compose config</span><br><span class="line">services:</span><br><span class="line">  mynginx:</span><br><span class="line">    image: nginx:1.7.9</span><br><span class="line">    ports:</span><br><span class="line">    - 80:80/tcp</span><br><span class="line">version: &#x27;3.0&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时会发现变量TAG被.env文件中的字符串赋值。</p>
+</blockquote>
+<p><strong>注意：</strong>这个默认的环境变量配置的优先级略低，如果是从docker-compose run命令中传入相同的KEY，则yml配置文件中的值会被覆盖。</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/breezey/p/9426085.html">https://www.cnblogs.com/breezey/p/9426085.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36148847/article/details/79427878">https://blog.csdn.net/qq_36148847/article/details/79427878</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hellxz/p/11039514.html">https://www.cnblogs.com/hellxz/p/11039514.html</a></li>
+</ul>
+<h3 id="实战经验"><a href="#实战经验" class="headerlink" title="实战经验"></a>实战经验</h3><p>目前 Docker 官方已开始推荐使用 <code>Alpine</code> 替代之前的 <code>Ubuntu</code> 做为基础镜像环境。<code>Alpine</code> 操作系统是一个面向安全的轻型 <code>Linux</code> 发行版。<code>Alpine</code> 提供了自己的包管理工具 <code>apk</code>，可以通过 <code>https://pkgs.alpinelinux.org/packages</code> 网站上查询包信息，也可以直接通过 <code>apk</code> 命令直接查询和安装各种软件。</p>
+<p>Alpine Docker 镜像也继承了 Alpine Linux 发行版的这些优势。相比于其他 Docker镜像，它的容量非常小，仅仅只有 5 MB 左右（对比 Ubuntu 系列镜像接近 200 MB），且拥有非常友好的包管理机制。</p>
+<h4 id="拉取Alpine基础镜像"><a href="#拉取Alpine基础镜像" class="headerlink" title="拉取Alpine基础镜像"></a>拉取Alpine基础镜像</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker pull alpine</span><br></pre></td></tr></table></figure>
+
+<h4 id="进入Alpine-Docker容器"><a href="#进入Alpine-Docker容器" class="headerlink" title="进入Alpine Docker容器"></a>进入Alpine Docker容器</h4><p>如果使用之前提到的进入ubuntu docker容器的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker exec -it 容器名称 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>会遇到下面类似的报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">OCI runtime exec failed: exec failed: container_linux.go:348: starting container process caused &quot;exec: \&quot;/bin/bash\&quot;: stat /bin/bash: no such file or directory&quot;: unknown</span><br></pre></td></tr></table></figure>
+
+<p>这是因为Alpine中没有<code>bash</code>。所以需要这样登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker exec -it 容器名称 sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="在Alpine中安装软件包"><a href="#在Alpine中安装软件包" class="headerlink" title="在Alpine中安装软件包"></a>在Alpine中安装软件包</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apk add --no-cache &lt;package&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="如何清除docker镜像列表中带有-的镜像"><a href="#如何清除docker镜像列表中带有-的镜像" class="headerlink" title="如何清除docker镜像列表中带有&lt;none&gt;:&lt;none&gt;的镜像"></a>如何清除docker镜像列表中带有&lt;none&gt;:&lt;none&gt;的镜像</h4><p>我们在构建过Docker镜像的电脑上查看本地镜像列表，有可能看到下图红框中的镜像，即在列表中展示为&lt;none&gt;:&lt;none&gt;，如下图所示：</p>
+<p><img src="/2019/07/16/docker-usage/1.jpg"></p>
+<p>这种镜像在Docker官方文档中被称作dangling images，指的是没有标签并且没有被容器使用的镜像。</p>
+<blockquote>
+<p>下面我们来简单梳理下dangling images是怎么产生的，结合上面那张图来看：</p>
+</blockquote>
+<p>1、第一次构建镜像时生成的镜像ID为079dbd67f9f4，此镜像会被构建工具加上标签bolingcavalry&#x2F;eureka-server:0.0.1-SNAPSHOT；<br>2、第二次构建镜像时生成的镜像ID为e40a97f764ef，此镜像会被构建工具加上标签bolingcavalry&#x2F;eureka-server:0.0.1-SNAPSHOT，<br>3、此时Docker会自动移除079dbd67f9f4的标签，那么这时候079dbd67f9f4就变成了dangling images，即在镜像列表中展示为&lt;none&gt;:&lt;none&gt;。</p>
+<blockquote>
+<p>dangling images产生的愿意我们已经知道了，那么我们该如何清理它们呢？</p>
+</blockquote>
+<p>执行命令<code>docker image prune</code>即可批量删除dangling images。</p>
+<blockquote>
+<p>刚才我们说满足dangling images需要两个条件：没有标签、且不再被容器使用，那么如果一个镜像没有标签，但仍在被容器使用，此时用 prune 命令会把它删除吗？</p>
+</blockquote>
+<p>答案是，不会把它删除的。docker image prune是用来清理dangling images的，如果某个镜像正在被使用，那就不算是dangling images，也就不会被prune清理掉。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/docker-compose/" rel="tag"># docker-compose</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/26/root-exp/" rel="prev" title="手机在ROOT过程中踩得一些坑">
+      <i class="fa fa-chevron-left"></i> 手机在ROOT过程中踩得一些坑
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/09/docker-image-repo/" rel="next" title="搭建私有化docker镜像仓库">
+      搭建私有化docker镜像仓库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">docker基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8Bdocker%E6%A6%82%E8%A6%81"><span class="nav-number">1.1.</span> <span class="nav-text">查看docker概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8Bdocker%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3"><span class="nav-number">1.2.</span> <span class="nav-text">查看docker帮助文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8Bdocker%E7%8A%B6%E6%80%81"><span class="nav-number">1.3.</span> <span class="nav-text">查看docker状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8docker"><span class="nav-number">1.4.</span> <span class="nav-text">启动docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%97%ADdocker"><span class="nav-number">1.5.</span> <span class="nav-text">关闭docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%90%AFdocker"><span class="nav-number">1.6.</span> <span class="nav-text">重启docker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%95%9C%E5%83%8F%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">docker镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E9%95%9C%E5%83%8F%E5%88%97%E8%A1%A8"><span class="nav-number">2.1.</span> <span class="nav-text">查看镜像列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E9%95%9C%E5%83%8F"><span class="nav-number">2.2.</span> <span class="nav-text">搜索镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEdocker%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">配置docker镜像加速器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E9%95%9C%E5%83%8F%E6%8B%89%E5%8F%96%E3%80%81%E5%88%A0%E9%99%A4"><span class="nav-number">2.4.</span> <span class="nav-text">docker镜像拉取、删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">docker容器操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8"><span class="nav-number">3.1.</span> <span class="nav-text">查看容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%88%9B%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">容器创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8"><span class="nav-number">3.3.</span> <span class="nav-text">容器启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%81%9C%E6%AD%A2"><span class="nav-number">3.4.</span> <span class="nav-text">容器停止</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E5%88%A0%E9%99%A4"><span class="nav-number">3.5.</span> <span class="nav-text">容器删除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%83%A8%E7%BD%B2%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">docker部署操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D"><span class="nav-number">4.1.</span> <span class="nav-text">docker文件拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD"><span class="nav-number">4.2.</span> <span class="nav-text">docker目录挂载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker%E5%A4%87%E4%BB%BD"><span class="nav-number">4.3.</span> <span class="nav-text">docker备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%8A%A0%E8%BD%BD-%E9%83%A8%E7%BD%B2"><span class="nav-number">4.4.</span> <span class="nav-text">镜像加载&#x2F;部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E9%80%81%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">5.</span> <span class="nav-text">推送自己的镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">Dockerfile的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E"><span class="nav-number">6.1.</span> <span class="nav-text">Dockerfile文件格式说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Dockerfile%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-number">6.2.</span> <span class="nav-text">用Dockerfile构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E9%95%9C%E5%83%8F"><span class="nav-number">6.3.</span> <span class="nav-text">运行镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-Compose%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">Docker Compose基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#yml%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">7.1.</span> <span class="nav-text">yml的基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yml%E6%94%AF%E6%8C%81%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="nav-number">7.2.</span> <span class="nav-text">yml支持的数据格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">7.3.</span> <span class="nav-text">docker-compose 常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-yml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">7.4.</span> <span class="nav-text">docker-compose.yml配置文件说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99"><span class="nav-number">7.4.1.</span> <span class="nav-text">语法规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">7.4.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E7%BB%8F%E9%AA%8C"><span class="nav-number">8.</span> <span class="nav-text">实战经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%89%E5%8F%96Alpine%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F"><span class="nav-number">8.1.</span> <span class="nav-text">拉取Alpine基础镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5Alpine-Docker%E5%AE%B9%E5%99%A8"><span class="nav-number">8.2.</span> <span class="nav-text">进入Alpine Docker容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8Alpine%E4%B8%AD%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">8.3.</span> <span class="nav-text">在Alpine中安装软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4docker%E9%95%9C%E5%83%8F%E5%88%97%E8%A1%A8%E4%B8%AD%E5%B8%A6%E6%9C%89-%E7%9A%84%E9%95%9C%E5%83%8F"><span class="nav-number">8.4.</span> <span class="nav-text">如何清除docker镜像列表中带有&lt;none&gt;:&lt;none&gt;的镜像</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="主要介绍如何使用logging模块进行日志打印和按天生成日志文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python logging模块使用">
+<meta property="og:url" content="https://panzhe.cn/2020/02/20/python-log/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="主要介绍如何使用logging模块进行日志打印和按天生成日志文件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-20T03:11:59.000Z">
+<meta property="article:modified_time" content="2020-02-21T16:08:13.315Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="日志">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://panzhe.cn/2020/02/20/python-log/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Python logging模块使用 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2020/02/20/python-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python logging模块使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-20 11:11:59" itemprop="dateCreated datePublished" datetime="2020-02-20T11:11:59+08:00">2020-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 00:08:13" itemprop="dateModified" datetime="2020-02-22T00:08:13+08:00">2020-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">主要介绍如何使用logging模块进行日志打印和按天生成日志文件。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="logging模块简介"><a href="#logging模块简介" class="headerlink" title="logging模块简介"></a>logging模块简介</h1><p>logging模块是Python内置的标准模块，主要用于输出运行日志，可以设置输出日志的等级、日志保存路径、日志文件回滚等；相比print，具备如下优点：</p>
+<ol>
+<li>可以通过设置不同的日志等级，在release版本中只输出重要信息，而不必显示大量的调试信息；</li>
+<li>print将所有信息都输出到标准输出中，严重影响开发者从标准输出中查看其它数据；logging则可以由开发者决定将信息输出到什么地方，以及怎么输出；</li>
+</ol>
+<h1 id="logging模块使用"><a href="#logging模块使用" class="headerlink" title="logging模块使用"></a>logging模块使用</h1><h2 id="logging的日志等级"><a href="#logging的日志等级" class="headerlink" title="logging的日志等级"></a>logging的日志等级</h2><p>在Python3.7中，logging模块将日志等级设为以下几类：</p>
+<ul>
+<li>logging.CRITICAL：特别糟糕的事情，如内存耗尽、磁盘空间为空 </li>
+<li>logging.ERROR：发生错误时，如IO操作失败或者连接问题 </li>
+<li>logging.WARNING：发生很重要的事件，但是并不是错误时，如用户登录密码错误 </li>
+<li>logging.INFO：处理请求或者状态变化等日常事务 </li>
+<li>logging.DEBUG：调试过程中使用DEBUG等级，如算法中每个循环的中间状态</li>
+</ul>
+<p>这几类等级的排序：CRITICAL &gt; ERROR &gt; WARNING &gt; INFO &gt; DEBUG</p>
+<p><strong>重点说明：</strong></p>
+<ul>
+<li>设置了日志等级之后，调用<strong>比设置等级低的日志函数</strong>，其日志内容不会输出到日志文件中。</li>
+<li>默认情况下python的logging模块会将日志打印到了标准输出中，且只显示大于等于WARNING级别的日志，这说明python将默认的日志级别设置为WARNING。</li>
+</ul>
+<h2 id="将日志输出到控制台"><a href="#将日志输出到控制台" class="headerlink" title="将日志输出到控制台"></a>将日志输出到控制台</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import logging</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level = logging.INFO,format = &#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;)</span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">logger.info(&quot;Start print log&quot;)</span><br><span class="line">logger.debug(&quot;Do something&quot;)</span><br><span class="line">logger.warning(&quot;Something maybe fail.&quot;)</span><br><span class="line">logger.info(&quot;Finish&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>运行后，控制台输出以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
+
+<h2 id="将日志写入指定文件"><a href="#将日志写入指定文件" class="headerlink" title="将日志写入指定文件"></a>将日志写入指定文件</h2><p>导入logging模块，创建一个FileHandler，并对输出消息的格式进行设置，将其添加到logger，然后将日志写入到指定的文件中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">handler = logging.FileHandler(<span class="string">&quot;log.txt&quot;</span>)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">logger.info(<span class="string">&quot;Start print log&quot;</span>)</span><br><span class="line">logger.debug(<span class="string">&quot;Do something&quot;</span>)</span><br><span class="line">logger.warning(<span class="string">&quot;Something maybe fail.&quot;</span>)</span><br><span class="line">logger.info(<span class="string">&quot;Finish&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>log.txt中的日志内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于logging.Formatter的参数说明：</p>
+</blockquote>
+<ul>
+<li>%(levelno)s：打印日志级别的数值 </li>
+<li>%(levelname)s：打印日志级别的名称 </li>
+<li>%(pathname)s：打印当前执行程序的路径，其实就是sys.argv[0] </li>
+<li>%(filename)s：打印当前执行程序名 </li>
+<li>%(funcName)s：打印日志的当前函数 </li>
+<li>%(lineno)d：打印日志的当前行号 </li>
+<li>%(asctime)s：打印日志的时间 </li>
+<li>%(thread)d：打印线程ID </li>
+<li>%(threadName)s：打印线程名称 </li>
+<li>%(process)d：打印进程ID </li>
+<li>%(message)s：打印日志信息</li>
+</ul>
+<h2 id="将日志同时输出到控制台和日志文件"><a href="#将日志同时输出到控制台和日志文件" class="headerlink" title="将日志同时输出到控制台和日志文件"></a>将日志同时输出到控制台和日志文件</h2><p>基于上面的代码，在logger中添加StreamHandler，则可以将日志输出到控制台上。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">handler = logging.FileHandler(<span class="string">&quot;log.txt&quot;</span>)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将日志也输出到控制台上 </span></span><br><span class="line">console = logging.StreamHandler()</span><br><span class="line">console.setLevel(logging.INFO)</span><br><span class="line">logger.addHandler(console)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">logger.info(<span class="string">&quot;Start print log&quot;</span>)</span><br><span class="line">logger.debug(<span class="string">&quot;Do something&quot;</span>)</span><br><span class="line">logger.warning(<span class="string">&quot;Something maybe fail.&quot;</span>)</span><br><span class="line">logger.info(<span class="string">&quot;Finish&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就可以在控制台上看到与文件中一样的日志内容。</p>
+<p>从上面的代码中，可以发现，logging有一个日志处理的主对象（如：上面代码中的 logger ），其他的处理方式都是通过addHandler函数添加进去的。</p>
+<h2 id="logging中常用的Handler"><a href="#logging中常用的Handler" class="headerlink" title="logging中常用的Handler"></a>logging中常用的Handler</h2><h3 id="StreamHandler"><a href="#StreamHandler" class="headerlink" title="StreamHandler"></a>StreamHandler</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.StreamHandler(stream=None)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>日志信息会输出到指定的stream中，可以是sys.stderr，sys.stdout或者文件。</p>
+</blockquote>
+<p>参数说明</p>
+<blockquote>
+<p>如果stream参数为空，则默认输出到sys.stderr。</p>
+</blockquote>
+<h3 id="FileHandler"><a href="#FileHandler" class="headerlink" title="FileHandler"></a>FileHandler</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.FileHandler(filename, mode=&#x27;a&#x27;, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<blockquote>
+<p>继承自StreamHandler，功能是将日志信息输出到磁盘文件上。</p>
+</blockquote>
+<p>参数说明</p>
+<ul>
+<li><p>mode参数默认为append；</p>
+</li>
+<li><p>若delay参数为true时，文件直到emit方法被执行才会打开。默认情况下，日志文件可以无限增大。</p>
+</li>
+</ul>
+<h3 id="WatchedFileHandler"><a href="#WatchedFileHandler" class="headerlink" title="WatchedFileHandler"></a>WatchedFileHandler</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.WatchedFileHandler(filename, mode=&#x27;a&#x27;, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<ul>
+<li>位于logging.handlers模块中。</li>
+<li>该函数用于监视文件的状态。如果文件被改变了，那么就关闭当前流，重新打开文件，创建一个新的流。</li>
+<li>newsyslog或者logrotate的使用会导致文件改变。</li>
+<li>这个函数是专门为linux&#x2F;unix系统设计的，因为在windows系统上，正在被打开的文件是不会被改变的。</li>
+</ul>
+<p>参数说明</p>
+<blockquote>
+<p>该函数参数和FileHandler相同。</p>
+</blockquote>
+<h3 id="RotatingFileHandler"><a href="#RotatingFileHandler" class="headerlink" title="RotatingFileHandler"></a>RotatingFileHandler</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.RotatingFileHandler(filename, mode=&#x27;a&#x27;, maxBytes=0, backupCount=0, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<ul>
+<li>位于logging.handlers模块。</li>
+<li>支持<strong>循环生成日志文件</strong>。</li>
+</ul>
+<p>参数说明</p>
+<ul>
+<li>filename: 自定义日志文件的路径以及文件名。</li>
+<li>参数maxBytes和backupCount允许日志文件在达到maxBytes时rollover，即当文件大小达到或者超过maxBytes时，就会新建一个日志文件。上述这两个参数，其中任何一个为0时，rollover都不会发生，也就是文件没有maxBytes限制。</li>
+<li>backupCount参数是指备份数目，也就是日志最多能保留多少个文件。其文件命名则会在filename后面加上.0到.n的后缀，比如filename参数填error.log，当error.log大小达到maxBytes字节后，会自动再新建一个文件，并命名叫error.log.1，当error.log.1大小达到maxBytes字节后，会再新建一个文件error.log.2，以此类推下去。</li>
+</ul>
+<h3 id="TimedRotatingFileHandler"><a href="#TimedRotatingFileHandler" class="headerlink" title="TimedRotatingFileHandler"></a>TimedRotatingFileHandler</h3><p>函数原型</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.TimedRotatingFileHandler(filename, when=&#x27;h&#x27;, interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)</span><br></pre></td></tr></table></figure>
+
+<p>函数说明</p>
+<ul>
+<li>位于logging.handlers模块。</li>
+<li>支持定时生成新日志文件。</li>
+</ul>
+<p>参数说明</p>
+<ul>
+<li><p>filename：日志文件名的前缀prefix。</p>
+</li>
+<li><p>when：是一个字符串，用于描述定时周期的基本单位，字符串的值及意义如下：</p>
+<p> ‘S’：秒<br> ‘M’：分钟<br> ‘H’：小时<br> ‘D’：天<br> ‘W0’-‘W6’：工作日(0&#x3D;星期一)<br> ‘midnight’：凌晨</p>
+</li>
+<li><p>interval：设置间隔周期，单位由when参数指定，如：when&#x3D;’D’，interval&#x3D;1，表示每天产生一个日志文件。</p>
+</li>
+<li><p>backupCount：表示日志文件的保留个数，超过数量就会丢弃掉老的日志文件；不写则全保存。</p>
+</li>
+<li><p>utc：表示UTC时间，如果utc为true，则启用UTC时间，反之则使用本机时间。</p>
+</li>
+</ul>
+<p>除了上述这些参数之外，TimedRotatingFileHandler还有一个比较重要的成员变量 <strong>suffix</strong> 。</p>
+<blockquote>
+<p>suffix是指日志文件名的后缀，suffix中通常带有格式化的时间字符串，filename和suffix由“.”连接构成文件名。</p>
+<p>例如：filename&#x3D;”runtime”， suffix&#x3D;”%Y-%m-%d.log”，那么生成的文件名就是 runtime.2020-02-20.log</p>
+</blockquote>
+<h2 id="按天保存单独的日志文件"><a href="#按天保存单独的日志文件" class="headerlink" title="按天保存单独的日志文件"></a>按天保存单独的日志文件</h2><p>通常我们在运行中大型python程序时，日志最好是使用按天保存的方式，这样查看起来会很方便，也不会因为日志内容积累太多而不好打开。</p>
+<p>说到按周期保存文件，我们很容易会想到使用TimedRotatingFileHandler函数来实现。没错，就是它。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import os</span><br><span class="line">import logging</span><br><span class="line">from logging.handlers import TimedRotatingFileHandler</span><br><span class="line"></span><br><span class="line"># 当前文件所在目录（绝对路径）</span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[0]</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">formatter = logging.Formatter(&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;)</span><br><span class="line"></span><br><span class="line"># 在当前文件所在目录下，新建logs目录，用来存放log文件</span><br><span class="line">log_path = os.path.join(rootDir,&#x27;logs&#x27;)</span><br><span class="line">if not os.path.exists(log_path):</span><br><span class="line">	os.makedirs(log_path)</span><br><span class="line">filename = os.path.join(log_path,&#x27;test&#x27;)</span><br><span class="line">handler = TimedRotatingFileHandler(filename, when=&#x27;midnight&#x27;, interval=1)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">handler.suffix = &quot;%Y-%m-%d_%H-%M-%S.log&quot;</span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">logger.info(&quot;Start print log&quot;)</span><br><span class="line">logger.debug(&quot;Do something&quot;)</span><br><span class="line">logger.warning(&quot;Something maybe fail.&quot;)</span><br><span class="line">logger.info(&quot;Finish&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>运行这段代码之后，会发现在该python文件所在目录下创建了一个logs目录，并在logs目录里面创建了一个log文件。</p>
+<p><strong>重要说明：</strong></p>
+<p>大家可能会发现上述代码，在调用TimedRotatingFileHandler时，传入的when参数值是’midnight’，那为什么不传’D’呢？它不也可以表示按天为单位周期来生成日志吗？<strong>其实传’D’也是可以的，但有个条件要满足</strong>：就是该python脚本会一直运行不会停止，比如长期在后台运行。</p>
+<p>那为什么会有这么一个奇怪的要求呢？</p>
+<p>这个就要看看TimedRotatingFileHandler源码（源码位于：Python37\Lib\logging\handlers.py）在时间计算这块是怎么实现的了。</p>
+<p>贴上TimedRotatingFileHandler类的 init 函数的部分代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">self.extMatch = re.compile(self.extMatch, re.ASCII)</span><br><span class="line">    self.interval = self.interval * interval # multiply by units requested</span><br><span class="line">    if os.path.exists(filename):</span><br><span class="line">        t = os.stat(filename)[ST_MTIME]</span><br><span class="line">    else:</span><br><span class="line">        t = int(time.time())</span><br><span class="line">    self.rolloverAt = self.computeRollover(t) # 计算何时分割日志</span><br></pre></td></tr></table></figure>
+
+<p>从上面代码可以发现，TimedRotatingFileHandler是根据当前文件的修改时间或当前时间戳来判断是否需要把日志分割开来，而每次初始化TimedRotatingFileHandler这个类，时间就会重新计算一次。</p>
+<p>所以，如果项目是持续运行的，那么这个类只会初始化一次，这时通过传入参数when&#x3D;’D’ 是可以正常按天来分割日志的。而只要python脚本一重启，那这个时间就会重新算，日志分割时间也就会推迟了。</p>
+<p>然后我们再阅读下computeRollover函数源码，发现如果传参when&#x3D;’midnight’，那么它会计算当前时间到凌晨零点的秒数，然后每次写日志时都会判断有没有过凌晨，一旦过了凌晨就会自动分割日志。</p>
+<p>到这里，关于python logging模块的内容就介绍完了。总的来说，logging模块用起来还是相当方便的，功能也比较强大，值得我们好好深入学习和使用。</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dahu-daqing/p/7040764.html">python logging模块</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38107388/article/details/90639151">Python自带TimedRotatingFileHandler巨坑，日志无法按天分割，使用需谨慎</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.7/library/logging.handlers.html">Python官方文档-logging.handlers</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E6%97%A5%E5%BF%97/" rel="tag"># 日志</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/18/python-auto-operation/" rel="prev" title="python自动化脚本实现模拟鼠标和键盘输入">
+      <i class="fa fa-chevron-left"></i> python自动化脚本实现模拟鼠标和键盘输入
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/20/python-cv/" rel="next" title="基于python-opencv的图像比对功能">
+      基于python-opencv的图像比对功能 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#logging%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">logging模块简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#logging%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">logging模块使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#logging%E7%9A%84%E6%97%A5%E5%BF%97%E7%AD%89%E7%BA%A7"><span class="nav-number">2.1.</span> <span class="nav-text">logging的日志等级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%88%B0%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">2.2.</span> <span class="nav-text">将日志输出到控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%97%A5%E5%BF%97%E5%86%99%E5%85%A5%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">将日志写入指定文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%97%A5%E5%BF%97%E5%90%8C%E6%97%B6%E8%BE%93%E5%87%BA%E5%88%B0%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%92%8C%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-number">2.4.</span> <span class="nav-text">将日志同时输出到控制台和日志文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logging%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84Handler"><span class="nav-number">2.5.</span> <span class="nav-text">logging中常用的Handler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#StreamHandler"><span class="nav-number">2.5.1.</span> <span class="nav-text">StreamHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FileHandler"><span class="nav-number">2.5.2.</span> <span class="nav-text">FileHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WatchedFileHandler"><span class="nav-number">2.5.3.</span> <span class="nav-text">WatchedFileHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RotatingFileHandler"><span class="nav-number">2.5.4.</span> <span class="nav-text">RotatingFileHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TimedRotatingFileHandler"><span class="nav-number">2.5.5.</span> <span class="nav-text">TimedRotatingFileHandler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E5%A4%A9%E4%BF%9D%E5%AD%98%E5%8D%95%E7%8B%AC%E7%9A%84%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-number">2.6.</span> <span class="nav-text">按天保存单独的日志文件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

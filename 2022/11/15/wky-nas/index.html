@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="利用玩客云实现低成本搭建家用轻NAS系统，总体方案：玩客云+ArmBian+可道云+移动硬盘。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="低成本搭建家用轻NAS系统-玩客云">
+<meta property="og:url" content="https://panzhe.cn/2022/11/15/wky-nas/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="利用玩客云实现低成本搭建家用轻NAS系统，总体方案：玩客云+ArmBian+可道云+移动硬盘。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/1.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/2.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/3.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/4.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/5.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/10.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/9.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/6.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/7.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/8.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/11.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/12.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/13.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/14.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/15.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/16.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/17.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/18.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/19.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/20.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/21.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/22.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/23.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/32.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/33.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/31.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/24.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/25.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/26.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/27.jpg">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/28.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/29.png">
+<meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/30.png">
+<meta property="article:published_time" content="2022-11-15T09:30:25.000Z">
+<meta property="article:modified_time" content="2022-11-17T03:37:29.656Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="armbian">
+<meta property="article:tag" content="NAS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2022/11/15/wky-nas/1.jpg">
+
+<link rel="canonical" href="https://panzhe.cn/2022/11/15/wky-nas/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>低成本搭建家用轻NAS系统-玩客云 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2022/11/15/wky-nas/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          低成本搭建家用轻NAS系统-玩客云
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-15 17:30:25" itemprop="dateCreated datePublished" datetime="2022-11-15T17:30:25+08:00">2022-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-17 11:37:29" itemprop="dateModified" datetime="2022-11-17T11:37:29+08:00">2022-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NAS%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">NAS系统</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+            <div class="post-description">利用玩客云实现低成本搭建家用轻NAS系统，总体方案：玩客云+ArmBian+可道云+移动硬盘。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><ul>
+<li><p>目前网络上有很多关于使用玩客云搭建NAS系统的文章，其中我觉得写的比较详细的是知乎上的这一篇<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1334222614072287232">《玩客云刷机armbian系列》</a>，我有很多是参考他的内容。</p>
+</li>
+<li><p>本文主要对我自己搭建的过程做一个详细和全面的介绍，供大家参考。</p>
+</li>
+<li><p>标题写“低成本”，至于为什么是低成本，主要是有两个方面原因。一方面是本身硬件成本不高，主要由玩客云和存储硬盘组成，玩客云从闲鱼上买只要50元左右，硬盘可以用闲置的移动硬盘；另一方面是玩客云的功耗很低，只有3~5w，即使是外接移动硬盘，连续运行一年的电费也不会超过50元。</p>
+</li>
+<li><p><strong>玩客云的硬件配置</strong>：CPU采用的是晶晨的S805，单核主频1.5GHz，这个CPU的最大优点就是功耗低，发热量小。内存RAM采用的是海力士，512MB*2，共1GB DDR3内存。闪存ROM是三星的8GB。网口芯片采用的是螃蟹的RTL6211F千兆网口。外观上采用铝合金工艺，前面板有一颗七彩灯，整体颜值较高。</p>
+<p><img src="/2022/11/15/wky-nas/1.jpg"></p>
+</li>
+</ul>
+<h2 id="玩客云拆机"><a href="#玩客云拆机" class="headerlink" title="玩客云拆机"></a>玩客云拆机</h2><h3 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h3><p>因为刷机需要先拆机才能刷，所以需要借助有些工具来拆机。需准备的工具内容如下：</p>
+<p>（1）双公头的USB线</p>
+<p>（2）一把镊子或一根短接线</p>
+<p>（3）一根网线</p>
+<p>（4）平口和米字型螺丝刀</p>
+<p>（5）一台吹风机</p>
+<h3 id="拆机"><a href="#拆机" class="headerlink" title="拆机"></a>拆机</h3><p>（1）用吹风机将面板吹热，让玩客云粘和面板的胶水软化，然后用平口螺丝刀慢慢撬开。从SD卡的位置比较容易撬一些。</p>
+<p><img src="/2022/11/15/wky-nas/2.jpg"></p>
+<p>（2）取下面板之后，拧掉露出来的六颗螺丝，然后将主板从盒子里抽出来。</p>
+<p><img src="/2022/11/15/wky-nas/3.jpg"></p>
+<p>（3）玩客云的主板分为两个硬件版本，一个是V1.0，一个是V1.3，在主板上会有相应标识。这里需要特别注意下主板的硬件版本，因为不同硬件版本的主板，其刷机方式略有差异。</p>
+<p><img src="/2022/11/15/wky-nas/4.jpg"></p>
+<h2 id="玩客云刷机"><a href="#玩客云刷机" class="headerlink" title="玩客云刷机"></a>玩客云刷机</h2><h3 id="准备软件工具包"><a href="#准备软件工具包" class="headerlink" title="准备软件工具包"></a>准备软件工具包</h3><p>（1）需准备的软件工具包如下：</p>
+<p><img src="/2022/11/15/wky-nas/5.jpg"></p>
+<ul>
+<li><p>Armbian_22.11.0是Armbian系统固件；</p>
+</li>
+<li><p>A-v1.0底包是V1.0主板的安卓盒子固件；</p>
+</li>
+<li><p>A-v1.3底包是V1.3主板的安卓盒子固件；</p>
+</li>
+<li><p>Amlogic.USB.Burning.Tool是刷机工具；</p>
+</li>
+<li><p>putty是远程连接玩客云盒子的通讯工具。</p>
+</li>
+</ul>
+<p>（2）双击并安装Amlogic.USB.Burning.Tool。</p>
+<h3 id="刷入Armbian系统"><a href="#刷入Armbian系统" class="headerlink" title="刷入Armbian系统"></a>刷入Armbian系统</h3><blockquote>
+<p>什么是 Armbian ？</p>
+<p>Armbian是其他项目可以信赖的单板计算机（SBC）的基本操作系统平台，它拥有以下几个特点：</p>
+<p>1、轻量级基于Debian或Ubuntu的Linux发行版，专门用于ARM开发板；</p>
+<p>2、每个系统均由Armbian Build Tools进行编译，组装和优化；<br>3、它具有强大的构建和软件开发工具，可以进行自定义构建；<br>4、充满活力的社区。<br>Armbian其实就是Linux的一个发行版本，专门用于ARM开发板的小型系统。</p>
+</blockquote>
+<h4 id="用双公头的USB线把电脑和主板连起来"><a href="#用双公头的USB线把电脑和主板连起来" class="headerlink" title="用双公头的USB线把电脑和主板连起来"></a>用双公头的USB线把电脑和主板连起来</h4><p>（1）打开刚才已安装好的USB_Burning_Tool。</p>
+<p><img src="/2022/11/15/wky-nas/10.png"></p>
+<p>（2）将USB线的一头插到电脑的USB口上，另一头插到主板的USB口上，注意是靠近HDMI接口的那个USB口。</p>
+<p><img src="/2022/11/15/wky-nas/9.jpg"></p>
+<h4 id="将主板短接"><a href="#将主板短接" class="headerlink" title="将主板短接"></a>将主板短接</h4><p>用镊子或短接线将主板的某两个点进行短接，V1.0和V1.3主板的短接点不一样，具体如下图所示。</p>
+<blockquote>
+<p><strong>V1.0版本的主板短接方式</strong></p>
+</blockquote>
+<p><img src="/2022/11/15/wky-nas/6.jpg"></p>
+<blockquote>
+<p><strong>V1.3版本的主板短接方式</strong></p>
+</blockquote>
+<p><img src="/2022/11/15/wky-nas/7.jpg"></p>
+<p>使用镊子、线缆或其他能导电的东西都可以，如下图所示，使用镊子把两个端点连接。 <strong>短接通电时，一定要注意，手部千万别碰触到面板，以免造成短路，把板子烧坏。</strong></p>
+<p><img src="/2022/11/15/wky-nas/8.jpg"></p>
+<h4 id="通电刷机"><a href="#通电刷机" class="headerlink" title="通电刷机"></a>通电刷机</h4><p>（1）当主板短接好之后，接上主板电源，给主板通电。<strong>这里一定要一直保持住主板的两个点处于短接状态。</strong></p>
+<p>（2）当USB_Burning_Tool软件界面上出现“连接成功”时，将短接线或镊子移开。<strong>如果短接成功，则主板上的灯也不会亮。</strong> 如果短接失败，则主板上的灯会亮，那么就重新断开主板电源，短接好之后，再给主板通电。</p>
+<p><img src="/2022/11/15/wky-nas/11.jpg"></p>
+<p>（3）连接成功之后，开始<strong>导入安卓盒子固件，即A-v1.0底包.img 或 A-v1.3底包.img，根据自己的主板版本选择相应底包</strong>，开始烧录。烧录完成后，点击“停止”按钮，然后断开电源，拔掉电脑侧的USB线。</p>
+<p><img src="/2022/11/15/wky-nas/12.jpg"></p>
+<p>（4）接通主板电源，给主板通电运行一下底包。运行约1分钟以后，关闭主板电源。将电脑侧USB线接好，将主板短接，然后接通主板电源。当USB_Burning_Tool软件界面上出现“连接成功”时，将短接线或镊子移开。</p>
+<p>（5）<strong>导入Armbian系统固件，即Armbian_22.11.0</strong>，烧录成功后，点击“停止”按钮，关闭主板电源，拔掉电脑侧的USB线。</p>
+<p>（6）可将主板放回到玩客云盒子中，把面板螺丝拧紧固定好，把盒子组装好。将网线接到路由器和玩客云盒子上，<strong>保证电脑与玩客云盒子同处于一个局域网环境下，即它们俩连的是同一个路由器，</strong> 然后接通玩客云盒子的电源，此时会发现灯是红色的，而且会闪。</p>
+<p><img src="/2022/11/15/wky-nas/13.jpg"></p>
+<h4 id="启动Armbian"><a href="#启动Armbian" class="headerlink" title="启动Armbian"></a>启动Armbian</h4><p>（1）通过windows控制台，输入ipconfig，查看网关IP地址，即当前路由器的IP地址，然后打开浏览器，访问该路由器配置界面，可以看到在路由器的设备列表中，有一个名字叫onecloud的设备，这个设备就是玩客云盒子。从这里可以看到玩客云的内网IP地址，即192.168.XX.XX。</p>
+<p><img src="/2022/11/15/wky-nas/14.jpg"></p>
+<p>（2）打开putty通讯工具，用户名为root，初始登录密码是1234。登录成功之后，会提示你创建一个新密码。新密码设置完成后，就会正式进入到Armbian系统了。</p>
+<p><img src="/2022/11/15/wky-nas/15.jpg"></p>
+<p>（3）修改系统时区</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm -rf /etc/localtime</span><br><span class="line">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line">echo Etc/UTC &gt; /etc/timezone</span><br></pre></td></tr></table></figure>
+
+<p>（4）更换为国内源，下载速度更快</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 备份原文件</span><br><span class="line">cp /etc/apt/sources.list.d/armbian.list /etc/apt/sources.list.d/armbian.list.bak</span><br><span class="line"># 更改为清华源(以下是一条命令，需一次性复制完整)</span><br><span class="line">sudo tee /etc/apt/sources.list.d/armbian.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/armbian/ stretch main stretch-utils stretch-desktop</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 备份原文件</span><br><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"># 更改为中科大源(以下是一条命令，需一次性复制完整)</span><br><span class="line">sudo tee /etc/apt/sources.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-updates main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-backports main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 更新软件列表和软件</span><br><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line"># 重启玩客云</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<p><strong>到这里，Armbian系统就安装好了，玩客云刷机成功。</strong></p>
+<hr>
+<p><em>接下来开始部署可道云，实现家用轻 NAS 系统。</em></p>
+<h2 id="搭建WEB环境-LNMP"><a href="#搭建WEB环境-LNMP" class="headerlink" title="搭建WEB环境-LNMP"></a>搭建WEB环境-LNMP</h2><p>所谓的LNMP是指 linux+nginx+mysql+php 的首字母，是一套用于运行WEB网站的软件组合包。</p>
+<ul>
+<li><p>linux 就是我们现在已经刷好的Armbian系统。</p>
+</li>
+<li><p>nginx 是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP&#x2F;POP3&#x2F;SMTP服务。</p>
+</li>
+<li><p>mysql 是一个关系型数据库管理系统, 也是当前最流行的关系型数据库管理系统之一。</p>
+</li>
+<li><p>PHP 即“超文本预处理器”是在服务器端执行的脚本语言，主要用途在于处理动态网页。</p>
+</li>
+</ul>
+<p>所以现在需要安装nginx、mysql、PHP，可以通过安装宝塔来一键可视化安装这些包，也可以通过挨个手动安装。我是采用的后者，因为装宝塔一直装不成功，各种版本的宝塔都试了，安装过程中出现了各种问题，后来一怒之下，弃之。如果感兴趣的，想安装宝塔的，可访问 <a target="_blank" rel="noopener" href="https://www.bt.cn/btcode.html">宝塔linux面板命令大全 - 宝塔面板</a>，查阅相关内容。</p>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt-get -y install nginx</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用电脑或手机浏览器访问 玩客云IP ，例如我的 192.168.2.194。如果显示了Welcome to nginx! 则表示nginx安装完成！</p>
+<p><img src="/2022/11/15/wky-nas/16.jpg"></p>
+<h3 id="安装php及其常用组件"><a href="#安装php及其常用组件" class="headerlink" title="安装php及其常用组件"></a>安装php及其常用组件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt install -y php php-fpm php7.0-mysql php7.0-gd php7.0-curl php7.0-mbstring</span><br></pre></td></tr></table></figure>
+
+<p>同样，可以通过命令<code>php -v</code>查看php的版本号。</p>
+<h3 id="安装mysql-（可选，kodexplorer不依赖它）"><a href="#安装mysql-（可选，kodexplorer不依赖它）" class="headerlink" title="安装mysql （可选，kodexplorer不依赖它）"></a>安装mysql （可选，kodexplorer不依赖它）</h3><p>刚开始我是打算通过命令<code>apt install -y mysql-server</code>来安装mysql，但系统一直提示找不到相应的软件包，所以后来改用了MariaDB。</p>
+<p>MariaDB数据库管理系统是MySQL的一个分支，是由MySQL之父Michael开发的。开发这个分支的原因之一是：甲骨文公司收购了MySQL后，有将MySQL闭源的潜在风险，因此社区采用分支的方式来避开这个风险，所以mariadb就是mysql的替代品。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt install -y mariadb-server</span><br></pre></td></tr></table></figure>
+
+<p>然后可以通过命令<code>mysql -V</code>查看mysql的版本号。</p>
+<h3 id="配置nginx环境"><a href="#配置nginx环境" class="headerlink" title="配置nginx环境"></a>配置nginx环境</h3><p>这里使用到一个系统自带的文本编辑器nano，就像windows里的记事本，它比vi&#x2F;vim要简单得多。想深入了解的同学可以使用<code>nano --help</code> 或 <code>man nano</code> 命令查看。</p>
+<p><strong>这里简单说下基本用法：</strong></p>
+<blockquote>
+<p>方向键上下左右，用于调整光标位置</p>
+<p>ctrl + x 退出</p>
+<p>ctrl + o 写入(保存)</p>
+<p>ctrl + w 搜索</p>
+<p>ctrl + c 游标位置(显示光标所在的行列)</p>
+<p>ctrl + &#x2F; 跳转到指定 行、列</p>
+<p>ctrl + g 帮助</p>
+</blockquote>
+<p>接着我们对nginx配置文件做简单修改，输入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano -c /etc/nginx/sites-enabled/default</span><br></pre></td></tr></table></figure>
+
+<p>在第44行的最后面加上index.php，如下图所示。</p>
+<p><img src="/2022/11/15/wky-nas/17.png"></p>
+<p>然后对56~63行的部分行，做去#号处理，如下图所示。</p>
+<blockquote>
+<p>处理前的内容</p>
+</blockquote>
+<p><img src="/2022/11/15/wky-nas/18.jpg"></p>
+<blockquote>
+<p>处理后的内容，这里要注意千万别弄错了。</p>
+</blockquote>
+<p><img src="/2022/11/15/wky-nas/19.jpg"></p>
+<p>按 <code>ctrl + o</code> 写入并保存，再按 <code>ctrl + x</code> 退出。</p>
+<p><img src="/2022/11/15/wky-nas/20.jpg"></p>
+<p>先检查下修改后的nginx配置文件是否正确。输入<code>nginx -t</code> 命令，如果返回 successful ，则表示配置文件无错误，否则说明配置文件有错误。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nginx -t -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>确认nginx配置文件正确后，重启nginx服务。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
+
+<p>接着创建一个测试文件，输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &quot;&lt;?php phpinfo(); ?&gt;&quot;&gt;/var/www/html/info.php</span><br></pre></td></tr></table></figure>
+
+<p>然后使用电脑或手机浏览器访问 “玩客云IP&#x2F;info.php”，比如：192.168.2.194&#x2F;info.php。如果出现以下内容，表示nginx配置的没有问题。</p>
+<p><img src="/2022/11/15/wky-nas/21.png"></p>
+<h3 id="配置mysql-mariadb（可选，若无需安装mysql，则跳过）"><a href="#配置mysql-mariadb（可选，若无需安装mysql，则跳过）" class="headerlink" title="配置mysql&#x2F;mariadb（可选，若无需安装mysql，则跳过）"></a>配置mysql&#x2F;mariadb（可选，若无需安装mysql，则跳过）</h3><h4 id="使用配置向导"><a href="#使用配置向导" class="headerlink" title="使用配置向导"></a>使用配置向导</h4><p>输入命令 <code>mysql_secure_installation</code> 进行配置。</p>
+<p><img src="/2022/11/15/wky-nas/22.jpg"></p>
+<p>此时会出现一些交互事项：</p>
+<blockquote>
+<p>Enter current password for root (enter for none):  初次运次无密码，直接回车。</p>
+<p>Set root password? [Y&#x2F;n]  输入Y，这里的 root 是指mysql的用户名。</p>
+<p>New password:  设置 root 用户的密码。</p>
+<p>Re-enter new password:  再输入一次你设置的密码。</p>
+<p>Remove anonymous users? [Y&#x2F;n]  是否删除匿名用户，直接回车。<br>Disallow root login remotely? [Y&#x2F;n]  是否禁止root远程登录，输入n。<br>Remove test database and access to it? [Y&#x2F;n]  是否删除test数据库，直接回车。<br>Reload privilege tables now? [Y&#x2F;n]  是否重新加载权限表，直接回车。</p>
+</blockquote>
+<h4 id="配置mariadb远程访问权限"><a href="#配置mariadb远程访问权限" class="headerlink" title="配置mariadb远程访问权限"></a>配置mariadb远程访问权限</h4><p>（1）开启数据库远程访问，输入刚才设置的root用户的密码来登录。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<p>（2）接着依次输入以下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt; use mysql;</span><br><span class="line"></span><br><span class="line">mysql&gt;GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;123456&#x27; WITH GRANT OPTION;</span><br><span class="line"></span><br><span class="line">mysql&gt;update user set plugin = &#x27;mysql_native_password&#x27; where user = &#x27;root&#x27;;</span><br><span class="line"></span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"></span><br><span class="line">mysql&gt; exit;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/15/wky-nas/23.jpg"></p>
+<h4 id="修改MariaDB配置文件，允许远程访问"><a href="#修改MariaDB配置文件，允许远程访问" class="headerlink" title="修改MariaDB配置文件，允许远程访问"></a>修改MariaDB配置文件，允许远程访问</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano /etc/mysql/mariadb.conf.d/50-server.cnf</span><br></pre></td></tr></table></figure>
+
+<p>将bind-address &#x3D; 127.0.0.1 改为 bind-address &#x3D; 0.0.0.0，然后ctrl + o 保存，ctrl + x 退出。</p>
+<p><strong>至此，WEB环境搭建完成。</strong></p>
+<hr>
+<h2 id="安装可道云"><a href="#安装可道云" class="headerlink" title="安装可道云"></a>安装可道云</h2><p>可道云是最常用的搭建私人云盘的软件之一，分为 <em>kod explorer 和 kodbox 两个版本</em>，属于不同产品，适用的场景也不相同。</p>
+<h3 id="kod-explorer简介"><a href="#kod-explorer简介" class="headerlink" title="kod explorer简介"></a>kod explorer简介</h3><p>kod explorer是可道云的早期产品，<strong>无需数据库就可以运行</strong>，适用于个人用户或小型团队和企业。它本质上是一个在线的文件管理器，可以用来管理指定文件夹的文件，和File Browser有点类似，可以理解成是一个在线的“我的电脑”。通过kod explorer看到的文件跟我们通过WINSCP或者SSH看到的文件是一样的，说白了就是<strong>kod explorer的文件目录结构与磁盘中存储的文件目录结构是一样的，因而比较适合那些对文件管理有强烈需求的用户。</strong></p>
+<h3 id="kodbox简介"><a href="#kodbox简介" class="headerlink" title="kodbox简介"></a>kodbox简介</h3><p>kodbox 是在 kod explorer 基础上进行了系统重构的全新产品。为满足系统更强性能、更安全、更多特性的拓展需求，Kodbox 对底层架构、存储方式、权限机制等进行了重构，同时继承并升级了 kod explorer 优秀前端体验。KodBox 更多针对企业级的应用需求，可支撑高并发、更多用户数、更高协作和安全要求。</p>
+<p>同时，<strong>kodbox是需要数据库支持的</strong>，它会将你上传的文件分成一个一个的小文件进行存储。在kodbox里面看到的是完整的文件，而通过WINSCP或SSH看到的则是一个一个的小文件，无法正常读取。同样的，通过WINSCP或者FTP上传的文件也不能被kodbox识别，所以kodbox的安全性会更高，更适合用来分享文件，但是不适合做文件的管理，因为kodbox在磁盘中存储的文件是按照日期分类存储的，与kodbox看到的文件目录结构完全不一致。</p>
+<blockquote>
+<p>我搭建可道云私有化环境，主要是用来对我个人家庭的日常文件，如图片、视频等，进行文件的管理和维护，所以我选用了kod explorer作为家用的私有云存储系统。</p>
+</blockquote>
+<p>下面将分别介绍 kod explorer 和 kodbox 的具体安装过程，我们可根据自身需求，<strong>选择其中一个来安装和使用。</strong></p>
+<h3 id="安装kod-explorer"><a href="#安装kod-explorer" class="headerlink" title="安装kod explorer"></a>安装kod explorer</h3><p>（1）用命令wget获取kodexplorer安装包或前往<a target="_blank" rel="noopener" href="https://kodcloud.com/download/">可道云官网</a>自行下载。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodexplorer4.49.zip</span><br></pre></td></tr></table></figure>
+
+<p>（2）解压kodexplorer到&#x2F;var&#x2F;www&#x2F;html&#x2F;kode目录下，并赋予kode目录读写权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodexplorer4.49.zip </span><br><span class="line">chmod -R 777 /var/www/html/kode/</span><br></pre></td></tr></table></figure>
+
+<p>（3）使用手机或电脑浏览器访问：玩客云IP&#x2F;kode，例如我的是：192.168.2.194&#x2F;kode，根据系统提示新建管理员密码，即可进入系统。</p>
+<p><img src="/2022/11/15/wky-nas/32.jpg"></p>
+<p>（4）最后可前往可道云官网下载移动端APP，在手机上访问可道云。注意需要配置下服务器站点，如：192.168.2.194&#x2F;kodb，才能正常访问，且要保证手机与玩客云连接的是同一个路由器。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">安卓APP下载地址：https://static.kodcloud.com/update/client/app/kodexplorer/com.kodcloud.explorer.apk</span><br><span class="line">苹果APP获取方法：打开App Store，搜索 kodexplorer 即可。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/15/wky-nas/33.jpg"></p>
+<h4 id="修改kod-explorer的默认存储位置"><a href="#修改kod-explorer的默认存储位置" class="headerlink" title="修改kod explorer的默认存储位置"></a>修改kod explorer的默认存储位置</h4><p>kod explorer登录进去之后的默认存储位置（主文件夹）是在玩客云的内部存储，所以我们上传文件时默认上传到了玩客云的内部存储。由于玩客云的内部存储空间小，且存放着系统文件，可谓一寸空间一寸金。因此，将默认存储位置修改到外部存储设备就显得十分有必要了。</p>
+<p>（1）准备好外接存储设备</p>
+<p>外接存储设备必须是ext4格式的，否则将会挂载失败。如果外接存储设备不是ext4格式，则需要进行格式转化，具体步骤如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看你的U盘序号，通常是/dev/sda或/dev/sdb之类的</span><br><span class="line">fdisk -l </span><br><span class="line"># 格式化为ext4分区</span><br><span class="line">mkfs.ext4 /dev/sda1</span><br></pre></td></tr></table></figure>
+
+<p>然后将U盘挂载到系统上，并将kod explorer现有数据迁移到U盘</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 建立挂载点，netdisk为挂载点名称，可以自定义</span><br><span class="line">mkdir /var/www/netdisk</span><br><span class="line"># 挂载U盘</span><br><span class="line">mount -t ext4 /dev/sda1 /var/www/netdisk</span><br><span class="line"># 迁移数据</span><br><span class="line">cp -r /var/www/html/kode/data /var/www/netdisk/</span><br><span class="line"># 赋予挂载目录读写权限</span><br><span class="line">chmod -R 777 /var/www/netdisk/</span><br></pre></td></tr></table></figure>
+
+<p>（2）修改默认存储位置</p>
+<p>在&#x2F;var&#x2F;www&#x2F;html&#x2F;kode&#x2F;config目录下新建一个define.php文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano -c /var/www/html/kode/config/define.php</span><br></pre></td></tr></table></figure>
+
+<p>并输入如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">define(&#x27;DATA_PATH&#x27;,&#x27;/var/www/netdisk/data/&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>保存文件后，重新登录kod explorer，会发现默认存储位置或主文件夹已经变成了修改后的路径了。</p>
+<p><img src="/2022/11/15/wky-nas/31.png"></p>
+<h3 id="安装kodbox"><a href="#安装kodbox" class="headerlink" title="安装kodbox"></a>安装kodbox</h3><p>（1）用命令wget获取可道云KodBox安装包或前往<a target="_blank" rel="noopener" href="https://kodcloud.com/download/">可道云官网</a>自行下载。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodbox.1.35.zip</span><br></pre></td></tr></table></figure>
+
+<p>（2）解压kodbox到&#x2F;var&#x2F;www&#x2F;html&#x2F;kodb目录下，并赋予kodb目录读写权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodbox.1.35.zip </span><br><span class="line">chmod -R 777 /var/www/html/kodb/</span><br></pre></td></tr></table></figure>
+
+<p>（3）为了提升系统访问速度，我们采用redis系统缓存，所以先安装下redis-server及php-redis组件。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt-get install -y php-redis</span><br><span class="line">apt-get install -y redis-server</span><br></pre></td></tr></table></figure>
+
+<p>（4）重启 php7.0-fpm</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service php7.0-fpm restart</span><br></pre></td></tr></table></figure>
+
+<p>（5）使用手机或电脑浏览器访问：玩客云IP&#x2F;kodb，例如我的是：192.168.2.194&#x2F;kodb，会出现安装向导。</p>
+<p><strong>环境检测：</strong> 由于玩客云s805不是64位CPU，所以只能支持32位，所以在环境检测中选择跳过。</p>
+<p><img src="/2022/11/15/wky-nas/24.jpg"></p>
+<p><strong>数据库配置：</strong> 数据库类型，选择mysql，并填写mysql 的用户名与密码。系统缓存，选择 Redis ，然后点击“确定”即可。</p>
+<p><img src="/2022/11/15/wky-nas/25.jpg"></p>
+<p><strong>账号设置：</strong> 设置好kodbox的管理员密码，就可以登录了。</p>
+<p><img src="/2022/11/15/wky-nas/26.jpg"></p>
+<p>最后可前往可道云官网下载移动端APP，在手机上访问可道云。注意需要配置下服务器站点，如：192.168.2.194&#x2F;kodb，才能正常访问，且要保证手机与玩客云连接的是同一个路由器。</p>
+<p><img src="/2022/11/15/wky-nas/27.jpg"></p>
+<hr>
+<p><strong>到这里，利用玩客云来搭建家用轻NAS系统的操作就全部完成了。</strong></p>
+<h2 id="遇到的问题及解决方案"><a href="#遇到的问题及解决方案" class="headerlink" title="遇到的问题及解决方案"></a>遇到的问题及解决方案</h2><h3 id="使用putty时报错：tput-unknown-terminal-“xterm”"><a href="#使用putty时报错：tput-unknown-terminal-“xterm”" class="headerlink" title="使用putty时报错：tput: unknown terminal “xterm”"></a>使用putty时报错：tput: unknown terminal “xterm”</h3><p><strong>问题描述：</strong> 在使用putty过程中，报错 tput: unknown terminal “xterm”，此时按后退键和上下左右键都会出现乱码。</p>
+<p><strong>解决方案：</strong> 输入以下命令，重装<strong>ncurses-base</strong>即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt reinstall ncurses-base</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies"><a href="#安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies" class="headerlink" title="安装mysql或mariadb时报错：The following packages have unmet dependencies"></a>安装mysql或mariadb时报错：The following packages have unmet dependencies</h3><p><strong>问题描述：</strong> 输入命令<code>apt-get install mysql-server</code>安装mysql时，出现以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> mysql-server : Depends: default-mysql-server but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+
+<p>被告知需要安装依赖包：default-mysql-server，然后输入命令<code>apt-get install default-mysql-server</code>安装这个依赖包，但又出现以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> default-mysql-server : Depends: mariadb-server-10.1 but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+
+<p>这次被告知需要安装依赖包：mariadb-server-10.1，然后继续输入命令<code>apt-get install mariadb-server-10.1</code>安装这个依赖包，但又出现了以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> mariadb-server-10.1 : Depends: libdbi-perl but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+
+<p>根据提示，需要安装依赖包：libdbi-per，然后再输入命令<code>apt-get install libdbi-perl</code>安装这个依赖包，但又出现了以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> libdbi-perl : Depends: perlapi-5.24.1</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，它又依赖于perlapi-5.24.1，所以继续输入命令<code>apt-get install perlapi-5.24.1</code>安装它，但依然报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Package perlapi-5.24.1 is a virtual package provided by:</span><br><span class="line">  perl-base 5.24.1-3+deb9u5 [Not candidate version]</span><br><span class="line"></span><br><span class="line">E: Package &#x27;perlapi-5.24.1&#x27; has no installation candidate</span><br></pre></td></tr></table></figure>
+
+<p>到这里，终于出现了终极错误。原来是因为 <strong>没有安装perl-base 5.24.1</strong> 而导致mysql无法正常安装。但我们通过命令<code>perl -v</code>可以看到，系统里其实已经安装了perl-base，只是版本号不是5.24.1，而是其它别的版本，但一般来说，perl的依赖关联实在太多，我们不能直接卸载它进行重装，否则将会非常麻烦。</p>
+<p><strong>解决方案：</strong> 基于上述情况，我们可以考虑将当前系统的perl版本平滑降至5.24.1，来解决这个问题。</p>
+<p>（1）首先我们去debian官网下载<a target="_blank" rel="noopener" href="https://packages.debian.org/stretch/perl-base">perl-base 5.24.1软件包</a>，由于玩客云的硬件架构师armhf的，所以选择下载 armhf 的软件包。</p>
+<p><img src="/2022/11/15/wky-nas/28.png"></p>
+<p>点击“armhf”，进入到另一个页面，选择亚洲节点进行下载，也可输入如下命令，直接获取软件包到玩客云上。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.ustc.edu.cn/debian/pool/main/p/perl/perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
+
+<p>（2）通过dpkg来安装deb包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
+
+<p>（3）修复相关依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt --fix-broken install</span><br></pre></td></tr></table></figure>
+
+<p>此时输入命令<code>perl -v</code>查看perl版本，发现perl版本变成了5.24.1，然后再次输入安装mysql或mariadb的命令，就可以成功安装了。</p>
+<h3 id="使用SD卡刷机后，如何恢复SD卡的原始存储空间"><a href="#使用SD卡刷机后，如何恢复SD卡的原始存储空间" class="headerlink" title="使用SD卡刷机后，如何恢复SD卡的原始存储空间"></a>使用SD卡刷机后，如何恢复SD卡的原始存储空间</h3><p><strong>问题描述：</strong> 有些玩客云刷机教程采用的是SD卡刷机，首先是利用 BalenaEtcher 刻录工具将armbian系统刻录到SD卡中，作为系统启动盘。我尝试过一次，感觉这种方式刷机比较慢，大概等了半个多小时才刷好，所以后来还是采用了拆机短接的方式刷的。那么如何将之前作为系统启动盘的SD卡恢复回去，继续作为普通的文件存储U盘使用呢？</p>
+<p><strong>解决方案：</strong> 利用diskpart将SD卡中的数据清空，然后再进行格式化，就可以了。具体操作步骤如下：</p>
+<p>（1）打开windows命令行，输入diskpart命令。<br>（2）在diskpart里面，输入list disk命令，查看当前系统挂载的磁盘（包括SATA、U盘、SD卡等），如下图所示。</p>
+<p><img src="/2022/11/15/wky-nas/29.png"></p>
+<p>（3）找到要恢复的磁盘，比如我要恢复的是磁盘1，则输入命令select disk 1</p>
+<p>（4）再输入命令clean，就可以将4中所选的磁盘数据清空了，再次输入list disk可以看到磁盘的可用已经和大小一样了。此时已经完成了SD卡的恢复，接下来我们将SD卡格式化。</p>
+<p>（5）依次输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建卷</span><br><span class="line">create partition primary</span><br><span class="line"># 查看创建的卷</span><br><span class="line">list partition</span><br><span class="line"># 选中磁盘1</span><br><span class="line">select partition 1</span><br><span class="line"># 格式化磁盘1，即SD卡</span><br><span class="line">format quick</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/11/15/wky-nas/30.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/armbian/" rel="tag"># armbian</a>
+              <a href="/tags/NAS/" rel="tag"># NAS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/19/logrotate/" rel="prev" title="使用工具logrotate实现大日志文件的分割和转储">
+      <i class="fa fa-chevron-left"></i> 使用工具logrotate实现大日志文件的分割和转储
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/27/rasa-docker/" rel="next" title="在docker中部署rasa服务">
+      在docker中部署rasa服务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%A9%E5%AE%A2%E4%BA%91%E6%8B%86%E6%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">玩客云拆机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%86%E6%9C%BA"><span class="nav-number">2.2.</span> <span class="nav-text">拆机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">玩客云刷机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">准备软件工具包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E5%85%A5Armbian%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.2.</span> <span class="nav-text">刷入Armbian系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E5%8F%8C%E5%85%AC%E5%A4%B4%E7%9A%84USB%E7%BA%BF%E6%8A%8A%E7%94%B5%E8%84%91%E5%92%8C%E4%B8%BB%E6%9D%BF%E8%BF%9E%E8%B5%B7%E6%9D%A5"><span class="nav-number">3.2.1.</span> <span class="nav-text">用双公头的USB线把电脑和主板连起来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E4%B8%BB%E6%9D%BF%E7%9F%AD%E6%8E%A5"><span class="nav-number">3.2.2.</span> <span class="nav-text">将主板短接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E7%94%B5%E5%88%B7%E6%9C%BA"><span class="nav-number">3.2.3.</span> <span class="nav-text">通电刷机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8Armbian"><span class="nav-number">3.2.4.</span> <span class="nav-text">启动Armbian</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BAWEB%E7%8E%AF%E5%A2%83-LNMP"><span class="nav-number">4.</span> <span class="nav-text">搭建WEB环境-LNMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nginx"><span class="nav-number">4.1.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85php%E5%8F%8A%E5%85%B6%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">安装php及其常用组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql-%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8Ckodexplorer%E4%B8%8D%E4%BE%9D%E8%B5%96%E5%AE%83%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">安装mysql （可选，kodexplorer不依赖它）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEnginx%E7%8E%AF%E5%A2%83"><span class="nav-number">4.4.</span> <span class="nav-text">配置nginx环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEmysql-mariadb%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%8C%E8%8B%A5%E6%97%A0%E9%9C%80%E5%AE%89%E8%A3%85mysql%EF%BC%8C%E5%88%99%E8%B7%B3%E8%BF%87%EF%BC%89"><span class="nav-number">4.5.</span> <span class="nav-text">配置mysql&#x2F;mariadb（可选，若无需安装mysql，则跳过）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E5%90%91%E5%AF%BC"><span class="nav-number">4.5.1.</span> <span class="nav-text">使用配置向导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEmariadb%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90"><span class="nav-number">4.5.2.</span> <span class="nav-text">配置mariadb远程访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9MariaDB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="nav-number">4.5.3.</span> <span class="nav-text">修改MariaDB配置文件，允许远程访问</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8F%AF%E9%81%93%E4%BA%91"><span class="nav-number">5.</span> <span class="nav-text">安装可道云</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kod-explorer%E7%AE%80%E4%BB%8B"><span class="nav-number">5.1.</span> <span class="nav-text">kod explorer简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kodbox%E7%AE%80%E4%BB%8B"><span class="nav-number">5.2.</span> <span class="nav-text">kodbox简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85kod-explorer"><span class="nav-number">5.3.</span> <span class="nav-text">安装kod explorer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9kod-explorer%E7%9A%84%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="nav-number">5.3.1.</span> <span class="nav-text">修改kod explorer的默认存储位置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85kodbox"><span class="nav-number">5.4.</span> <span class="nav-text">安装kodbox</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">遇到的问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8putty%E6%97%B6%E6%8A%A5%E9%94%99%EF%BC%9Atput-unknown-terminal-%E2%80%9Cxterm%E2%80%9D"><span class="nav-number">6.1.</span> <span class="nav-text">使用putty时报错：tput: unknown terminal “xterm”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql%E6%88%96mariadb%E6%97%B6%E6%8A%A5%E9%94%99%EF%BC%9AThe-following-packages-have-unmet-dependencies"><span class="nav-number">6.2.</span> <span class="nav-text">安装mysql或mariadb时报错：The following packages have unmet dependencies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SD%E5%8D%A1%E5%88%B7%E6%9C%BA%E5%90%8E%EF%BC%8C%E5%A6%82%E4%BD%95%E6%81%A2%E5%A4%8DSD%E5%8D%A1%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">6.3.</span> <span class="nav-text">使用SD卡刷机后，如何恢复SD卡的原始存储空间</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

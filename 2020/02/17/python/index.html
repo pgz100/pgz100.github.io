@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍在python具体使用过程中的一些基础知识点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python使用的基础知识">
+<meta property="og:url" content="https://panzhe.cn/2020/02/17/python/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="介绍在python具体使用过程中的一些基础知识点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2020/02/17/python/1.jpg">
+<meta property="article:published_time" content="2020-02-17T15:01:08.000Z">
+<meta property="article:modified_time" content="2020-02-20T03:16:26.950Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2020/02/17/python/1.jpg">
+
+<link rel="canonical" href="https://panzhe.cn/2020/02/17/python/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python使用的基础知识 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2020/02/17/python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python使用的基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 23:01:08" itemprop="dateCreated datePublished" datetime="2020-02-17T23:01:08+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-20 11:16:26" itemprop="dateModified" datetime="2020-02-20T11:16:26+08:00">2020-02-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">介绍在python具体使用过程中的一些基础知识点。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python简介"><a href="#Python简介" class="headerlink" title="Python简介"></a>Python简介</h1><p>Python是由Guido van Rossum于1989年底发明，第一个公开发行版发行于1991年。Python是一种解释型、面向对象、动态数据类型的高级程序设计语言，它具有卓越的通用性、高效性、平台移植性和安全性。近几年Python在数据挖掘，人工智能等领域较为流行。</p>
+<h1 id="Python2和Python3"><a href="#Python2和Python3" class="headerlink" title="Python2和Python3"></a>Python2和Python3</h1><p>因为早期的 Python版本在基础方面设计存在着一些不足之处，所以在2008 年的时候 Guido van Rossum 又重新开发 Python 3.0（被称为Python 3000，或简称Py3k），Python3在设计的时候很好地解决了这些遗留问题， 并且在性能上也有了一定的提升， 然而 Python3 带来的最大的问题就是不完全向后兼容，当时向后兼容的版本是Python2.6。Python开发团队无法一下子就让所有项目和类库都转到 Python3.0 上面。 所以，两个版本就进入了长期并行开发和维护的状态。但是就更新速度来说 ，Python3更新速度远快于Python2的速度，因为Python2目前主要以维护为主，Python3是未来的趋势，但从目前形势来看，Python2和Python3应该会长期并存，就像现在的WinXP、Win7、Win10一样。</p>
+<h2 id="学习Python-2还是Python-3？"><a href="#学习Python-2还是Python-3？" class="headerlink" title="学习Python 2还是Python 3？"></a>学习Python 2还是Python 3？</h2><p>对于纠结是学python2还是python3的朋友，推荐你看一篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39521554/article/details/80855086">https://blog.csdn.net/qq_39521554/article/details/80855086</a> 。其实我刚开始学python的时候，也曾纠结过这个问题。当时主流用的还是python2，所以我没有在这个问题上纠结太久（当你不知道该如何二选一时，那么跟着主流走就对了）。</p>
+<h1 id="同时安装Python2和Python3"><a href="#同时安装Python2和Python3" class="headerlink" title="同时安装Python2和Python3"></a>同时安装Python2和Python3</h1><p>这里介绍下如何同时安装Python2和Python3，以及安装好之后如何使用，如何避免两个版本间的命令冲突。</p>
+<p>当前Windows下稳定版Python如下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/ftp/python/2.7.16/python-2.7.16.amd64.msi">Python 2 Release - Python 2.7.16</a>（64位操作系统）</p>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64.exe">Python 3 Release - Python 3.7.3</a>（64位操作系统）</p>
+<p>如果上面两个版本不满足需求，可到<a target="_blank" rel="noopener" href="https://www.python.org/">Python官网</a>，下载其他Python安装文件。</p>
+<p>安装步骤这里就省去了，注意在安装过程中可以选择让安装程序来设置python的环境变量，当然也可以等安装以后，自己再去我的电脑&gt;属性&gt;高级系统设置&gt;高级&gt;环境变量&gt;系统变量&gt;Path里设置环境变量。</p>
+<p>当python2和python3都安装完以后，可以看到无论是python2还是python3，python可执行文件都叫python.exe，那此时我们在cmd窗口里输入python，会进入哪个版本的python命令行中呢？其实在cmd下输入python得到的版本号取决于环境变量里哪个版本的python路径更靠前，毕竟windows是按照顺序查找的。</p>
+<p>这就带来一个问题了，如果你一会想用python2运行一个脚本，一会又想用python3运行另一个脚本，你怎么做？来回改环境变量显然很麻烦。</p>
+<blockquote>
+<p>网上有个简单粗暴的办法：把两个python.exe改名，一个改成python2.exe，一个改成python3.exe。这样做固然可以，但修改可执行文件的方式，毕竟不是很好的方法。</p>
+</blockquote>
+<p>这里介绍一个我觉得比较合适的解决办法：</p>
+<blockquote>
+<p>借用py的一个参数来调用不同版本的Python，即 py -2调用python2，py -3调用的是python3。</p>
+</blockquote>
+<ul>
+<li><p>当python脚本需要python2运行时，只需在<strong>脚本最前面</strong>添加一行<code>#! python2</code>，然后运行py xxx.py即可。</p>
+</li>
+<li><p>当python脚本需要python3运行时，只需在<strong>脚本最前面</strong>添加一行<code>#! python3</code>，然后运行py xxx.py即可。</p>
+</li>
+</ul>
+<p>有人可能会问，那我要用pip安装依赖包的时候该怎么办呢？</p>
+<blockquote>
+<p>其实这个也很简单。我们可以看到在python2和python3的安装目录下都有一个<strong>Scripts目录</strong>（如果你安装好python之后，没有发现这个Scripts目录，那就去python官网下载一个最新版本的python安装包），而python2的Scripts目录里有个pip2.exe，python3的Scripts目录里有个pip3.exe。那么我们直接在cmd里执行<code>pip2 install xxx</code>就是安装python2的依赖包，执行<code>pip3 install xxx</code>就是安装python3的依赖包。</p>
+</blockquote>
+<h1 id="更改Python依赖包的下载源"><a href="#更改Python依赖包的下载源" class="headerlink" title="更改Python依赖包的下载源"></a>更改Python依赖包的下载源</h1><p>当我们使用pip来下载依赖包的时候，会发现下载速度比较慢，这是因为python默认使用的是官方下载源，这个下载源的地址在国外，所以最好更改为国内的下载源，即添加一个pip的配置文件。以下描述是基于windows系统上的操作：</p>
+<p>1、按照pip的官方说明文档，它的配置文件应该放在%APPDATA%&#x2F;pip&#x2F;目录下，配置文件名称是pip.ini，我们先按下win+R键。或者在开始菜单上点右键，点运行。然后在出来的窗口中输入%APPDATA%，然后点击确定。</p>
+<p>2、我们可能会发现该目录下并没有pip目录，那我们就手动创建一个。</p>
+<p>3、pip目录创建好以后，进入到这个目录中，然后新建一个pip.ini文件，并在文件中输入以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[global]</span><br><span class="line">time-out=60</span><br><span class="line">index-url = https://mirrors.aliyun.com/pypi/simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host = mirrors.aliyun.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong>[global] 区域配置的是下载链接和超时时间，而[install] 区域配置的是安装时信任的地址。这里我写的是阿里云提供的pip下载源，其它的几个国内pip下载源地址如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">阿里云 </span><br><span class="line">http://mirrors.aliyun.com/pypi/simple/</span><br><span class="line"> </span><br><span class="line">中国科技大学 </span><br><span class="line">https://pypi.mirrors.ustc.edu.cn/simple/</span><br><span class="line"> </span><br><span class="line">豆瓣(douban) </span><br><span class="line">http://pypi.douban.com/simple/</span><br><span class="line"> </span><br><span class="line">清华大学 </span><br><span class="line">https://pypi.tuna.tsinghua.edu.cn/simple/</span><br><span class="line"> </span><br><span class="line">中国科学技术大学 </span><br><span class="line">http://pypi.mirrors.ustc.edu.cn/simple/</span><br></pre></td></tr></table></figure>
+
+<p>4、pip.ini文件写好之后，点击保存。然后重新打开一个cmd命令行窗口，使用pip安装任意一个模块，这个时候就能看到，使用的是阿里云的下载地址了，下载速度也快很多。</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/3d69c55127775af0cf02d79e.html">https://jingyan.baidu.com/article/3d69c55127775af0cf02d79e.html</a></li>
+</ul>
+<h1 id="查找python的安装目录"><a href="#查找python的安装目录" class="headerlink" title="查找python的安装目录"></a>查找python的安装目录</h1><p>有时候时间一长，我们自己也忘记当初把python安装到哪个位置了，那么如果想查看python的安装目录，只需进入到python命令行界面，然后依次输入以下内容即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import sys</span><br><span class="line">path = sys.executable</span><br><span class="line">print(path)</span><br></pre></td></tr></table></figure>
+
+<p>然后就会打印出python的安装目录了。</p>
+<p><img src="/2020/02/17/python/1.jpg"></p>
+<h1 id="python一键获取依赖包和安装依赖包"><a href="#python一键获取依赖包和安装依赖包" class="headerlink" title="python一键获取依赖包和安装依赖包"></a>python一键获取依赖包和安装依赖包</h1><h2 id="获取依赖包"><a href="#获取依赖包" class="headerlink" title="获取依赖包"></a>获取依赖包</h2><p>一键获取依赖包有两种方法：</p>
+<p><strong>第一种方法：</strong>获取环境中所有安装的包</p>
+<p>打开命令提示符，在某条路径下输入 <code>pip freeze &gt; ./requirements.txt</code></p>
+<p>这时就会生成一个requirements.txt文件</p>
+<p><strong>第二种方法：</strong>根据某一个项目的 import 语句来生成依赖</p>
+<p>打开命令提示符，将路径切换到需要生成依赖的项目的根目录下，依次输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install pipreqs</span><br><span class="line">pipreqs ./</span><br></pre></td></tr></table></figure>
+
+<p>执行完以后，在这个项目下会生成一个requirements.txt文件，里面记录了该项目所用到的依赖。</p>
+<h2 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h2><p>获得了依赖包之后，我们就可以在新环境下安装依赖包的模块，执行以下命令即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h1 id="关于python的除法操作"><a href="#关于python的除法操作" class="headerlink" title="关于python的除法操作"></a>关于python的除法操作</h1><p>我们知道，在python中，除法有两种运算符，’&#x2F;‘和’&#x2F;&#x2F;‘，我们通常把’&#x2F;‘ 叫做精确除，’&#x2F;&#x2F;‘ 叫做地板除，它们在python2和python3上的表现结果也不太一样。</p>
+<p><strong>精确除和地板除的解释：</strong></p>
+<p>精确除：</p>
+<blockquote>
+<p>在python2中，当被除数和除数都是整数时，得到的结果是被整除后的整数，舍弃小数部分，与C语言里面的除法处理方式一样。</p>
+<p>在python3中，无论被除数和除数是整数还是浮点数，得到的商总是真实结果，总是得到保留尾数的浮点数。</p>
+</blockquote>
+<p>地板除：</p>
+<blockquote>
+<p>是指无论被除数和除数是整数还是浮点数，得到的商都不保留浮点数的尾数。</p>
+</blockquote>
+<p>在python2中，无论是’&#x2F;‘ 还是 ‘&#x2F;&#x2F;‘，</p>
+<ul>
+<li>当被除数和除数都是整数时，那么结果也是整数；</li>
+<li>当被除数和除数两者中有任何一个是浮点数时，那么结果也一定是浮点数。只是如果用 ‘&#x2F;&#x2F;‘ 运算符的话，操作的结果是整除后的结果，虽然结果仍是浮点数，但其尾数被舍去了。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">以python2.7为例：</span><br><span class="line">&gt;&gt;&gt; 5 / 2 = 2</span><br><span class="line">&gt;&gt;&gt; 5 // 2 = 2</span><br><span class="line">&gt;&gt;&gt; 5.0 / 2 = 2.5</span><br><span class="line">&gt;&gt;&gt; 5.0 // 2 = 2.0</span><br></pre></td></tr></table></figure>
+
+<p>在python3中，为了与python2做个对比，这里特地加了一个 <code>4 / 2</code> 的计算。通过对比我们可以看出，无论被除数能否被整除，’&#x2F;‘ 运算符操作的结果都是保留小数部分的，都是浮点数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">以python3.7为例：</span><br><span class="line">&gt;&gt;&gt; 4 / 2 = 2.0</span><br><span class="line">&gt;&gt;&gt; 5 / 2 = 2.5</span><br><span class="line">&gt;&gt;&gt; 5 // 2 = 2</span><br><span class="line">&gt;&gt;&gt; 5.0 / 2 = 2.5</span><br><span class="line">&gt;&gt;&gt; 5.0 // 2 = 2.0</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong>无论是python2还是python3，如果想得到某个整数被整除后的结果，使用 ‘&#x2F;&#x2F;‘ 就可以了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/05/smart-home/" rel="prev" title="智能家居物联网平台环境搭建">
+      <i class="fa fa-chevron-left"></i> 智能家居物联网平台环境搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/18/python-auto-operation/" rel="next" title="python自动化脚本实现模拟鼠标和键盘输入">
+      python自动化脚本实现模拟鼠标和键盘输入 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Python简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python2%E5%92%8CPython3"><span class="nav-number">2.</span> <span class="nav-text">Python2和Python3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0Python-2%E8%BF%98%E6%98%AFPython-3%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">学习Python 2还是Python 3？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%97%B6%E5%AE%89%E8%A3%85Python2%E5%92%8CPython3"><span class="nav-number">3.</span> <span class="nav-text">同时安装Python2和Python3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9Python%E4%BE%9D%E8%B5%96%E5%8C%85%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">更改Python依赖包的下载源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E6%89%BEpython%E7%9A%84%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">查找python的安装目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python%E4%B8%80%E9%94%AE%E8%8E%B7%E5%8F%96%E4%BE%9D%E8%B5%96%E5%8C%85%E5%92%8C%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">6.</span> <span class="nav-text">python一键获取依赖包和安装依赖包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">6.1.</span> <span class="nav-text">获取依赖包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">6.2.</span> <span class="nav-text">安装依赖包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Epython%E7%9A%84%E9%99%A4%E6%B3%95%E6%93%8D%E4%BD%9C"><span class="nav-number">7.</span> <span class="nav-text">关于python的除法操作</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="解释为何使用v2ray客户端替代Shadowsocks客户端；部署v2ray服务和安装v2ray客户端的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代">
+<meta property="og:url" content="https://panzhe.cn/2018/12/16/v2ray/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="解释为何使用v2ray客户端替代Shadowsocks客户端；部署v2ray服务和安装v2ray客户端的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/8.png">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/1.png">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/2.png">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/3.png">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/4.jpg">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/5.jpg">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/6.jpg">
+<meta property="og:image" content="https://panzhe.cn/2018/12/16/v2ray/7.jpg">
+<meta property="article:published_time" content="2018-12-15T16:50:02.000Z">
+<meta property="article:modified_time" content="2020-02-06T08:36:58.520Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="Win10">
+<meta property="article:tag" content="shadowsocks">
+<meta property="article:tag" content="v2ray">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2018/12/16/v2ray/8.png">
+
+<link rel="canonical" href="https://panzhe.cn/2018/12/16/v2ray/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2018/12/16/v2ray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Shadowsocks客户端《从入门到放弃》—— 使用v2ray替代
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-16 00:50:02" itemprop="dateCreated datePublished" datetime="2018-12-16T00:50:02+08:00">2018-12-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-06 16:36:58" itemprop="dateModified" datetime="2020-02-06T16:36:58+08:00">2020-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+            <div class="post-description">解释为何使用v2ray客户端替代Shadowsocks客户端；部署v2ray服务和安装v2ray客户端的方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="信息更新：2019-10-03"><a href="#信息更新：2019-10-03" class="headerlink" title="信息更新：2019-10-03"></a>信息更新：2019-10-03</h2><p>前两天突然发现不能科学上网了，怀疑是shadowsocks的服务（用的是cfb的加密方式）被封禁了，后来网上查了一下，确实如此。所以换成了v2ray的方式，v2ray是目前比较稳定的使用方式，虽然速度不是很快，但能满足基本的需求。就像一个博客上写的，虽然有很多加速的方式，但建议大家不要折腾，<strong>能用</strong>总比<strong>加速之后被封</strong>好得多。</p>
+<h2 id="为何放弃使用Shadowsocks客户端"><a href="#为何放弃使用Shadowsocks客户端" class="headerlink" title="为何放弃使用Shadowsocks客户端"></a>为何放弃使用Shadowsocks客户端</h2><p>其实我最开始接触的翻墙软件是Shadowsocks。一开始从官网下载了Windows 4.1.2客户端版本，用着也挺不错，但后来发现，每次运行Shadowsocks客户端的时候，只要使用Foxmail发邮件，Foxmail必崩。这就让我无法在Windows上同时使用Shadowsocks和Foxmail，但v2ray的及时出现，挽救了这一切~~~</p>
+<h2 id="什么是v2ray"><a href="#什么是v2ray" class="headerlink" title="什么是v2ray"></a>什么是v2ray</h2><p>在介绍v2ray之前，先说说ProjectV，Project V 是一个工具集合，它可以帮助你打造专属的基础通信网络。Project V 的核心工具称为<code>v2ray</code>，其主要负责网络协议和功能的实现，与其它 Project V 通信。v2ray 可以单独运行，也可以和其它工具配合，以提供简便的操作流程。更多细节请点击 <a target="_blank" rel="noopener" href="https://www.v2ray.com/">v2ray官网</a> 查阅。</p>
+<h2 id="v2ray-和-Shadowsocks的区别"><a href="#v2ray-和-Shadowsocks的区别" class="headerlink" title="v2ray 和 Shadowsocks的区别"></a>v2ray 和 Shadowsocks的区别</h2><p>v2ray 更像是一个集成工具，它集合了多种多样的协议（包括 Socks、HTTP、Shadowsocks、VMess 等）和功能，对个人用户而言像是一个工具箱，可以使用各种各样的工具组合。对开发者而言像是一个脚手架，可以在此基础上开发扩充自己需要的功能而节省开发时间。</p>
+<p>v2ray的主要特性有：</p>
+<ul>
+<li><p>多入口多出口: 一个 v2ray 进程可并发支持多个入站和出站协议，每个协议可独立工作。</p>
+</li>
+<li><p>可定制化路由: 入站流量可按配置由不同的出口发出。轻松实现按区域或按域名分流，以达到最优的网络性能。</p>
+</li>
+<li><p>多协议支持: v2ray 可同时开启多个协议支持，包括 Socks、HTTP、Shadowsocks、VMess 等。每个协议可单独设置传输载体，比如 TCP、mKCP、WebSocket 等。</p>
+</li>
+<li><p>隐蔽性: v2ray 的节点可以伪装成正常的网站（HTTPS），将其流量与正常的网页流量混淆，以避开第三方干扰。</p>
+</li>
+<li><p>反向代理: 通用的反向代理支持，可实现内网穿透功能。</p>
+</li>
+<li><p>多平台支持: 原生支持所有常见平台，如 Windows、Mac OS、Linux，并已有第三方支持移动平台。</p>
+</li>
+</ul>
+<h2 id="安装和使用v2ray"><a href="#安装和使用v2ray" class="headerlink" title="安装和使用v2ray"></a>安装和使用v2ray</h2><blockquote>
+<p> <em>这方面的材料比较多，在此推荐一篇v2ray的安装和使用教程：<a target="_blank" rel="noopener" href="https://yuan.ga/v2ray-complete-tutorial/">https://yuan.ga/v2ray-complete-tutorial/</a> ，请自行查阅。如果您已经搭建好科学上网的服务端，只是单纯想安装和使用v2ray客户端进行科学上网的话，请参阅下一章节的简易教程：<strong>基于v2ray搭建客户端代理</strong></em></p>
+</blockquote>
+<p>为防止上述v2ray的教程被封，下面简单说明下v2ray的服务端搭建方法（基于CentOS 7 64位系统）：</p>
+<p>V2Ray 官方维护并提供了适用于大多数主流系统的自动安装脚本，只需一行命令即可完成安装，当你想要更新V2Ray 的时候同样只需要运行下面一行命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash &lt;(curl -L -s https://install.direct/go.sh)</span><br><span class="line"><span class="comment"># 上列命令会自动安装 V2Ray，然后执行下面命令运行V2Ray</span></span><br><span class="line">systemctl start v2ray</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/12/16/v2ray/8.png"></p>
+<blockquote>
+<p>当你使用脚本自动安装结束后，此时服务端的部署已经完成了，脚本不仅安装了 V2Ray，还在配置中随机生成了一个 5 位数端口以及 UUID 供我们直接使用，所以我们无需进一步配置服务端，这时已经获得了三个必要的信息：IP、端口（Port）、id（UUID）。</p>
+</blockquote>
+<p>安装完成后会新增下列文件：</p>
+<ul>
+<li>&#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ctl：V2Ray 工具，用于给程序自身调用</li>
+<li>&#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ray：V2Ray 核心程序</li>
+<li>&#x2F;etc&#x2F;v2ray&#x2F;config.json：配置文件</li>
+<li>&#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geoip.dat：IP 数据文件，V2Ray 路由功能时有用，下同</li>
+<li>&#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;geosite.dat：域名数据文件</li>
+</ul>
+<p>之后就可以使用 <span id="inline-blue"> systemctl start|restart|stop|status v2ray</span>  查看和控制 V2Ray 的运行。</p>
+<h2 id="在Android上安装和使用v2ray客户端"><a href="#在Android上安装和使用v2ray客户端" class="headerlink" title="在Android上安装和使用v2ray客户端"></a>在Android上安装和使用v2ray客户端</h2><p>Android上的客户端推荐使用<strong>BifrostV</strong>，可从Google Play商店中下载。BifrostV的整体布局设计模仿了安卓版Shadowsocks，当你使用过安卓版Shadowsocks，再使用这个软件时就不存在太多障碍了。BifrostV支持 VMess、Shadowsocks、SOCKS 等协议，也就是说上述协议的连接只要一个客户端就可以搞定了。BifrostV中有少量广告（设置中有关闭广告选项，但需要Google Play的支持），希望用户可以理解开发者的劳动成果，包容那点广告或选择捐赠支持开发者。</p>
+<p>在使用BifrostV时，有个功能比较实用：首页-&gt;点击“+”号-&gt;手动设置，在配置页面的最下面有个<code>分应用模式</code>。</p>
+<p><img src="/2018/12/16/v2ray/1.png"></p>
+<p>开启<code>分应用模式</code>后，可以选择哪些APP走VPN，哪些APP不走VPN。如下图所示，Twitter需要走VPN，那么就把该APP选中；WPS Office不需要走VPN，那么就不用勾选它。</p>
+<p><img src="/2018/12/16/v2ray/2.png"></p>
+<p>可惜的是，v2ray在iPhone和iPad等iOS设备上，目前还没有官方客户端。不过还是一些第三方APP可以使用的，具体可参考该链接：<a target="_blank" rel="noopener" href="https://ssr.tools/295">https://ssr.tools/295</a> 。</p>
+<h2 id="在Windows上搭建v2ray客户端代理"><a href="#在Windows上搭建v2ray客户端代理" class="headerlink" title="在Windows上搭建v2ray客户端代理"></a>在Windows上搭建v2ray客户端代理</h2><p>此处以Windows10系统为例，讲述如何通过v2ray搭建客户端代理，并使用chrome浏览器科学上网。</p>
+<h3 id="安装v2ray客户端"><a href="#安装v2ray客户端" class="headerlink" title="安装v2ray客户端"></a>安装v2ray客户端</h3><ol>
+<li>通过Github下载v2ray客户端，打开链接：<a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core/releases">https://github.com/v2ray/v2ray-core/releases</a> ，往下浏览可找到Windows平台的v2ray客户端。如果您的系统是32位的，请选择并下载v2ray-windows-32.zip；如果您的系统是64位的，请选择并下载v2ray-windows-64.zip。</li>
+<li>下载完毕后，将zip包解压到任意目录下，然后打开解压后的目录，找到config.json文件并打开。</li>
+</ol>
+<p><img src="/2018/12/16/v2ray/3.png"></p>
+<h3 id="配置config-json"><a href="#配置config-json" class="headerlink" title="配置config.json"></a>配置config.json</h3><p>此处分别以vmess和shadowsocks为例，讲述如何配置config.json。</p>
+<ul>
+<li><p>以<strong>vmess</strong>为例（其中传输协议为TCP）：把当前config.json文件内容清空，将以下内容复制到config.json文件中。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;log&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;loglevel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;warning&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;inbounds&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;listen&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">1080</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;socks&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;domainOverride&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;tls&quot;</span><span class="punctuation">,</span><span class="string">&quot;http&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;auth&quot;</span><span class="punctuation">:</span> <span class="string">&quot;noauth&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;udp&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;tag&quot;</span><span class="punctuation">:</span><span class="string">&quot;instag_1080&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outbounds&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vmess&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;vnext&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;address&quot;</span><span class="punctuation">:</span> <span class="string">&quot;替换成你的IP&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> 替换成你的端口号<span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;users&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                        <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;替换成你的UUID&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;level&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;alterId&quot;</span><span class="punctuation">:</span> 修改成你的ID，注意与你在服务端设置的alterId保持一致</span><br><span class="line">                        <span class="punctuation">&#125;</span></span><br><span class="line">                    <span class="punctuation">]</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;streamSettings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;network&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tcp&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;sockopt&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;mark&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;tcpFastOpen&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;tproxy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;off&quot;</span></span><br><span class="line">                  <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;mux&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;tag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;outstag_1080&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;routing&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;domainStrategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;IPIfNonMatch&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;rules&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;field&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;inboundTag&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="string">&quot;instag_1080&quot;</span></span><br><span class="line">                <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;outboundTag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;outstag_1080&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;balancers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以<strong>shadowsocks</strong>为例：把当前config.json文件内容清空，将以下内容复制到config.json文件中。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;log&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;loglevel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;warning&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;inbounds&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;listen&quot;</span><span class="punctuation">:</span> <span class="string">&quot;127.0.0.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> <span class="number">1080</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;socks&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;domainOverride&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;tls&quot;</span><span class="punctuation">,</span><span class="string">&quot;http&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;auth&quot;</span><span class="punctuation">:</span> <span class="string">&quot;noauth&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;udp&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;tag&quot;</span><span class="punctuation">:</span><span class="string">&quot;instag_1080&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outbounds&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;shadowsocks&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;servers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                  <span class="attr">&quot;address&quot;</span><span class="punctuation">:</span> <span class="string">&quot;替换成你的IP&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;port&quot;</span><span class="punctuation">:</span> 替换成你的端口号<span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;替换成你的加密方式&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;替换成你的密码&quot;</span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;ota&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">                  <span class="attr">&quot;level&quot;</span><span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">              <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;streamSettings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;mux&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">              <span class="attr">&quot;concurrency&quot;</span><span class="punctuation">:</span> <span class="number">8</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;tag&quot;</span><span class="punctuation">:</span><span class="string">&quot;outstag_1080&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;routing&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;domainStrategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;IPIfNonMatch&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;rules&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;field&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;inboundTag&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="string">&quot;instag_1080&quot;</span></span><br><span class="line">                <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;outboundTag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;outstag_1080&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;balancers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="运行v2ray客户端"><a href="#运行v2ray客户端" class="headerlink" title="运行v2ray客户端"></a>运行v2ray客户端</h3><p>打开v2ray客户端安装目录，双击wv2ray.exe运行即可。</p>
+<blockquote>
+<p>v2ray.exe和wv2ray.exe的区别：前者是以命令行窗口的形式在前台显示，后者则没有窗口。</p>
+</blockquote>
+<h3 id="设置v2ray客户端开机自启动"><a href="#设置v2ray客户端开机自启动" class="headerlink" title="设置v2ray客户端开机自启动"></a>设置v2ray客户端开机自启动</h3><ol>
+<li><p>按下快捷键：Win+R，输入<code>shell:startup</code>，回车，此时会打开一个文件夹，在这个文件夹里放入的任何程序，都会在开机时自动运行。</p>
+<blockquote>
+<p><em>Windows键(Winkey)，简称“Win键”，是在计算机键盘左下角 Ctrl 和 Alt 键之间的按键，图案是 Microsoft Windows 的视窗图标。 现在大多数运行 Windows 的 PC 键盘上都有这个按键。</em></p>
+</blockquote>
+</li>
+<li><p>打开v2ray客户端安装目录，找到wv2ray.exe，创建它的快捷方式，并将该快捷方式放到上面打开的那个文件夹里。</p>
+</li>
+</ol>
+<p><img src="/2018/12/16/v2ray/4.jpg"></p>
+<h3 id="安装Proxy-SwitchyOmega插件"><a href="#安装Proxy-SwitchyOmega插件" class="headerlink" title="安装Proxy SwitchyOmega插件"></a>安装Proxy SwitchyOmega插件</h3><p>打开chrome浏览器，去<a target="_blank" rel="noopener" href="https://github.com/FelisCatus/SwitchyOmega/releases">Github下载</a>最新版安装包，或直接<a target="_blank" rel="noopener" href="https://github.com/FelisCatus/SwitchyOmega/releases/download/v2.5.20/SwitchyOmega_Chromium.crx">本地下载</a>文件进行安装。更多信息请访问<a target="_blank" rel="noopener" href="https://www.switchyomega.com/download/">Proxy SwitchyOmega官网</a>查阅。</p>
+<blockquote>
+<p><em>在 Chrome 地址栏输入 chrome:&#x2F;&#x2F;extensions 打开扩展程序，拖动 .crx 后缀的 SwitchyOmega 安装文件到扩展程序中进行安装。</em></p>
+</blockquote>
+<h3 id="配置Chrome浏览器代理模式"><a href="#配置Chrome浏览器代理模式" class="headerlink" title="配置Chrome浏览器代理模式"></a>配置Chrome浏览器代理模式</h3><ol>
+<li>安装完Proxy SwitchyOmega插件后，会发现chrome浏览器右上方有个小圆圈的标志，点击该小圆圈，单击<code>选项</code>按钮，进入SwitchyOmega配置界面，参照下图，修改情景模式。</li>
+</ol>
+<p><img src="/2018/12/16/v2ray/5.jpg"></p>
+<ol start="2">
+<li><p>点击<code>auto switch</code>按钮，单击<code>编辑源代码</code>，然后将里面的内容清空，并将以下内容拷贝进去。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[SwitchyOmega Conditions]</span><br><span class="line">@with result</span><br><span class="line"></span><br><span class="line">*.v2ray.com +127.0.0.1-1080</span><br><span class="line">*.iissnan.com +127.0.0.1-1080</span><br><span class="line">*.hexo.io +127.0.0.1-1080</span><br><span class="line">*.typora.io +127.0.0.1-1080</span><br><span class="line">*.doorbell.io +127.0.0.1-1080</span><br><span class="line">*.docker.com +127.0.0.1-1080</span><br><span class="line">*.atavi.com +127.0.0.1-1080</span><br><span class="line">*.jquery.com +127.0.0.1-1080</span><br><span class="line">*.bootstrapcdn.com +127.0.0.1-1080</span><br><span class="line">*.apache.org +127.0.0.1-1080</span><br><span class="line">*.instadp.net +127.0.0.1-1080</span><br><span class="line">*.golang.org +127.0.0.1-1080</span><br><span class="line">*.fontawesome.com +127.0.0.1-1080</span><br><span class="line">*.intercom.io +127.0.0.1-1080</span><br><span class="line">*.carbonads.net +127.0.0.1-1080</span><br><span class="line">*.icons8.com +127.0.0.1-1080</span><br><span class="line">*.icons8.cn +127.0.0.1-1080</span><br><span class="line">*.gr-assets.com +127.0.0.1-1080</span><br><span class="line">*.goodreads.com +127.0.0.1-1080</span><br><span class="line">*.bittiger.io +127.0.0.1-1080</span><br><span class="line">*.packagecontrol.io +127.0.0.1-1080</span><br><span class="line">*.sublimetext.com +127.0.0.1-1080</span><br><span class="line">*.margo.sh +127.0.0.1-1080</span><br><span class="line">*.color-themes.com +127.0.0.1-1080</span><br><span class="line">*.pocketgophers.com +127.0.0.1-1080</span><br><span class="line">*.contentful.com +127.0.0.1-1080</span><br><span class="line">*.userstyles.org +127.0.0.1-1080</span><br><span class="line">*.scrimba.com +127.0.0.1-1080</span><br><span class="line">*.heroku.com +127.0.0.1-1080</span><br><span class="line">*.cloudflare.com +127.0.0.1-1080</span><br><span class="line">*.gitbooks.io +127.0.0.1-1080</span><br><span class="line">*.autopilothq.com +127.0.0.1-1080</span><br><span class="line">*.evgnet.com +127.0.0.1-1080</span><br><span class="line">*.godoc.org +127.0.0.1-1080</span><br><span class="line">*.travis-ci.org +127.0.0.1-1080</span><br><span class="line">*.apple.com +127.0.0.1-1080</span><br><span class="line">*.herokuapp.com +127.0.0.1-1080</span><br><span class="line">*.twimg.com +127.0.0.1-1080</span><br><span class="line">*.redis.io +127.0.0.1-1080</span><br><span class="line">*.mozilla.net +127.0.0.1-1080</span><br><span class="line">*.mozilla.org +127.0.0.1-1080</span><br><span class="line">*.swagger.io +127.0.0.1-1080</span><br><span class="line">*.adguard.com +127.0.0.1-1080</span><br><span class="line">*.visual-paradigm.com +127.0.0.1-1080</span><br><span class="line">*.*.github.io +127.0.0.1-1080</span><br><span class="line">*.stackoverflow.com +127.0.0.1-1080</span><br><span class="line">*.javaworld.com +127.0.0.1-1080</span><br><span class="line">*.russellluo.com +127.0.0.1-1080</span><br><span class="line">*.golangprograms.com +127.0.0.1-1080</span><br><span class="line">*.forestapp.cc +127.0.0.1-1080</span><br><span class="line">*.kotlinlang.org +127.0.0.1-1080</span><br><span class="line">*.kotl.in +127.0.0.1-1080</span><br><span class="line">*.tampermonkey.net +127.0.0.1-1080</span><br><span class="line">*.zdassets.com +127.0.0.1-1080</span><br><span class="line">*.zendesk.tv +127.0.0.1-1080</span><br><span class="line">*.evernote.com +127.0.0.1-1080</span><br><span class="line">*.uptodown.com +127.0.0.1-1080</span><br><span class="line">*.yandex.ru +127.0.0.1-1080</span><br><span class="line">*.yastatic.net +127.0.0.1-1080</span><br><span class="line">*.jshell.net +127.0.0.1-1080</span><br><span class="line">*.usesfathom.com +127.0.0.1-1080</span><br><span class="line">*.jsfiddle.net +127.0.0.1-1080</span><br><span class="line">*.segment.com +127.0.0.1-1080</span><br><span class="line">*.atlassian.com +127.0.0.1-1080</span><br><span class="line">*.bitbucket.org +127.0.0.1-1080</span><br><span class="line">*.staticfile.org +127.0.0.1-1080</span><br><span class="line">*.go-zh.org +127.0.0.1-1080</span><br><span class="line">*.molunerfinn.com +127.0.0.1-1080</span><br><span class="line">*.explainshell.com +127.0.0.1-1080</span><br><span class="line">*.ipfs.io +127.0.0.1-1080</span><br><span class="line">*.yastatic.com +127.0.0.1-1080</span><br><span class="line">*.yandex.com +127.0.0.1-1080</span><br><span class="line">*.cryptokitties.co +127.0.0.1-1080</span><br><span class="line">*.myeoskit.com +127.0.0.1-1080</span><br><span class="line">*.pixelmaster.io +127.0.0.1-1080</span><br><span class="line">*.steemit.com +127.0.0.1-1080</span><br><span class="line">*.okex.com +127.0.0.1-1080</span><br><span class="line">*.eos.io +127.0.0.1-1080</span><br><span class="line">*.douban.com +127.0.0.1-1080</span><br><span class="line">*.xclient.info +127.0.0.1-1080</span><br><span class="line">*.golangweekly.com +127.0.0.1-1080</span><br><span class="line">*.awsstatic.com +127.0.0.1-1080</span><br><span class="line">*.amazon.com +127.0.0.1-1080</span><br><span class="line">*.amazonaws.com +127.0.0.1-1080</span><br><span class="line">*.greasyfork.org +127.0.0.1-1080</span><br><span class="line">*.openuserjs.org +127.0.0.1-1080</span><br><span class="line">*.basicattentiontoken.org +127.0.0.1-1080</span><br><span class="line">*.adex.network +127.0.0.1-1080</span><br><span class="line">*.gitbook.io +127.0.0.1-1080</span><br><span class="line">*.github.com +127.0.0.1-1080</span><br><span class="line">*.skyao.io +127.0.0.1-1080</span><br><span class="line">*.readthedocs.io +127.0.0.1-1080</span><br><span class="line">*.gobyexample.com +127.0.0.1-1080</span><br><span class="line">*.go-database-sql.org +127.0.0.1-1080</span><br><span class="line">*.t.co +127.0.0.1-1080</span><br><span class="line">*.sourcegraph.com +127.0.0.1-1080</span><br><span class="line">*.linkerd.io +127.0.0.1-1080</span><br><span class="line">*.staruml.io +127.0.0.1-1080</span><br><span class="line">*.jfrog.com +127.0.0.1-1080</span><br><span class="line">*.google.com +127.0.0.1-1080</span><br><span class="line">*.time.graphics +127.0.0.1-1080</span><br><span class="line">*.zupzup.org +127.0.0.1-1080</span><br><span class="line">*.blockchain.com +127.0.0.1-1080</span><br><span class="line">*.discord.gg +127.0.0.1-1080</span><br><span class="line">*.colobu.com +127.0.0.1-1080</span><br><span class="line">*.technologyreview.com +127.0.0.1-1080</span><br><span class="line">*.jianshu.com +127.0.0.1-1080</span><br><span class="line">*.gowalker.org +127.0.0.1-1080</span><br><span class="line">*.hashingit.com +127.0.0.1-1080</span><br><span class="line">*.unic.ac.cy +127.0.0.1-1080</span><br><span class="line">*.cloudfront.net +127.0.0.1-1080</span><br><span class="line">*.coursera.org +127.0.0.1-1080</span><br><span class="line">*.quoracdn.net +127.0.0.1-1080</span><br><span class="line">*.quora.com +127.0.0.1-1080</span><br><span class="line">*.medium.com +127.0.0.1-1080</span><br><span class="line">*.ipictheaters.com +127.0.0.1-1080</span><br><span class="line">*.101blockchains.com +127.0.0.1-1080</span><br><span class="line">*.michelsen.dk +127.0.0.1-1080</span><br><span class="line">*.launchd.info +127.0.0.1-1080</span><br><span class="line">*.jetbrains.com +127.0.0.1-1080</span><br><span class="line">*.wireshark.org +127.0.0.1-1080</span><br><span class="line">*.gomods.io +127.0.0.1-1080</span><br><span class="line">*.bootcss.com +127.0.0.1-1080</span><br><span class="line">*.githubusercontent.com +127.0.0.1-1080</span><br><span class="line"></span><br><span class="line">* +direct</span><br></pre></td></tr></table></figure>
+
+<p>拷贝完成后，其效果应如下图所示：</p>
+<p><img src="/2018/12/16/v2ray/6.jpg"></p>
+</li>
+<li><p>在当前页面下，点击下方<code>添加规则列表</code>按钮，选择<code>AutoProxy</code>，并输入规则列表网址：<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt">https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</a>，点击<code>立即更新情景模式</code>，等待规则列表更新，最后单击左侧的<code>应用选项</code>按钮。最终其效果应如下图所示：</p>
+<p><img src="/2018/12/16/v2ray/7.jpg"></p>
+</li>
+</ol>
+<p>此时，在chrome浏览器中输入：<a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a> ，发现谷歌可以正常访问了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Win10/" rel="tag"># Win10</a>
+              <a href="/tags/shadowsocks/" rel="tag"># shadowsocks</a>
+              <a href="/tags/v2ray/" rel="tag"># v2ray</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/05/linux-quick-run/" rel="prev" title="Ubuntu系统下，使用systemd配置开机启动的方法">
+      <i class="fa fa-chevron-left"></i> Ubuntu系统下，使用systemd配置开机启动的方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/26/root-exp/" rel="next" title="手机在ROOT过程中踩得一些坑">
+      手机在ROOT过程中踩得一些坑 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%9B%B4%E6%96%B0%EF%BC%9A2019-10-03"><span class="nav-number">1.</span> <span class="nav-text">信息更新：2019-10-03</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BD%95%E6%94%BE%E5%BC%83%E4%BD%BF%E7%94%A8Shadowsocks%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">为何放弃使用Shadowsocks客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFv2ray"><span class="nav-number">3.</span> <span class="nav-text">什么是v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v2ray-%E5%92%8C-Shadowsocks%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">v2ray 和 Shadowsocks的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8v2ray"><span class="nav-number">5.</span> <span class="nav-text">安装和使用v2ray</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8Android%E4%B8%8A%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8v2ray%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">6.</span> <span class="nav-text">在Android上安装和使用v2ray客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8Windows%E4%B8%8A%E6%90%AD%E5%BB%BAv2ray%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%A3%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">在Windows上搭建v2ray客户端代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85v2ray%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">7.1.</span> <span class="nav-text">安装v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEconfig-json"><span class="nav-number">7.2.</span> <span class="nav-text">配置config.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cv2ray%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">7.3.</span> <span class="nav-text">运行v2ray客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEv2ray%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-number">7.4.</span> <span class="nav-text">设置v2ray客户端开机自启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Proxy-SwitchyOmega%E6%8F%92%E4%BB%B6"><span class="nav-number">7.5.</span> <span class="nav-text">安装Proxy SwitchyOmega插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEChrome%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.6.</span> <span class="nav-text">配置Chrome浏览器代理模式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

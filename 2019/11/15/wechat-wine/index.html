@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在ubuntu18.04上安装微信">
+<meta property="og:url" content="https://panzhe.cn/2019/11/15/wechat-wine/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2019/11/15/wechat-wine/1.png">
+<meta property="og:image" content="https://panzhe.cn/2019/11/15/wechat-wine/2.png">
+<meta property="article:published_time" content="2019-11-15T08:03:28.000Z">
+<meta property="article:modified_time" content="2020-02-06T08:37:20.987Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="微信">
+<meta property="article:tag" content="wine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2019/11/15/wechat-wine/1.png">
+
+<link rel="canonical" href="https://panzhe.cn/2019/11/15/wechat-wine/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>在ubuntu18.04上安装微信 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2019/11/15/wechat-wine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在ubuntu18.04上安装微信
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-15 16:03:28" itemprop="dateCreated datePublished" datetime="2019-11-15T16:03:28+08:00">2019-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-06 16:37:20" itemprop="dateModified" datetime="2020-02-06T16:37:20+08:00">2020-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+            <div class="post-description">介绍如何在ubuntu18.04上安装微信，系统是64位的，系统语言是中文的，系统默认输入法是搜狗输入法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一提到在linux系统上使用微信，大家可能第一反应就是用微信网页版。我刚开始也是这么想的，但现实是残酷的。当我尝试使用微信网页版登录时，发现已无法正常登录。在网上搜了下，得知微信网页版后续将会关闭。</p>
+<p>下面是我从网上搜到的<strong>关于微信网页版受限</strong>的资料，仅供参考。</p>
+<blockquote>
+<p><strong>一、第一次开始限制</strong></p>
+<p>在2017年9月份开始，腾讯已经 开始限制新注册的微信号禁止登录网页版微信，老的微信号则不受影响，可以自行验证。用新注册的微信号登录微信网页版，会提示：</p>
+</blockquote>
+<p><img src="/2019/11/15/wechat-wine/1.png"></p>
+<blockquote>
+<p><strong>二、第二次完全屏蔽与限制</strong><br>而从2019年7月份开始，腾讯疑似彻底关闭了网页版微信登录入口，通过<a target="_blank" rel="noopener" href="https://wx.qq.com/">https://wx.qq.com</a>  或 <a target="_blank" rel="noopener" href="https://wx2.qq.com/">https://wx2.qq.com</a>  登录网页版的微信都会有如下类似提示信息，不管是新注册的微信号，还是老的微信号都是如此。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;error&gt;&lt;ret&gt;1203&lt;/ret&gt;&lt;message&gt;为了你的帐号安全，此微信号不能登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。Windows微信下载地址：https://pc.weixin.qq.com  Mac微信下载地址：https://mac.weixin.qq.com&lt;/message&gt;&lt;/error&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>既然微信网页版这条路不通，那我们就再尝试其它的路子吧。</p>
+<p>于是紧接着想到了用<a target="_blank" rel="noopener" href="https://github.com/geeeeeeeeek/electronic-wechat/releases">electronic-wechat</a>，<code>electronic-wechat</code>是托管在 github 中的一款第三方开源微信客户端，但它也是基于微信网页版API封装的一个客户端。既然现在微信网页版已经不能用了，那么<code>electronic-wechat</code>也就不能再正常使用了。</p>
+<p>至此，上述两条路都不通，那么还有没有其它的路呢？</p>
+<p><span id = "inline-blue">这时候想到了Wine。</span> <strong>那什么是Wine？</strong></p>
+<h2 id="关于Wine"><a href="#关于Wine" class="headerlink" title="关于Wine"></a>关于Wine</h2><p><strong>Wine</strong>是一个在x86、x86-64的类UNIX系统下运行微软Windows程序的”兼容层”。Wine可以运行在Linux、Mac、FreeBSD和Solaris上，在Wine中运行的Windows程序，就如同运行原生Linux程序一样，不会有模拟器那样的性能问题。<strong>Wine</strong>是”Wine Is Not an Emulator”的递归缩写，所以<strong>它并不是模拟器</strong>，而是用兼容模式调用DLLs以运行Windows程序。</p>
+<p>接下来我们就开始安装和使用它吧。</p>
+<h2 id="安装Wine"><a href="#安装Wine" class="headerlink" title="安装Wine"></a>安装Wine</h2><p>1、创建一个Wine目录，如：放在<code>/opt</code>目录下，并给予777权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd /opt</span><br><span class="line">$ sudo mkdir Wine</span><br><span class="line">$ sudo chmod 777 Wine</span><br></pre></td></tr></table></figure>
+
+<p>2、进入Wine目录，clone项目<code>deepin-wine</code>到本地。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu.git</span><br></pre></td></tr></table></figure>
+
+<p>3、安装Wine</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd deepin-wine-for-ubuntu</span><br><span class="line">$ sudo ./install.sh</span><br></pre></td></tr></table></figure>
+
+<p>至此，我们完成了Wine的安装，接下来安装微信。</p>
+<h2 id="安装微信"><a href="#安装微信" class="headerlink" title="安装微信"></a>安装微信</h2><h3 id="下载deepin发布的微信软件包"><a href="#下载deepin发布的微信软件包" class="headerlink" title="下载deepin发布的微信软件包"></a>下载deepin发布的微信软件包</h3><p>这里有两种下载方式：</p>
+<p>1、从gitee上下载，可能需要登录gitee后才能下载：<a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat_2.6.8.65deepin0_i386.deb">https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat_2.6.8.65deepin0_i386.deb</a></p>
+<p>2、从网盘上下载，我已经把微信安装包上传到了我的网盘中：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">链接：https://pan.baidu.com/s/15FtAPH4P8JQagLTDMcEGdw </span><br><span class="line">提取码：9mzx</span><br></pre></td></tr></table></figure>
+
+<h3 id="用dpkg安装微信软件包"><a href="#用dpkg安装微信软件包" class="headerlink" title="用dpkg安装微信软件包"></a>用dpkg安装微信软件包</h3><p>将上面下载到的wechat安装包（<code>deepin.com.wechat_2.6.8.65deepin0_i386.deb</code>）copy到刚才创建的Wine目录下，然后执行如下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i deepin.com.wechat_2.6.8.65deepin0_i386.deb</span><br></pre></td></tr></table></figure>
+
+<p><span id = "inline-blue">至此，微信安装完成。</span> 此时可以在系统应用列表中看到<strong>微信图标</strong>，单击运行即可。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="系统是非中文语言环境，会出现微信登录后显示乱码"><a href="#系统是非中文语言环境，会出现微信登录后显示乱码" class="headerlink" title="系统是非中文语言环境，会出现微信登录后显示乱码"></a>系统是非中文语言环境，会出现微信登录后显示乱码</h3><p><strong>解决方法：</strong>在<code>/opt/deepinwine/tools/run.sh</code>中添加LC_ALL&#x3D;”zh_CN.UTF-8”，重启微信。由于我的ubuntu系统语言是中文的，所以在安装时没有遇到这种问题。</p>
+<h3 id="微信中无法输入中文"><a href="#微信中无法输入中文" class="headerlink" title="微信中无法输入中文"></a>微信中无法输入中文</h3><p>当时我安装完微信后，满怀欣喜登录微信，结果发现不能输入中文，但我明明已经装了<strong>搜狗输入法</strong>。于是从网上搜索一番，找到了解决方案：</p>
+<p>搜狗输入法属于Fcitx框架，我们只需重启Fcitx服务就可以了，如下图所示：</p>
+<p><img src="/2019/11/15/wechat-wine/2.png"></p>
+<p>如果重启Fcitx服务后，发现仍然无法输入中文，就重启下系统，然后再登录微信，会发现可以正常输入中文了。</p>
+<p><strong>参考链接：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu">https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73033900">https://zhuanlan.zhihu.com/p/73033900</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+              <a href="/tags/%E5%BE%AE%E4%BF%A1/" rel="tag"># 微信</a>
+              <a href="/tags/wine/" rel="tag"># wine</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/14/maven-nexus/" rel="prev" title="基于Centos7搭建Maven私有仓库">
+      <i class="fa fa-chevron-left"></i> 基于Centos7搭建Maven私有仓库
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/05/smart-home/" rel="next" title="智能家居物联网平台环境搭建">
+      智能家居物联网平台环境搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EWine"><span class="nav-number">1.</span> <span class="nav-text">关于Wine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Wine"><span class="nav-number">2.</span> <span class="nav-text">安装Wine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%BE%AE%E4%BF%A1"><span class="nav-number">3.</span> <span class="nav-text">安装微信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDdeepin%E5%8F%91%E5%B8%83%E7%9A%84%E5%BE%AE%E4%BF%A1%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">下载deepin发布的微信软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8dpkg%E5%AE%89%E8%A3%85%E5%BE%AE%E4%BF%A1%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">3.2.</span> <span class="nav-text">用dpkg安装微信软件包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%98%AF%E9%9D%9E%E4%B8%AD%E6%96%87%E8%AF%AD%E8%A8%80%E7%8E%AF%E5%A2%83%EF%BC%8C%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%BE%AE%E4%BF%A1%E7%99%BB%E5%BD%95%E5%90%8E%E6%98%BE%E7%A4%BA%E4%B9%B1%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">系统是非中文语言环境，会出现微信登录后显示乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E4%B8%AD%E6%97%A0%E6%B3%95%E8%BE%93%E5%85%A5%E4%B8%AD%E6%96%87"><span class="nav-number">4.2.</span> <span class="nav-text">微信中无法输入中文</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

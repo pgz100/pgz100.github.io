@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用工具logrotate实现大日志文件的分割和转储">
+<meta property="og:url" content="https://panzhe.cn/2021/05/19/logrotate/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-19T13:48:55.000Z">
+<meta property="article:modified_time" content="2021-05-19T13:52:16.965Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="logrotate">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://panzhe.cn/2021/05/19/logrotate/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用工具logrotate实现大日志文件的分割和转储 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2021/05/19/logrotate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用工具logrotate实现大日志文件的分割和转储
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-05-19 21:48:55 / 修改时间：21:52:16" itemprop="dateCreated datePublished" datetime="2021-05-19T21:48:55+08:00">2021-05-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">linux系统相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">本文主要介绍针对单个日志文件过大的情况，如何使用logrotate日志文件管理工具进行日志转储，将大的日志文件拆分为多个小的日志文件，便于日常运维和管理。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="为什么需要用logrotate"><a href="#为什么需要用logrotate" class="headerlink" title="为什么需要用logrotate"></a>为什么需要用logrotate</h2><p>通常情况下，系统运行时所产生的日志文件，会记录系统中已发生的一些重要的事件信息，经常被用于系统排障或系统性能分析。而对于比较忙碌的服务器，其日志文件大小会快速增长，大量消耗服务器的磁盘空间，造成磁盘空间不足，这也就成了一个不可忽视的问题。除此之外，查阅和处理一个体积庞大的日志文件也常常是件十分棘手的事情。</p>
+<p>为了解决以上问题，自然而然的就想到了logrotate，它是linux系统自带的日志文件管理工具，它可以自动对日志进行截断（或轮循）、压缩以及删除旧的日志文件。例如，你可以设置logrotate，让&#x2F;var&#x2F;log&#x2F;foo日志文件每30天轮循一次，并删除超过6个月的日志。配置完成后，logrotate的运作完全自动化，不必进行任何进一步的人为干预。另外，旧日志也可以通过电子邮件的方式发送到指定邮箱中。</p>
+<h2 id="安装logrotate（一般系统都会默认自动安装）"><a href="#安装logrotate（一般系统都会默认自动安装）" class="headerlink" title="安装logrotate（一般系统都会默认自动安装）"></a>安装logrotate（一般系统都会默认自动安装）</h2><p>主流Linux发行版上都默认安装有logrotate包。如果出于某种原因，logrotate没有被系统自动安装，那么你可以使用apt-get或yum命令来手动安装。</p>
+<p>在Debian或Ubuntu上：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># apt-get install logrotate cron</span><br></pre></td></tr></table></figure>
+
+<p>在Fedora、CentOS或RHEL上：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># yum install logrotate crontabs</span><br></pre></td></tr></table></figure>
+
+<p>logrotate的配置文件是&#x2F;etc&#x2F;logrotate.conf，我们通常不需要对它进行修改。每个应用程序的日志文件，其轮循策略被设置在独立的配置文件中，这些配置文件都会放在&#x2F;etc&#x2F;logrotate.d&#x2F;目录下。</p>
+<h2 id="logrotate实现日志文件转储的工作原理"><a href="#logrotate实现日志文件转储的工作原理" class="headerlink" title="logrotate实现日志文件转储的工作原理"></a>logrotate实现日志文件转储的工作原理</h2><p>针对文章开头提出的因单个日志文件内容过大而导致的一系列问题，可以通过linux系统自带的logrotate来对系统生成的日志文件按照日期、大小等进行转储，让logrotate定期转储日志文件，并且保留指定数量的日志转储文件，以满足线上运维的需求。</p>
+<p>其实logrotate转储日志文件的工作机制比较简单，即在linux系统下，Crontab每天都会执行logrotate，而logrotate每执行一次，就可以把我们的日志文件转储一次。</p>
+<p>logrotate通过与定时任务Crontab结合来工作，就能满足定期，例如每天对日志文件进行转储的功能，<strong>其原理是：</strong></p>
+<p>Crontab在linux系统的&#x2F;etc目录中有几个定时执行的脚本目录，例如：&#x2F;etc&#x2F;cron.daily，在该文件夹下保存了Crontab每天都会定时执行的脚本；目录&#x2F;etc&#x2F;cron.weekly下则是记录了Crontab每周都会定时执行的脚本。</p>
+<p>我们可以看到在目录&#x2F;etc&#x2F;cron.daily中有个脚本文件：logrotate，这个脚本的内容为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">/usr/sbin/logrotate /etc/logrotate.conf</span><br><span class="line">EXITVALUE=$?</span><br><span class="line">if [ $EXITVALUE != 0 ]; then</span><br><span class="line">/usr/bin/logger -t logrotate &quot;ALERTexited abnormally with [$EXITVALUE]&quot;</span><br><span class="line">fi</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+<p>从上面的脚本内容可以看出，它主要是执行程序logrotate，并且启动logrotate的时候加载了配置文件&#x2F;etc&#x2F;logrotate.conf。</p>
+<p>下面就是对这个配置文件 logrotate.conf 的内容进行简要说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># see &quot;man logrotate&quot; fordetails</span><br><span class="line"># rotate log files weekly</span><br><span class="line">weekly</span><br><span class="line"># keep 4 weeks worth of backlogs</span><br><span class="line">rotate 4</span><br><span class="line"># create new (empty) log files afterrotating old ones</span><br><span class="line">create</span><br><span class="line"># use date as a suffix of the rotated file</span><br><span class="line">dateext</span><br><span class="line"># uncomment this if you want your logfiles compressed</span><br><span class="line">#compress</span><br><span class="line"></span><br><span class="line"># RPM packages drop log rotationinformation into this directory</span><br><span class="line">include /etc/logrotate.d</span><br><span class="line"></span><br><span class="line"># no packages own wtmp and btmp -- we&#x27;ll rotate them here</span><br><span class="line">/var/log/wtmp &#123;</span><br><span class="line">monthly</span><br><span class="line">create 0664 root utmp</span><br><span class="line">minsize 1M</span><br><span class="line">rotate 1</span><br><span class="line">&#125;</span><br><span class="line">/var/log/btmp &#123;</span><br><span class="line">missingok</span><br><span class="line">monthly</span><br><span class="line">create 0600 root utmp</span><br><span class="line">rotate 1</span><br><span class="line">&#125;</span><br><span class="line"># system-specific logs may be also beconfigured here.</span><br></pre></td></tr></table></figure>
+
+<p>该文件的前半部分内容都是默认配置项，这些配置项可以被后续的配置所覆盖，这里需要关注的是配置项：<strong>include &#x2F;etc&#x2F;logrotate.d</strong>，它表示logrotate在启动的时候还要把目录&#x2F;etc&#x2F;logrotate.d中的配置文件都执行一遍。</p>
+<p>实际上，为了便于使用，每个应用程序都可以编写自己的logrotate配置文件，然后把编写好的配置文件放在目录&#x2F;etc&#x2F;logrotate.d下，这样每个程序自己的配置项就会把上面的默认配置项给覆盖掉。</p>
+<p><strong>覆盖默认配置项的具体过程如下：</strong></p>
+<p>（1）logrotate的启动脚本被放在了Crontab每天执行的脚本目录中&#x2F;etc&#x2F;cron.daily，这样Crontab每天都会执行一次logrotate；</p>
+<p>（2）logrotate启动的时候，加载了配置文件&#x2F;etc&#x2F;logrotate.conf；</p>
+<p>（3）配置文件&#x2F;etc&#x2F;logrotate.conf 又引入了目录：&#x2F;etc&#x2F;logrotate.d；</p>
+<p>（4）我们在&#x2F;etc&#x2F;logrotate.d目录下新建了一个自己的logrotate配置文件；</p>
+<p>（5）这样，当logrotate每次启动的时候就会执行加载我们自己新建的logrotate配置文件，从而按照我们设定的配置项来转储我们指定的日志文件。</p>
+<h2 id="以mosquitto日志文件为例说明"><a href="#以mosquitto日志文件为例说明" class="headerlink" title="以mosquitto日志文件为例说明"></a>以mosquitto日志文件为例说明</h2><p>（1）在目录&#x2F;etc&#x2F;logrotate.d&#x2F;下创建一个日志转储的配置文件（<em>名字可以自己定义，只要在该目录下就会被执行</em>）：mosquitto</p>
+<p>（2）配置文件mosquitto的内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/home/logs/mosquitto/mosquitto.log &#123;</span><br><span class="line"> daily</span><br><span class="line"> dateext</span><br><span class="line"> copytruncate</span><br><span class="line"> nocompress</span><br><span class="line"> rotate 15</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是该配置文件的内容说明：</p>
+<ul>
+<li><p>第一行左大括号之前的&#x2F;home&#x2F;logs&#x2F;mosquitto&#x2F;mosquitto.log 指出了要转储的日志文件的具体位置和文件名；</p>
+</li>
+<li><p>daily：按天去转储；</p>
+</li>
+<li><p>dateext：表示转储后的日志文件会附加上日期信息</p>
+</li>
+<li><p>copytruncate：对于正在open中的日志文件，会把当前日志备份并截断</p>
+</li>
+<li><p>nocompress：表示不要对转储的日志压缩</p>
+</li>
+<li><p>rotate 15：表示最多保留多少个转储之后的日志文件</p>
+</li>
+</ul>
+<p>（3）确保刚才新建的mosquitto配置文件的权限为：-rw-r–r–</p>
+<p><strong>注意：</strong>该配置文件的权限不能错，如果你修改为其他的，例如：-rwxrwxrwx，虽然你放开了权限，但是logrotate在运行时仍会报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># /usr/sbin/logrotate -vf /etc/logrotate.d/</span><br><span class="line"> </span><br><span class="line">Ignoring mosquitto because of bad filemode.</span><br><span class="line"> </span><br><span class="line">进而造成logrotate读取你的配置文件失败！！！！</span><br></pre></td></tr></table></figure>
+
+<p>（4）查看log文件所在<strong>父目录的权限，确保group权限和other权限中没有“w”权限</strong>，否则在执行logrotate转储命令时会报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">logrotate执行轮询异常，“considering log /home/logs/mosquitto/mosquitto.log</span><br><span class="line">error: skipping “/home/logs/mosquitto/mosquitto.log” because parent directory has insecure permissions (It’s world writable or writable by group which is not “root”) Set “su” directive in config file to tell logrotate which user/group should be used for rotation.”</span><br></pre></td></tr></table></figure>
+
+<p>如果发现group权限和other权限中含有“w”权限，则需使用chmod命令删除“w”权限，具体命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># chmod go-w /home/logs/mosquitto</span><br></pre></td></tr></table></figure>
+
+<p>（5）最后测试一下配置文件的配置内容是否有误。执行logrotate转储命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># /usr/sbin/logrotate -vf /etc/logrotate.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到新生成的转储文件与原日志文件在同一个目录下，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-rwxrwxrwx. 1 root root 482 5月  18 15:36 mosquitto.log</span><br><span class="line">-rwxrwxrwx. 1 root root 950 5月  18 15:25 mosquitto.log-20210518</span><br></pre></td></tr></table></figure>
+
+<p>这样后续每天原始日志文件的内容都会自动备份和截断，在当前目录下自动生成一个带有日期标签的日志转储文件。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/logrotate/" rel="tag"># logrotate</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/29/ml/" rel="prev" title="人工智能之常见机器学习算法介绍">
+      <i class="fa fa-chevron-left"></i> 人工智能之常见机器学习算法介绍
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/15/wky-nas/" rel="next" title="低成本搭建家用轻NAS系统-玩客云">
+      低成本搭建家用轻NAS系统-玩客云 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%94%A8logrotate"><span class="nav-number">1.</span> <span class="nav-text">为什么需要用logrotate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85logrotate%EF%BC%88%E4%B8%80%E8%88%AC%E7%B3%BB%E7%BB%9F%E9%83%BD%E4%BC%9A%E9%BB%98%E8%AE%A4%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">安装logrotate（一般系统都会默认自动安装）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logrotate%E5%AE%9E%E7%8E%B0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%BD%AC%E5%82%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">logrotate实现日志文件转储的工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5mosquitto%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E4%B8%BA%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">4.</span> <span class="nav-text">以mosquitto日志文件为例说明</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

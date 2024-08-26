@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我们知道，之前要想基于uiautomator框架来实现带模拟点击的自动化测试工具，手机是需要与PC机相连的，并通过adb shell来启动测试工具，但由于其限制因素较多，在实际工作中并不那么实用。本文主要介绍如何基于Android Studio3.2 和 uiautomator2.0框架，实现Android手机脱离PC机，独立运行模拟点击APP，来进行自动化测试。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uiautomator2.0脱离PC运行，实现模拟点击">
+<meta property="og:url" content="https://panzhe.cn/2018/10/08/uiautomator/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="我们知道，之前要想基于uiautomator框架来实现带模拟点击的自动化测试工具，手机是需要与PC机相连的，并通过adb shell来启动测试工具，但由于其限制因素较多，在实际工作中并不那么实用。本文主要介绍如何基于Android Studio3.2 和 uiautomator2.0框架，实现Android手机脱离PC机，独立运行模拟点击APP，来进行自动化测试。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/1.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/2.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/3.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/4.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/5.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/6.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/7.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/8.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/9.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/10.png">
+<meta property="og:image" content="https://panzhe.cn/2018/10/08/uiautomator/11.png">
+<meta property="article:published_time" content="2018-10-08T15:47:57.000Z">
+<meta property="article:modified_time" content="2020-02-06T08:37:57.089Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="uiautomator2.0">
+<meta property="article:tag" content="脱离PC">
+<meta property="article:tag" content="模拟点击">
+<meta property="article:tag" content="android studio3.2">
+<meta property="article:tag" content="系统权限">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2018/10/08/uiautomator/1.png">
+
+<link rel="canonical" href="https://panzhe.cn/2018/10/08/uiautomator/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>uiautomator2.0脱离PC运行，实现模拟点击 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2018/10/08/uiautomator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          uiautomator2.0脱离PC运行，实现模拟点击
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-08 23:47:57" itemprop="dateCreated datePublished" datetime="2018-10-08T23:47:57+08:00">2018-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-06 16:37:57" itemprop="dateModified" datetime="2020-02-06T16:37:57+08:00">2020-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">android系统相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">我们知道，之前要想基于uiautomator框架来实现带模拟点击的自动化测试工具，手机是需要与PC机相连的，并通过adb shell来启动测试工具，但由于其限制因素较多，在实际工作中并不那么实用。本文主要介绍如何基于Android Studio3.2 和 uiautomator2.0框架，实现Android手机脱离PC机，独立运行模拟点击APP，来进行自动化测试。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近在搞个自动化测试工具，但又不想那么麻烦的让手机一直连着电脑，所以想找找有没有办法让工具脱离PC运行，由于之前接触过uiautomator，所以想基于这个框架来实现。刚开始主要参考了一个大神的文章 <a target="_blank" rel="noopener" href="https://blog.csdn.net/cxq234843654/article/details/52605441">uiautomator2.0+脱离PC运行（apk启动uiautomator2.0+）的实现方案</a> 进行方案验证。但在实施过程中，遇到了一些问题，通过各种搜各种查，最终都解决了，期间还顺便把android studio升级到了3.2版本。本文主要是在之前这位大神发表的文章基础上，再将方案和流程细化一下，避免大家再次踩坑。</p>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>打开MyTest.apk，点击 RUN，就能直接运行uiautomator脚本。</p>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ul>
+<li><p>Android Studio3.2<br><img src="/2018/10/08/uiautomator/1.png"></p>
+</li>
+<li><p>已经ROOT的红米Note</p>
+<blockquote>
+<p>如果手机没有root，则需要事先准备好 该手机操作系统对应的系统签名文件，因为MyTest APP需要拥有系统权限，才能执行am instrument命令来运行uiautomator脚本。由于很多手机厂商会对android系统进行定制修改，所以使用原生的android系统证书platform.x509.pem和platform.pk8文件给APP添加系统签名是无效的。所以最终我选择了将手机ROOT。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="方案概述"><a href="#方案概述" class="headerlink" title="方案概述"></a>方案概述</h2><ul>
+<li>新建一个Android app工程MyTest，在Activity中添加Button，用于启动uiautomaotr脚本</li>
+<li>给这个app添加系统签名。<code>若手机已root，则忽略此步。</code></li>
+<li>在MyTest中新建一个module，命名为MyTestCase，用于编写uiautomaotr脚本</li>
+<li>使用<code>am instrument</code>命令实现脚本的运行，执行模拟点击</li>
+</ul>
+<h2 id="具体步骤："><a href="#具体步骤：" class="headerlink" title="具体步骤："></a>具体步骤：</h2><h3 id="1-新建一个Android应用，命名为MyTest"><a href="#1-新建一个Android应用，命名为MyTest" class="headerlink" title="1. 新建一个Android应用，命名为MyTest"></a>1. 新建一个Android应用，命名为MyTest</h3><p><img src="/2018/10/08/uiautomator/2.png"><br><img src="/2018/10/08/uiautomator/3.png"><br>并选择Empty Activity，一路next到finish。</p>
+<h3 id="2-给UI增加Button，修改res-layout目录下activity-main-xml文件"><a href="#2-给UI增加Button，修改res-layout目录下activity-main-xml文件" class="headerlink" title="2. 给UI增加Button，修改res&#x2F;layout目录下activity_main.xml文件"></a>2. 给UI增加Button，修改res&#x2F;layout目录下activity_main.xml文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;android.support.constraint.ConstraintLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    tools:context=&quot;.MainActivity&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:onClick=&quot;runMyUiautomator&quot;</span><br><span class="line">        android:id=&quot;@+id/runBtn&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;run&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/android.support.constraint.ConstraintLayout&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="3-修改MainActivity-java文件MainActivity-Class，添加Button事件、uiautomator线程、创建CMDUtils类等"><a href="#3-修改MainActivity-java文件MainActivity-Class，添加Button事件、uiautomator线程、创建CMDUtils类等" class="headerlink" title="3. 修改MainActivity.java文件MainActivity Class，添加Button事件、uiautomator线程、创建CMDUtils类等"></a>3. 修改MainActivity.java文件MainActivity Class，添加Button事件、uiautomator线程、创建CMDUtils类等</h3><p><strong>注意：</strong> generateCommand函数的三个入参分别是待会我们要创建的uiautomator脚本的包名、类名、方法名。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line">    private static final String TAG = &quot;MainActivity&quot;;</span><br><span class="line">    Button runBtn;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        runBtn= findViewById(R.id.runBtn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 点击按钮对应的方法</span><br><span class="line">     * @param v</span><br><span class="line">     */</span><br><span class="line">    public void runMyUiautomator(View v)&#123;</span><br><span class="line">        Log.i(TAG, &quot;runMyUiautomator: &quot;);</span><br><span class="line">        new UiautomatorThread().start();</span><br><span class="line">        Toast.makeText(this, &quot;start run&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 运行uiautomator是个费时的操作，不应该放在主线程，因此另起一个线程运行</span><br><span class="line">     */</span><br><span class="line">    class UiautomatorThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            super.run();</span><br><span class="line">            String command = generateCommand(&quot;zhepan.com.mytestcase&quot;, &quot;ExampleInstrumentedTest &quot;, &quot;useAppContext&quot;);</span><br><span class="line">            CMDUtils.CMD_Result rs= CMDUtils.runCMD(command,true,true);</span><br><span class="line">            Log.e(TAG, &quot;run: &quot; + rs.error + &quot;-------&quot; + rs.success);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 生成命令</span><br><span class="line">         * @param pkgName uiautomator包名</span><br><span class="line">         * @param clsName uiautomator类名</span><br><span class="line">         * @param mtdName uiautomator方法名</span><br><span class="line">         * @return</span><br><span class="line">         */</span><br><span class="line">        public  String generateCommand(String pkgName, String clsName, String mtdName) &#123;</span><br><span class="line">            String command = &quot;am instrument -w -r -e debug false -e class &quot;</span><br><span class="line">                    + pkgName + &quot;.&quot; + clsName + &quot;#&quot; + mtdName + &quot; &quot;</span><br><span class="line">                    + pkgName + &quot;.test/android.support.test.runner.AndroidJUnitRunner&quot;;</span><br><span class="line">            Log.e(&quot;test1: &quot;, command);</span><br><span class="line">            return command;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CMDUtils.java文件内容如下：<br><strong>注意:</strong> </p>
+<blockquote>
+<ul>
+<li>我没有采用给APP添加系统签名的方式来获取系统权限，而是在代码中使用<code>Runtime.getRuntime().exec(&quot;su&quot;);</code>来获取root权限，但<code>前提是你的手机已经root，且装有授权管理，允许应用来申请root权限</code>。</li>
+<li>当执行<code>Runtime.getRuntime().exec(&quot;su&quot;);</code>这行代码时，手机上会弹出一个对话框问你是否允许申请root，但只是执行这条命令有root权限而已，并不是整个程序都有root权限。这点<code>需要特别注意</code>。</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 执行命令</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CMDUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">TAG</span> <span class="operator">=</span> <span class="string">&quot;CMDUtils&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">CMD_Result</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> resultCode;</span><br><span class="line">        <span class="keyword">public</span> String error;</span><br><span class="line">        <span class="keyword">public</span> String success;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">CMD_Result</span><span class="params">(<span class="type">int</span> resultCode, String error, String success)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.resultCode = resultCode;</span><br><span class="line">            <span class="built_in">this</span>.error = error;</span><br><span class="line">            <span class="built_in">this</span>.success = success;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行命令</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> command         命令</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> isShowCommand   是否显示执行的命令</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> isNeedResultMsg 是否反馈执行的结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@retrun</span> CMD_Result</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> CMD_Result <span class="title function_">runCMD</span><span class="params">(String command, <span class="type">boolean</span> isShowCommand,</span></span><br><span class="line"><span class="params">                                    <span class="type">boolean</span> isNeedResultMsg)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isShowCommand)</span><br><span class="line">            Log.i(TAG, <span class="string">&quot;runCMD:&quot;</span> + command);</span><br><span class="line">        <span class="type">CMD_Result</span> <span class="variable">cmdRsult</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> result;</span><br><span class="line">        <span class="type">Process</span> <span class="variable">process</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">pw</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            process = Runtime.getRuntime().exec(<span class="string">&quot;su&quot;</span>); <span class="comment">//获取root权限</span></span><br><span class="line">            pw = <span class="keyword">new</span> <span class="title class_">PrintWriter</span>(process.getOutputStream());</span><br><span class="line">            pw.println(command);</span><br><span class="line">            pw.flush();</span><br><span class="line">            result = process.waitFor();</span><br><span class="line">            <span class="keyword">if</span> (isNeedResultMsg) &#123;</span><br><span class="line">                <span class="type">StringBuilder</span> <span class="variable">successMsg</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                <span class="type">StringBuilder</span> <span class="variable">errorMsg</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                <span class="type">BufferedReader</span> <span class="variable">successResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(</span><br><span class="line">                        <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(process.getInputStream()));</span><br><span class="line">                <span class="type">BufferedReader</span> <span class="variable">errorResult</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(</span><br><span class="line">                        <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(process.getErrorStream()));</span><br><span class="line">                String s;</span><br><span class="line">                <span class="keyword">while</span> ((s = successResult.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">                    successMsg.append(s);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span> ((s = errorResult.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">                    errorMsg.append(s);</span><br><span class="line">                &#125;</span><br><span class="line">                cmdRsult = <span class="keyword">new</span> <span class="title class_">CMD_Result</span>(result, errorMsg.toString(),</span><br><span class="line">                        successMsg.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            Log.e(TAG, <span class="string">&quot;run CMD:&quot;</span> + command + <span class="string">&quot; failed&quot;</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           <span class="keyword">if</span> (pw != <span class="literal">null</span>) &#123;</span><br><span class="line">                pw.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (process != <span class="literal">null</span>) &#123;</span><br><span class="line">                process.destroy();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cmdRsult;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-新建一个Module，用于编写uiautomator脚本"><a href="#4-新建一个Module，用于编写uiautomator脚本" class="headerlink" title="4. 新建一个Module，用于编写uiautomator脚本"></a>4. 新建一个Module，用于编写uiautomator脚本</h3><p>单击项目名称，右击“New – Module – Phone&amp;Table Module”，<br><img src="/2018/10/08/uiautomator/4.png"><br>并填写如下信息，<br><img src="/2018/10/08/uiautomator/5.png"><br>Next之后，选择 “Add No Activity” –&gt; Finish。</p>
+<h3 id="5-修改mytestcase模块的build-gradle文件"><a href="#5-修改mytestcase模块的build-gradle文件" class="headerlink" title="5. 修改mytestcase模块的build.gradle文件"></a>5. 修改mytestcase模块的build.gradle文件</h3><p><img src="/2018/10/08/uiautomator/6.png"></p>
+<ul>
+<li>打开build.gradle文件，可以看到系统已经自动在defaultConfig中添加了Runner（<code>testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</code>）。如系统未自动添加，请自行添加一下。<br><img src="/2018/10/08/uiautomator/7.png"></li>
+<li>在dependencies中添加依赖<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line"> 	implementation fileTree(dir: &#x27;libs&#x27;, include: [&#x27;*.jar&#x27;])</span><br><span class="line"></span><br><span class="line">  	implementation &#x27;com.android.support:appcompat-v7:27.1.1&#x27;</span><br><span class="line">  	implementation &#x27;junit:junit:4.12&#x27;</span><br><span class="line">  	implementation &#x27;com.android.support.test:runner:1.0.2&#x27;</span><br><span class="line">  	implementation &#x27;com.android.support.test.uiautomator:uiautomator-v18:2.1.3&#x27;</span><br><span class="line">  	androidTestImplementation &#x27;com.android.support.test.espresso:espresso-core:3.0.2&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="6-编写uiautomator脚本并运行（附加原理分析）"><a href="#6-编写uiautomator脚本并运行（附加原理分析）" class="headerlink" title="6. 编写uiautomator脚本并运行（附加原理分析）"></a>6. 编写uiautomator脚本并运行（附加原理分析）</h3><ul>
+<li><p>打开系统自行创建的测试类ExampleInstrumentedTest.java文件（在mytestcase\src\androidTest\java\zhepan\com\mytestcase目录下），或自己新建一个测试类。<br><img src="/2018/10/08/uiautomator/8.png"><br>修改ExampleInstrumentedTest类如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Instrumented test, which will execute on an Android device.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> &lt;a href=&quot;http://d.android.com/tools/testing&quot;&gt;Testing documentation&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RunWith(AndroidJUnit4.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExampleInstrumentedTest</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> UiDevice mDevice;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">useAppContext</span><span class="params">()</span> <span class="keyword">throws</span> UiObjectNotFoundException &#123;</span><br><span class="line">        mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());</span><br><span class="line">        mDevice.pressHome();</span><br><span class="line">        UiObject x=mDevice.findObject(<span class="keyword">new</span> <span class="title class_">UiSelector</span>().text(<span class="string">&quot;联系人&quot;</span>));</span><br><span class="line">        x.click();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Case说明：</p>
+<blockquote>
+<p>@RunWith注解，代表使用什么Runner<br>@Test注解，表示当前的方法为测试方法</p>
+</blockquote>
+<p><strong>注意：</strong> 还记得第3步MainActivity.java文件中的generateCommand函数吗？这个函数的<code>三个入参</code>分别是<span id="inline-blue"> 上面这个测试类的 </span><code>包名、类名和方法名</code>，一定要记得对应上哈。</p>
+</li>
+<li><p>运行一下你的case，测试是否有效。运行方法：点击带有Test注解的方法左侧绿色三角形<br><img src="/2018/10/08/uiautomator/9.png"><br>此时，控制台Run窗口会输出如下信息：<br><img src="/2018/10/08/uiautomator/10.png"><br><strong>原理分析：</strong></p>
+<blockquote>
+<p>可以看出，窗口其实执行了3条命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;$ adb push G:\Test\MyTest\mytestcase\build\outputs\apk\debug\mytestcase-debug.apk /data/local/tmp/zhepan.com.mytestcase</span><br></pre></td></tr></table></figure>
+
+<p>在我们点击运行之后，AS会自动将用例打包成apk文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;$ adb shell pm install -t -r &quot;/data/local/tmp/zhepan.com.mytestcase&quot;</span><br></pre></td></tr></table></figure>
+
+<p>将这个apk安装到手机上</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;$ adb shell am instrument -w -r   -e debug false -e class &#x27;zhepan.com.mytestcase.ExampleInstrumentedTest#useAppContext&#x27; zhepan.com.mytestcase.test/android.support.test.runner.AndroidJUnitRunner</span><br></pre></td></tr></table></figure>
+
+<p>执行am命令，使用AndroidJunitRunner启动测试用例</p>
+</blockquote>
+<p>通过分析这个过程，我们知道了AS是如何将用例跑起来的。仿照这个原理我们就可以自己实现通过apk调用uiautomator用例：只要让app中的button响应事件去执行am instrument命令即可，但是由于执行这个命令是需要系统权限的，因此需要给app添加系统签名，或跑在已经root的手机上。</p>
+</li>
+</ul>
+<h3 id="7-给APP添加系统签名（手机已-ROOT-的可跳过此步）"><a href="#7-给APP添加系统签名（手机已-ROOT-的可跳过此步）" class="headerlink" title="7. 给APP添加系统签名（手机已 ROOT 的可跳过此步）"></a>7. 给APP添加系统签名（手机已 ROOT 的可跳过此步）</h3><p>大致过程如下，具体的细节可以参照一位大神之前写过的文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/cxq234843654/article/details/51557025">Android Studio自动生成带系统签名的apk</a>：<br>a. 修改MyTest APP中的manifest.xml文件，添加<code>android:sharedUserId=&quot;android.uid.system&quot;</code><br>b. 生成js文件<br>c. 使用keytool-importkeypair对jks文件引入系统签名<br>d. 配置gradle（app）</p>
+<h3 id="8-通过MyTest-APP启动uiautomator脚本，实现脱离PC运行"><a href="#8-通过MyTest-APP启动uiautomator脚本，实现脱离PC运行" class="headerlink" title="8. 通过MyTest APP启动uiautomator脚本，实现脱离PC运行"></a>8. 通过MyTest APP启动uiautomator脚本，实现脱离PC运行</h3><p>运行MyTest APP，由于第6步已运行过uiautomator脚本，mytestcase-debug.apk已安装到手机上，所以此处不必再次运行脚本。<br><img src="/2018/10/08/uiautomator/11.png"><br>点击RUN，则回到主界面，并打开主界面上的联系人。至此，实现了uiautomator2.0脱离PC运行的效果。</p>
+<blockquote>
+<p>最后附上项目源码地址：<a target="_blank" rel="noopener" href="https://github.com/pgz100/myuiautomator">https://github.com/pgz100/myuiautomator</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/uiautomator2-0/" rel="tag"># uiautomator2.0</a>
+              <a href="/tags/%E8%84%B1%E7%A6%BBPC/" rel="tag"># 脱离PC</a>
+              <a href="/tags/%E6%A8%A1%E6%8B%9F%E7%82%B9%E5%87%BB/" rel="tag"># 模拟点击</a>
+              <a href="/tags/android-studio3-2/" rel="tag"># android studio3.2</a>
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9D%83%E9%99%90/" rel="tag"># 系统权限</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/02/githubpages-hexo-next/" rel="next" title="利用 Github Pages + Hexo + NexT 搭建私人博客">
+      利用 Github Pages + Hexo + NexT 搭建私人博客 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">实现效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">方案概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">具体步骤：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAAndroid%E5%BA%94%E7%94%A8%EF%BC%8C%E5%91%BD%E5%90%8D%E4%B8%BAMyTest"><span class="nav-number">4.1.</span> <span class="nav-text">1. 新建一个Android应用，命名为MyTest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%99UI%E5%A2%9E%E5%8A%A0Button%EF%BC%8C%E4%BF%AE%E6%94%B9res-layout%E7%9B%AE%E5%BD%95%E4%B8%8Bactivity-main-xml%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">2. 给UI增加Button，修改res&#x2F;layout目录下activity_main.xml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9MainActivity-java%E6%96%87%E4%BB%B6MainActivity-Class%EF%BC%8C%E6%B7%BB%E5%8A%A0Button%E4%BA%8B%E4%BB%B6%E3%80%81uiautomator%E7%BA%BF%E7%A8%8B%E3%80%81%E5%88%9B%E5%BB%BACMDUtils%E7%B1%BB%E7%AD%89"><span class="nav-number">4.3.</span> <span class="nav-text">3. 修改MainActivity.java文件MainActivity Class，添加Button事件、uiautomator线程、创建CMDUtils类等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAModule%EF%BC%8C%E7%94%A8%E4%BA%8E%E7%BC%96%E5%86%99uiautomator%E8%84%9A%E6%9C%AC"><span class="nav-number">4.4.</span> <span class="nav-text">4. 新建一个Module，用于编写uiautomator脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BF%AE%E6%94%B9mytestcase%E6%A8%A1%E5%9D%97%E7%9A%84build-gradle%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.</span> <span class="nav-text">5. 修改mytestcase模块的build.gradle文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BC%96%E5%86%99uiautomator%E8%84%9A%E6%9C%AC%E5%B9%B6%E8%BF%90%E8%A1%8C%EF%BC%88%E9%99%84%E5%8A%A0%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90%EF%BC%89"><span class="nav-number">4.6.</span> <span class="nav-text">6. 编写uiautomator脚本并运行（附加原理分析）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BB%99APP%E6%B7%BB%E5%8A%A0%E7%B3%BB%E7%BB%9F%E7%AD%BE%E5%90%8D%EF%BC%88%E6%89%8B%E6%9C%BA%E5%B7%B2-ROOT-%E7%9A%84%E5%8F%AF%E8%B7%B3%E8%BF%87%E6%AD%A4%E6%AD%A5%EF%BC%89"><span class="nav-number">4.7.</span> <span class="nav-text">7. 给APP添加系统签名（手机已 ROOT 的可跳过此步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%80%9A%E8%BF%87MyTest-APP%E5%90%AF%E5%8A%A8uiautomator%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%84%B1%E7%A6%BBPC%E8%BF%90%E8%A1%8C"><span class="nav-number">4.8.</span> <span class="nav-text">8. 通过MyTest APP启动uiautomator脚本，实现脱离PC运行</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

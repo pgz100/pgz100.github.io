@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="利用python编写自动化处理脚本，包括模拟鼠标点击、模拟键盘输入，适用在windows和linux的图形化桌面上，如：Win10、Ubuntu桌面版。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python自动化脚本实现模拟鼠标和键盘输入">
+<meta property="og:url" content="https://panzhe.cn/2020/02/18/python-auto-operation/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="利用python编写自动化处理脚本，包括模拟鼠标点击、模拟键盘输入，适用在windows和linux的图形化桌面上，如：Win10、Ubuntu桌面版。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://panzhe.cn/2020/02/18/python-auto-operation/1.png">
+<meta property="article:published_time" content="2020-02-18T01:56:07.000Z">
+<meta property="article:modified_time" content="2020-02-21T03:02:27.473Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="自动化脚本">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://panzhe.cn/2020/02/18/python-auto-operation/1.png">
+
+<link rel="canonical" href="https://panzhe.cn/2020/02/18/python-auto-operation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python自动化脚本实现模拟鼠标和键盘输入 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2020/02/18/python-auto-operation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python自动化脚本实现模拟鼠标和键盘输入
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-18 09:56:07" itemprop="dateCreated datePublished" datetime="2020-02-18T09:56:07+08:00">2020-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-21 11:02:27" itemprop="dateModified" datetime="2020-02-21T11:02:27+08:00">2020-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">python相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+            <div class="post-description">利用python编写自动化处理脚本，包括模拟鼠标点击、模拟键盘输入，适用在windows和linux的图形化桌面上，如：Win10、Ubuntu桌面版。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Windows上实现自动化脚本"><a href="#Windows上实现自动化脚本" class="headerlink" title="Windows上实现自动化脚本"></a>Windows上实现自动化脚本</h1><p>python在windows上的生态做的比较好，各种依赖包模块也比较齐全，所以在windows上实现自动化脚本相对容易一些，相关的实现文章和文档也比较多。我一开始做自动化脚本就是在windows系统上弄的，在这过程中也踩了一些坑，特于此整理，以备后查。</p>
+<p>运行环境：Win10&#x2F;Python3.7</p>
+<p>主要模块：win32gui，利用pip安装 pywin32即可。</p>
+<h2 id="模拟鼠标点击的关键代码和说明"><a href="#模拟鼠标点击的关键代码和说明" class="headerlink" title="模拟鼠标点击的关键代码和说明"></a>模拟鼠标点击的关键代码和说明</h2><p><strong>使用的主要函数：win32api.mouse_event</strong></p>
+<blockquote>
+<p>函数原型</p>
+</blockquote>
+<p>VOID mouse_event(</p>
+<p>​	DWORD dwFlags, &#x2F;&#x2F; motion and click options</p>
+<p>​	DWORD dx, &#x2F;&#x2F; horizontal position or change</p>
+<p>​	DWORD dy, &#x2F;&#x2F; vertical position or change</p>
+<p>​	DWORD dwData, &#x2F;&#x2F; wheel movement</p>
+<p>​	ULONG_PTR dwExtraInfo &#x2F;&#x2F; application-defined information</p>
+<p>);</p>
+<blockquote>
+<p>参数说明</p>
+</blockquote>
+<p>dwFlags：标志位集，指定点击按钮和鼠标动作的多种情况。<strong>这里主要介绍鼠标点击的一些组合</strong>：</p>
+<ul>
+<li>MOUSEEVENTF_LEFTDOWN：表明接按下鼠标左键。</li>
+<li>MOUSEEVENTF_LEFTUP：表明松开鼠标左键。</li>
+<li>MOUSEEVENTF_RIGHTDOWN：表明按下鼠标右键。</li>
+<li>MOUSEEVENTF_RIGHTUP：表明松开鼠标右键。</li>
+<li>MOUSEEVENTF_MIDDLEDOWN：表明按下鼠标中键。</li>
+<li>MOUSEEVENTF_MIDDLEUP：表明松开鼠标中键。</li>
+<li>MOUSEEVENTF_WHEEL：在Windows NT中如果鼠标有一个轮(wheel)，表明鼠标轮被移动。移动的数量由<strong>dwData</strong>给出。</li>
+</ul>
+<p>dx：指定鼠标沿x轴的绝对位置。</p>
+<p>dy：指定鼠标沿y轴的绝对位置。</p>
+<p>dwData：如果<strong>dwFlags</strong>为MOUSEEVENTF_WHEEL，则用dwData来指定鼠标轮移动的数量。</p>
+<ul>
+<li>dwData为正值：表明鼠标轮向前转动，即远离用户的方向；</li>
+<li>dwData为负值：表明鼠标轮向后转动，即朝向用户。</li>
+<li>一个轮击(即滚动一次)定义为WHEEL_DELTA，即120。</li>
+</ul>
+<p><strong>注意：</strong>在使用鼠标轮(wheel)时，如果想实现多次连续滚动，建议使用循环语句，且每次执行后稍微停顿(sleep)一下。</p>
+<blockquote>
+<p>示例代码</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向下滚动一次，即一个轮击</span></span><br><span class="line">win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">120</span>, win32con.WHEEL_DELTA)</span><br></pre></td></tr></table></figure>
+
+<p><strong>以下是模拟鼠标点击的关键代码：</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> win32gui</span><br><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动鼠标到指定位置</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mouse_move</span>(<span class="params">x,y</span>):</span><br><span class="line">    win32api.SetCursorPos((x, y))  <span class="comment"># 设置鼠标位置(x, y)</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标单击左键</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mouse_click</span>(<span class="params">x=<span class="literal">None</span>,y=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标双击左键</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mouse_dclick</span>(<span class="params">x=<span class="literal">None</span>,y=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> <span class="keyword">not</span> y <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        mouse_move(x,y)</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 鼠标滚轮向下滑动</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mouse_slide</span>(<span class="params">slide_times</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(slide_times):</span><br><span class="line">        win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL,<span class="number">0</span>,<span class="number">0</span>,-<span class="number">120</span>,win32con.WHEEL_DELTA)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">mouse_click(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_dclick(<span class="number">500</span>, <span class="number">280</span>)</span><br><span class="line">mouse_slide(<span class="number">3</span>) <span class="comment"># 鼠标滚轮向下滑动3次</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_53f023270101ors4.html">python中调用windowsAPI实现鼠标滑轮滚动操作</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/huidaoli/p/7398392.html">如何使用python来模拟鼠标点击（将通过实例自动化模拟在360浏览器中自动搜索”python”）</a></li>
+</ul>
+<h2 id="模拟键盘输入的关键代码和说明"><a href="#模拟键盘输入的关键代码和说明" class="headerlink" title="模拟键盘输入的关键代码和说明"></a>模拟键盘输入的关键代码和说明</h2><p><strong>使用的主要函数：win32api.keybd_event</strong></p>
+<blockquote>
+<p>函数原型</p>
+</blockquote>
+<p>keybd_event(bVk,  bScan,  dwFlags,  dwExtraInfo)</p>
+<blockquote>
+<p>参数说明</p>
+</blockquote>
+<p>bVk：定义一个虚拟键码，键码值必须在1～254之间（键盘键码对照表请见下方代码中的VK_CODE）。</p>
+<p>bScan：定义该键的硬件扫描码，一般设置为0即可。</p>
+<p>dwFlags：定义函数操作的一个标志位。置为0表示该健被按下，置为KEYEVENTF_KEYUP表示该健被释放。</p>
+<p>dwExtraInfo：定义与击键相关的附加的32位值，一般设置为0即可。</p>
+<blockquote>
+<p>示例代码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import win32api</span><br><span class="line">import win32con</span><br><span class="line"></span><br><span class="line">win32api.keybd_event(0x0D, 0, 0, 0)     # 按下enter键</span><br><span class="line">win32api.keybd_event(0x0D, 0, win32con.KEYEVENTF_KEYUP, 0)  #释放按键</span><br></pre></td></tr></table></figure>
+
+<p><strong>以下是模拟按键输入的关键代码：</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> win32gui</span><br><span class="line"><span class="keyword">import</span> win32con</span><br><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line">VK_CODE = &#123;</span><br><span class="line">    <span class="string">&#x27;backspace&#x27;</span>:<span class="number">0x08</span>,</span><br><span class="line">    <span class="string">&#x27;tab&#x27;</span>:<span class="number">0x09</span>,</span><br><span class="line">    <span class="string">&#x27;clear&#x27;</span>:<span class="number">0x0C</span>,</span><br><span class="line">    <span class="string">&#x27;enter&#x27;</span>:<span class="number">0x0D</span>,</span><br><span class="line">    <span class="string">&#x27;shift&#x27;</span>:<span class="number">0x10</span>,</span><br><span class="line">    <span class="string">&#x27;ctrl&#x27;</span>:<span class="number">0x11</span>,</span><br><span class="line">    <span class="string">&#x27;alt&#x27;</span>:<span class="number">0x12</span>,</span><br><span class="line">    <span class="string">&#x27;pause&#x27;</span>:<span class="number">0x13</span>,</span><br><span class="line">    <span class="string">&#x27;caps_lock&#x27;</span>:<span class="number">0x14</span>,</span><br><span class="line">    <span class="string">&#x27;esc&#x27;</span>:<span class="number">0x1B</span>,</span><br><span class="line">    <span class="string">&#x27;spacebar&#x27;</span>:<span class="number">0x20</span>,</span><br><span class="line">    <span class="string">&#x27;page_up&#x27;</span>:<span class="number">0x21</span>,</span><br><span class="line">    <span class="string">&#x27;page_down&#x27;</span>:<span class="number">0x22</span>,</span><br><span class="line">    <span class="string">&#x27;end&#x27;</span>:<span class="number">0x23</span>,</span><br><span class="line">    <span class="string">&#x27;home&#x27;</span>:<span class="number">0x24</span>,</span><br><span class="line">    <span class="string">&#x27;left_arrow&#x27;</span>:<span class="number">0x25</span>,</span><br><span class="line">    <span class="string">&#x27;up_arrow&#x27;</span>:<span class="number">0x26</span>,</span><br><span class="line">    <span class="string">&#x27;right_arrow&#x27;</span>:<span class="number">0x27</span>,</span><br><span class="line">    <span class="string">&#x27;down_arrow&#x27;</span>:<span class="number">0x28</span>,</span><br><span class="line">    <span class="string">&#x27;select&#x27;</span>:<span class="number">0x29</span>,</span><br><span class="line">    <span class="string">&#x27;print&#x27;</span>:<span class="number">0x2A</span>,</span><br><span class="line">    <span class="string">&#x27;execute&#x27;</span>:<span class="number">0x2B</span>,</span><br><span class="line">    <span class="string">&#x27;print_screen&#x27;</span>:<span class="number">0x2C</span>,</span><br><span class="line">    <span class="string">&#x27;ins&#x27;</span>:<span class="number">0x2D</span>,</span><br><span class="line">    <span class="string">&#x27;del&#x27;</span>:<span class="number">0x2E</span>,</span><br><span class="line">    <span class="string">&#x27;help&#x27;</span>:<span class="number">0x2F</span>,</span><br><span class="line">    <span class="string">&#x27;0&#x27;</span>:<span class="number">0x30</span>,</span><br><span class="line">    <span class="string">&#x27;1&#x27;</span>:<span class="number">0x31</span>,</span><br><span class="line">    <span class="string">&#x27;2&#x27;</span>:<span class="number">0x32</span>,</span><br><span class="line">    <span class="string">&#x27;3&#x27;</span>:<span class="number">0x33</span>,</span><br><span class="line">    <span class="string">&#x27;4&#x27;</span>:<span class="number">0x34</span>,</span><br><span class="line">    <span class="string">&#x27;5&#x27;</span>:<span class="number">0x35</span>,</span><br><span class="line">    <span class="string">&#x27;6&#x27;</span>:<span class="number">0x36</span>,</span><br><span class="line">    <span class="string">&#x27;7&#x27;</span>:<span class="number">0x37</span>,</span><br><span class="line">    <span class="string">&#x27;8&#x27;</span>:<span class="number">0x38</span>,</span><br><span class="line">    <span class="string">&#x27;9&#x27;</span>:<span class="number">0x39</span>,</span><br><span class="line">    <span class="string">&#x27;a&#x27;</span>:<span class="number">0x41</span>,</span><br><span class="line">    <span class="string">&#x27;b&#x27;</span>:<span class="number">0x42</span>,</span><br><span class="line">    <span class="string">&#x27;c&#x27;</span>:<span class="number">0x43</span>,</span><br><span class="line">    <span class="string">&#x27;d&#x27;</span>:<span class="number">0x44</span>,</span><br><span class="line">    <span class="string">&#x27;e&#x27;</span>:<span class="number">0x45</span>,</span><br><span class="line">    <span class="string">&#x27;f&#x27;</span>:<span class="number">0x46</span>,</span><br><span class="line">    <span class="string">&#x27;g&#x27;</span>:<span class="number">0x47</span>,</span><br><span class="line">    <span class="string">&#x27;h&#x27;</span>:<span class="number">0x48</span>,</span><br><span class="line">    <span class="string">&#x27;i&#x27;</span>:<span class="number">0x49</span>,</span><br><span class="line">    <span class="string">&#x27;j&#x27;</span>:<span class="number">0x4A</span>,</span><br><span class="line">    <span class="string">&#x27;k&#x27;</span>:<span class="number">0x4B</span>,</span><br><span class="line">    <span class="string">&#x27;l&#x27;</span>:<span class="number">0x4C</span>,</span><br><span class="line">    <span class="string">&#x27;m&#x27;</span>:<span class="number">0x4D</span>,</span><br><span class="line">    <span class="string">&#x27;n&#x27;</span>:<span class="number">0x4E</span>,</span><br><span class="line">    <span class="string">&#x27;o&#x27;</span>:<span class="number">0x4F</span>,</span><br><span class="line">    <span class="string">&#x27;p&#x27;</span>:<span class="number">0x50</span>,</span><br><span class="line">    <span class="string">&#x27;q&#x27;</span>:<span class="number">0x51</span>,</span><br><span class="line">    <span class="string">&#x27;r&#x27;</span>:<span class="number">0x52</span>,</span><br><span class="line">    <span class="string">&#x27;s&#x27;</span>:<span class="number">0x53</span>,</span><br><span class="line">    <span class="string">&#x27;t&#x27;</span>:<span class="number">0x54</span>,</span><br><span class="line">    <span class="string">&#x27;u&#x27;</span>:<span class="number">0x55</span>,</span><br><span class="line">    <span class="string">&#x27;v&#x27;</span>:<span class="number">0x56</span>,</span><br><span class="line">    <span class="string">&#x27;w&#x27;</span>:<span class="number">0x57</span>,</span><br><span class="line">    <span class="string">&#x27;x&#x27;</span>:<span class="number">0x58</span>,</span><br><span class="line">    <span class="string">&#x27;y&#x27;</span>:<span class="number">0x59</span>,</span><br><span class="line">    <span class="string">&#x27;z&#x27;</span>:<span class="number">0x5A</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_0&#x27;</span>:<span class="number">0x60</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_1&#x27;</span>:<span class="number">0x61</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_2&#x27;</span>:<span class="number">0x62</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_3&#x27;</span>:<span class="number">0x63</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_4&#x27;</span>:<span class="number">0x64</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_5&#x27;</span>:<span class="number">0x65</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_6&#x27;</span>:<span class="number">0x66</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_7&#x27;</span>:<span class="number">0x67</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_8&#x27;</span>:<span class="number">0x68</span>,</span><br><span class="line">    <span class="string">&#x27;numpad_9&#x27;</span>:<span class="number">0x69</span>,</span><br><span class="line">    <span class="string">&#x27;multiply_key&#x27;</span>:<span class="number">0x6A</span>,</span><br><span class="line">    <span class="string">&#x27;add_key&#x27;</span>:<span class="number">0x6B</span>,</span><br><span class="line">    <span class="string">&#x27;separator_key&#x27;</span>:<span class="number">0x6C</span>,</span><br><span class="line">    <span class="string">&#x27;subtract_key&#x27;</span>:<span class="number">0x6D</span>,</span><br><span class="line">    <span class="string">&#x27;decimal_key&#x27;</span>:<span class="number">0x6E</span>,</span><br><span class="line">    <span class="string">&#x27;divide_key&#x27;</span>:<span class="number">0x6F</span>,</span><br><span class="line">    <span class="string">&#x27;F1&#x27;</span>:<span class="number">0x70</span>,</span><br><span class="line">    <span class="string">&#x27;F2&#x27;</span>:<span class="number">0x71</span>,</span><br><span class="line">    <span class="string">&#x27;F3&#x27;</span>:<span class="number">0x72</span>,</span><br><span class="line">    <span class="string">&#x27;F4&#x27;</span>:<span class="number">0x73</span>,</span><br><span class="line">    <span class="string">&#x27;F5&#x27;</span>:<span class="number">0x74</span>,</span><br><span class="line">    <span class="string">&#x27;F6&#x27;</span>:<span class="number">0x75</span>,</span><br><span class="line">    <span class="string">&#x27;F7&#x27;</span>:<span class="number">0x76</span>,</span><br><span class="line">    <span class="string">&#x27;F8&#x27;</span>:<span class="number">0x77</span>,</span><br><span class="line">    <span class="string">&#x27;F9&#x27;</span>:<span class="number">0x78</span>,</span><br><span class="line">    <span class="string">&#x27;F10&#x27;</span>:<span class="number">0x79</span>,</span><br><span class="line">    <span class="string">&#x27;F11&#x27;</span>:<span class="number">0x7A</span>,</span><br><span class="line">    <span class="string">&#x27;F12&#x27;</span>:<span class="number">0x7B</span>,</span><br><span class="line">    <span class="string">&#x27;F13&#x27;</span>:<span class="number">0x7C</span>,</span><br><span class="line">    <span class="string">&#x27;F14&#x27;</span>:<span class="number">0x7D</span>,</span><br><span class="line">    <span class="string">&#x27;F15&#x27;</span>:<span class="number">0x7E</span>,</span><br><span class="line">    <span class="string">&#x27;F16&#x27;</span>:<span class="number">0x7F</span>,</span><br><span class="line">    <span class="string">&#x27;F17&#x27;</span>:<span class="number">0x80</span>,</span><br><span class="line">    <span class="string">&#x27;F18&#x27;</span>:<span class="number">0x81</span>,</span><br><span class="line">    <span class="string">&#x27;F19&#x27;</span>:<span class="number">0x82</span>,</span><br><span class="line">    <span class="string">&#x27;F20&#x27;</span>:<span class="number">0x83</span>,</span><br><span class="line">    <span class="string">&#x27;F21&#x27;</span>:<span class="number">0x84</span>,</span><br><span class="line">    <span class="string">&#x27;F22&#x27;</span>:<span class="number">0x85</span>,</span><br><span class="line">    <span class="string">&#x27;F23&#x27;</span>:<span class="number">0x86</span>,</span><br><span class="line">    <span class="string">&#x27;F24&#x27;</span>:<span class="number">0x87</span>,</span><br><span class="line">    <span class="string">&#x27;num_lock&#x27;</span>:<span class="number">0x90</span>,</span><br><span class="line">    <span class="string">&#x27;scroll_lock&#x27;</span>:<span class="number">0x91</span>,</span><br><span class="line">    <span class="string">&#x27;left_shift&#x27;</span>:<span class="number">0xA0</span>,</span><br><span class="line">    <span class="string">&#x27;right_shift &#x27;</span>:<span class="number">0xA1</span>,</span><br><span class="line">    <span class="string">&#x27;left_control&#x27;</span>:<span class="number">0xA2</span>,</span><br><span class="line">    <span class="string">&#x27;right_control&#x27;</span>:<span class="number">0xA3</span>,</span><br><span class="line">    <span class="string">&#x27;left_menu&#x27;</span>:<span class="number">0xA4</span>,</span><br><span class="line">    <span class="string">&#x27;right_menu&#x27;</span>:<span class="number">0xA5</span>,</span><br><span class="line">    <span class="string">&#x27;browser_back&#x27;</span>:<span class="number">0xA6</span>,</span><br><span class="line">    <span class="string">&#x27;browser_forward&#x27;</span>:<span class="number">0xA7</span>,</span><br><span class="line">    <span class="string">&#x27;browser_refresh&#x27;</span>:<span class="number">0xA8</span>,</span><br><span class="line">    <span class="string">&#x27;browser_stop&#x27;</span>:<span class="number">0xA9</span>,</span><br><span class="line">    <span class="string">&#x27;browser_search&#x27;</span>:<span class="number">0xAA</span>,</span><br><span class="line">    <span class="string">&#x27;browser_favorites&#x27;</span>:<span class="number">0xAB</span>,</span><br><span class="line">    <span class="string">&#x27;browser_start_and_home&#x27;</span>:<span class="number">0xAC</span>,</span><br><span class="line">    <span class="string">&#x27;volume_mute&#x27;</span>:<span class="number">0xAD</span>,</span><br><span class="line">    <span class="string">&#x27;volume_Down&#x27;</span>:<span class="number">0xAE</span>,</span><br><span class="line">    <span class="string">&#x27;volume_up&#x27;</span>:<span class="number">0xAF</span>,</span><br><span class="line">    <span class="string">&#x27;next_track&#x27;</span>:<span class="number">0xB0</span>,</span><br><span class="line">    <span class="string">&#x27;previous_track&#x27;</span>:<span class="number">0xB1</span>,</span><br><span class="line">    <span class="string">&#x27;stop_media&#x27;</span>:<span class="number">0xB2</span>,</span><br><span class="line">    <span class="string">&#x27;play/pause_media&#x27;</span>:<span class="number">0xB3</span>,</span><br><span class="line">    <span class="string">&#x27;start_mail&#x27;</span>:<span class="number">0xB4</span>,</span><br><span class="line">    <span class="string">&#x27;select_media&#x27;</span>:<span class="number">0xB5</span>,</span><br><span class="line">    <span class="string">&#x27;start_application_1&#x27;</span>:<span class="number">0xB6</span>,</span><br><span class="line">    <span class="string">&#x27;start_application_2&#x27;</span>:<span class="number">0xB7</span>,</span><br><span class="line">    <span class="string">&#x27;attn_key&#x27;</span>:<span class="number">0xF6</span>,</span><br><span class="line">    <span class="string">&#x27;crsel_key&#x27;</span>:<span class="number">0xF7</span>,</span><br><span class="line">    <span class="string">&#x27;exsel_key&#x27;</span>:<span class="number">0xF8</span>,</span><br><span class="line">    <span class="string">&#x27;play_key&#x27;</span>:<span class="number">0xFA</span>,</span><br><span class="line">    <span class="string">&#x27;zoom_key&#x27;</span>:<span class="number">0xFB</span>,</span><br><span class="line">    <span class="string">&#x27;clear_key&#x27;</span>:<span class="number">0xFE</span>,</span><br><span class="line">    <span class="string">&#x27;+&#x27;</span>:<span class="number">0xBB</span>,</span><br><span class="line">    <span class="string">&#x27;,&#x27;</span>:<span class="number">0xBC</span>,</span><br><span class="line">    <span class="string">&#x27;-&#x27;</span>:<span class="number">0xBD</span>,</span><br><span class="line">    <span class="string">&#x27;.&#x27;</span>:<span class="number">0xBE</span>,</span><br><span class="line">    <span class="string">&#x27;/&#x27;</span>:<span class="number">0xBF</span>,</span><br><span class="line">    <span class="string">&#x27;`&#x27;</span>:<span class="number">0xC0</span>,</span><br><span class="line">    <span class="string">&#x27;;&#x27;</span>:<span class="number">0xBA</span>,</span><br><span class="line">    <span class="string">&#x27;[&#x27;</span>:<span class="number">0xDB</span>,</span><br><span class="line">    <span class="string">&#x27;\\&#x27;</span>:<span class="number">0xDC</span>,</span><br><span class="line">    <span class="string">&#x27;]&#x27;</span>:<span class="number">0xDD</span>,</span><br><span class="line">    <span class="string">&quot;&#x27;&quot;</span>:<span class="number">0xDE</span>,</span><br><span class="line">    <span class="string">&#x27;`&#x27;</span>:<span class="number">0xC0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 模拟键盘输入，单个按键</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">single_key_input</span>(<span class="params">key_name</span>):</span><br><span class="line">    win32api.keybd_event(VK_CODE[key_name], <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>) <span class="comment"># 按下该健</span></span><br><span class="line">    win32api.keybd_event(VK_CODE[key_name], <span class="number">0</span>, win32con.KEYEVENTF_KEYUP, <span class="number">0</span>) <span class="comment"># 释放该健</span></span><br><span class="line">    time.sleep(<span class="number">0.05</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 模拟键盘输入，多个按键组合</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">multiple_key_input</span>(<span class="params">key_array</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(key_array) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(key_array), <span class="number">1</span>): <span class="comment"># 按顺序按下</span></span><br><span class="line">        win32api.keybd_event(VK_CODE[key_array[i]], <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;enter: %s&quot;</span> % key_array[i])</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(key_array)-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>): <span class="comment">#按倒序释放</span></span><br><span class="line">        win32api.keybd_event(VK_CODE[key_array[i]], <span class="number">0</span>, win32con.KEYEVENTF_KEYUP, <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;up: %s&quot;</span> % key_array[i])</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">    time.sleep(<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模拟键盘输入字符串</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">string_key_input</span>(<span class="params"><span class="built_in">str</span>=<span class="string">&#x27;&#x27;</span></span>):</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">str</span>:</span><br><span class="line">        win32api.keybd_event(VK_CODE[c], <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        win32api.keybd_event(VK_CODE[c], <span class="number">0</span>, win32con.KEYEVENTF_KEYUP, <span class="number">0</span>)</span><br><span class="line">        time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">single_key_input(<span class="string">&#x27;9&#x27;</span>)</span><br><span class="line">multiple_key_input([<span class="string">&#x27;ctrl&#x27;</span>, <span class="string">&#x27;F4&#x27;</span>])</span><br><span class="line">string_key_input(<span class="string">&#x27;python&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29360495/article/details/53006082">keybd_event模拟键盘输入</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gist.github.com/chriskiehl/2906125">Vitual keystroke example</a></p>
+</li>
+</ul>
+<p>网上也有一些关于如何模拟鼠标点击和键盘输入的文章，可以参考下面的链接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zydarChen/article/details/77587967">Python实现自动挂机脚本（基础篇）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/reader/p/10111777.html">用python做一个游戏辅助脚本，完整思路</a></li>
+</ul>
+<h1 id="实现跨平台自动化脚本（Windows-Linux）"><a href="#实现跨平台自动化脚本（Windows-Linux）" class="headerlink" title="实现跨平台自动化脚本（Windows&#x2F;Linux）"></a>实现跨平台自动化脚本（Windows&#x2F;Linux）</h1><p>由于pywin32无法在linux系统上安装加载，所以如果想在linux系统上实现自动化脚本，需要寻找其它的替代方案。</p>
+<p>通过网上查阅资料发现，有一个模块也可以实现模拟操作鼠标和键盘，它就是PyUserInput，最新版本0.1.11。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pypi.org/project/PyUserInput/">PyUserInput官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PyUserInput/PyUserInput">PyUserInput的GitHub</a></li>
+</ul>
+<p>其实我们要实现模拟操作鼠标和键盘，需要用到pymouse和pykeyboard这两个模块，而PyUserInput模块将它们俩打包在一起了，所以我们只需要安装PyUserInput模块就可以了（这里可能要翻车了，因为我在windows上尝试过，如果只装PyUserInput，不装pymouse的话，是无法成功 import pymouse 的）。</p>
+<p>以下涉及到的所有命令的运行环境：</p>
+<ul>
+<li>Windows环境：Win10&#x2F;Python3.7</li>
+<li>Linux环境：Ubuntu18.04&#x2F;Python3.7</li>
+</ul>
+<h2 id="PyUserInput简介"><a href="#PyUserInput简介" class="headerlink" title="PyUserInput简介"></a>PyUserInput简介</h2><p>PyUserInput是一个跨平台、使用python操作鼠标和键盘的模块，非常方便使用。支持的平台及依赖如下：</p>
+<ul>
+<li>Linux - Xlib (python-xlib)</li>
+<li>Mac - Quartz, AppKit</li>
+<li>Windows - pywin32, pyHook, pymouse</li>
+</ul>
+<h3 id="简剖PyUserInput"><a href="#简剖PyUserInput" class="headerlink" title="简剖PyUserInput"></a>简剖PyUserInput</h3><p>通过阅读PyUserInput源码（其实是pymouse和pykeboard源码，源码均在Python37\Lib\site-packages目录下）和官网信息，可以得知，</p>
+<ul>
+<li>在windows平台上，PyUserInput基于pywin32模块，封装了win32api中的mouse_event和keybd_event等核心函数，从而实现了模拟鼠标输入和键盘输入的功能，也就是pymouse和pykeyboard模块。</li>
+<li>在linux平台上，PyUserInput基于Xlib库，封装出pymouse和pykeyboard模块，可运行支持X11的linux平台上。</li>
+</ul>
+<blockquote>
+<p>相关说明：</p>
+</blockquote>
+<ul>
+<li>X11 中的 X 指的是 X 协议，11 指的是采用 X 协议的第 11 个版本。</li>
+<li>Linux 的图形化界面，底层都是基于 X 协议。</li>
+</ul>
+<h2 id="PyUserInput安装"><a href="#PyUserInput安装" class="headerlink" title="PyUserInput安装"></a>PyUserInput安装</h2><p>下面分别介绍在windows环境下和linux环境下如何安装PyUserInput模块。</p>
+<h3 id="windows环境下安装PyUserInput"><a href="#windows环境下安装PyUserInput" class="headerlink" title="windows环境下安装PyUserInput"></a>windows环境下安装PyUserInput</h3><p>在windows环境下，我们需要先安装3个依赖包，依次为pywin32、pyHook和pymouse。</p>
+<p>由于我的Win10电脑上同时安装了python2和python3，所以在输入pip命令时需要区别开来。</p>
+<blockquote>
+<p>安装pywin32</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install pywin32</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>安装pyHook</p>
+</blockquote>
+<p>pyHook通过pip命令无法安装，所以需要下载whl格式的安装包（whl格式本质上是一个压缩包，里面包含了py文件，以及经过编译的pyd文件），可以通过这里下载到pyHook安装包：<a target="_blank" rel="noopener" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook">https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook</a></p>
+<p><img src="/2020/02/18/python-auto-operation/1.png"></p>
+<p>选择适合自己环境的安装包。这里由于我的电脑是Win10 64位系统，使用的是Python3.7，所以我选择的是</p>
+<p>pyHook‑1.5.1‑cp37‑cp37m‑win_amd64.whl</p>
+<p>然后使用pip命令安装pyHook：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install D:\pyHook‑1.5.1‑cp37‑cp37m‑win_amd64.whl #假设whl文件在D盘根目录下</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>安装pymouse</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install pymouse</span><br></pre></td></tr></table></figure>
+
+<p>这时，3个依赖包都已经安装完毕，下面开始安装PyUserInput：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install PyUserInput==0.1.11</span><br><span class="line">或</span><br><span class="line">pip3 install PyUserInput</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，可通过命令<code>pip3 list</code>查看python3下面已经安装的所有模块。</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/guohu/p/11314920.html">PyMouse、PyKeyboard用python操作鼠标和键盘</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhusongziye/article/details/79241410">Win10 Python3.5 安装pymouse（pyuserinput）报错坑</a></li>
+</ul>
+<h3 id="linux环境下安装PyUserInput"><a href="#linux环境下安装PyUserInput" class="headerlink" title="linux环境下安装PyUserInput"></a>linux环境下安装PyUserInput</h3><p>##################################待补充</p>
+<h2 id="使用pymouse模拟鼠标点击"><a href="#使用pymouse模拟鼠标点击" class="headerlink" title="使用pymouse模拟鼠标点击"></a>使用pymouse模拟鼠标点击</h2><p>pymouse模块的基本用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># import the module</span><br><span class="line">from pymouse import PyMouse</span><br><span class="line"></span><br><span class="line"># instantiate an mouse object</span><br><span class="line">m = PyMouse()</span><br><span class="line"></span><br><span class="line"># move the mouse to int x and int y (these are absolute positions)</span><br><span class="line">m.move(200, 200)</span><br><span class="line"></span><br><span class="line"># click works about the same, except for int button possible values are 1: left, 2: right, 3: middle</span><br><span class="line">m.click(500, 300, 1)</span><br><span class="line"></span><br><span class="line"># get the screen size</span><br><span class="line">m.screen_size()</span><br><span class="line"># (1024, 768)</span><br><span class="line"></span><br><span class="line"># get the mouse position</span><br><span class="line">m.position()</span><br><span class="line"># (500, 300)</span><br></pre></td></tr></table></figure>
+
+<p>是不是感觉用起来很简单？其实就是这么简单哈。<strong>不过这里有个地方可能需要稍微注意一下，</strong>就是click这个函数。</p>
+<p>通过看pymouse的源码我们可以知道，click的函数原型其实是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def click(self, x, y, button=1, n=1):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Click a mouse button n times on a given x, y.</span><br><span class="line">        Button is defined as 1 = left, 2 = right, 3 = middle.</span><br><span class="line">        &quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最后一个参数是代表点击鼠标多少次，但我个人测试了一下这个参数，发现并不灵敏，达不到预期效果。所以建议大家在需要模拟鼠标双击的时候，最好自己写一个函数，调2次click，中间稍微sleep一下，这样效果会更好。</p>
+<p><strong>我当时在使用pymouse的时候，遇到过一个小坑或一个可能可以优化的点，在这里也跟大家分享一下：</strong></p>
+<p>我们先找到pymouse源码中的click函数、press函数和release函数，源码内容如下（以Windows的pymouse源码为例，Linux的也可做类似修改）：</p>
+<blockquote>
+<p>click函数源码（base.py文件）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def click(self, x, y, button=1, n=1):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Click a mouse button n times on a given x, y.</span><br><span class="line">        Button is defined as 1 = left, 2 = right, 3 = middle.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        for i in range(n):</span><br><span class="line">            self.press(x, y, button)</span><br><span class="line">            self.release(x, y, button)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>press函数源码（windows.py文件）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def press(self, x, y, button=1):</span><br><span class="line">        buttonAction = 2 ** ((2 * button) - 1)</span><br><span class="line">        self.move(x, y)</span><br><span class="line">        win32api.mouse_event(buttonAction, x, y)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>release函数源码（windows.py文件）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def release(self, x, y, button=1):</span><br><span class="line">        buttonAction = 2 ** ((2 * button))</span><br><span class="line">        self.move(x, y)</span><br><span class="line">        win32api.mouse_event(buttonAction, x, y)</span><br></pre></td></tr></table></figure>
+
+<p>这3个函数源码比较简单，我们可以看到，press函数和release函数中都有move函数，这个是用来移动鼠标指针到指定坐标的函数，在press函数和release函数中放一个move函数，不免让人觉得奇怪。按正常的逻辑，应该把move放在click函数中，press和release就干好press和release的活就好了，也符合高内聚低耦合的设计理念。所以我对它们进行了简单改造，改造后代码如下（click函数中增加了move函数调用，顺带sleep一下，给个缓冲时间；press和release中删除了move函数调用）：</p>
+<blockquote>
+<p>click函数（修改后）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from time import sleep</span><br><span class="line">def click(self, x, y, button=1, n=1):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Click a mouse button n times on a given x, y.</span><br><span class="line">        Button is defined as 1 = left, 2 = right, 3 = middle.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">        for i in range(n):</span><br><span class="line">            self.move(x, y)</span><br><span class="line">            sleep(0.05)</span><br><span class="line">            self.press(x, y, button)</span><br><span class="line">            self.release(x, y, button)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>press函数（修改后）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def press(self, x, y, button=1):</span><br><span class="line">        buttonAction = 2 ** ((2 * button) - 1)</span><br><span class="line">        #self.move(x, y)</span><br><span class="line">        win32api.mouse_event(buttonAction, x, y)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>release函数（修改后）</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def release(self, x, y, button=1):</span><br><span class="line">        buttonAction = 2 ** ((2 * button))</span><br><span class="line">        #self.move(x, y)</span><br><span class="line">        win32api.mouse_event(buttonAction, x, y)</span><br></pre></td></tr></table></figure>
+
+<p>这样修改之后，会显得逻辑上更顺一点，可能也是自我感觉顺一点吧，也许pymouse作者觉得他那种方式更好，这个就仁者见仁智者见智了，凡事没有绝对的对错好坏之分，只要合适就好，哈哈。</p>
+<h2 id="使用pykeyboard模拟键盘输入"><a href="#使用pykeyboard模拟键盘输入" class="headerlink" title="使用pykeyboard模拟键盘输入"></a>使用pykeyboard模拟键盘输入</h2><p>pykeyboard模块的基本用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from pykeyboard import PyKeyboard</span><br><span class="line"></span><br><span class="line">k = PyKeyboard()</span><br><span class="line"></span><br><span class="line"># pressing a key</span><br><span class="line">k.press_key(&#x27;H&#x27;)</span><br><span class="line"># which you then follow with a release of the key</span><br><span class="line">k.release_key(&#x27;H&#x27;)</span><br><span class="line"># or you can &#x27;tap&#x27; a key which does both</span><br><span class="line">k.tap_key(&#x27;e&#x27;)</span><br><span class="line"># note that that tap_key does support a way of repeating keystrokes with a interval time between each</span><br><span class="line">k.tap_key(&#x27;l&#x27;,n=2,interval=5)</span><br><span class="line"># and you can send a string if needed too</span><br><span class="line">k.type_string(&#x27;o World!&#x27;)</span><br><span class="line">### Hello World!</span><br></pre></td></tr></table></figure>
+
+<p>pykeyboard也支持输入各种功能键和数字键：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">k.tap_key(k.function_keys[5])  # Tap F5</span><br><span class="line">k.tap_key(k.numpad_keys[&#x27;Home&#x27;])  # Tap &#x27;Home&#x27; on the numpad</span><br><span class="line">k.tap_key(k.numpad_keys[5], n=3)  # Tap 5 on the numpad, thrice</span><br></pre></td></tr></table></figure>
+
+<p>pykeyboard还支持各种组合键的输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Create an Alt+Tab combo</span><br><span class="line">k.press_key(k.alt_key)</span><br><span class="line">k.tap_key(k.tab_key)</span><br><span class="line">k.release_key(k.alt_key)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/guohu/p/11314920.html">PyMouse、PyKeyboard 用python操作鼠标和键盘</a></li>
+</ul>
+<h1 id="脚本后台定时自启"><a href="#脚本后台定时自启" class="headerlink" title="脚本后台定时自启"></a>脚本后台定时自启</h1><p>一般我们写完自动化脚本以后，可能需要让它能够定时在后台自启，下面我们一起来看看这块如何实现。</p>
+<h2 id="Windows系统上定时启动"><a href="#Windows系统上定时启动" class="headerlink" title="Windows系统上定时启动"></a>Windows系统上定时启动</h2><p>在windows上定时启动python脚本，有个比较简便的方式：<strong>使用windows系统自带的 “任务计划程序”</strong> ，具体操作可参考这篇文章《<a target="_blank" rel="noopener" href="https://blog.csdn.net/shw800/article/details/78678665">windows创建定时任务执行python脚本</a>》。</p>
+<h2 id="Linux系统上定时启动"><a href="#Linux系统上定时启动" class="headerlink" title="Linux系统上定时启动"></a>Linux系统上定时启动</h2><p>可使用linux系统的 <strong>crontab命令</strong> 来实现：</p>
+<p>################################待补充</p>
+<blockquote>
+<p>参考链接：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-crontab.html">Linux crontab命令-菜鸟教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ftl1012/p/crontab.html">Linux crontab命令详解</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/" rel="tag"># 自动化脚本</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/17/python/" rel="prev" title="python使用的基础知识">
+      <i class="fa fa-chevron-left"></i> python使用的基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/20/python-log/" rel="next" title="Python logging模块使用">
+      Python logging模块使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E4%B8%8A%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">Windows上实现自动化脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%92%8C%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">模拟鼠标点击的关键代码和说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%92%8C%E8%AF%B4%E6%98%8E"><span class="nav-number">1.2.</span> <span class="nav-text">模拟键盘输入的关键代码和说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%EF%BC%88Windows-Linux%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">实现跨平台自动化脚本（Windows&#x2F;Linux）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PyUserInput%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">PyUserInput简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%89%96PyUserInput"><span class="nav-number">2.1.1.</span> <span class="nav-text">简剖PyUserInput</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyUserInput%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">PyUserInput安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85PyUserInput"><span class="nav-number">2.2.1.</span> <span class="nav-text">windows环境下安装PyUserInput</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85PyUserInput"><span class="nav-number">2.2.2.</span> <span class="nav-text">linux环境下安装PyUserInput</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pymouse%E6%A8%A1%E6%8B%9F%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB"><span class="nav-number">2.3.</span> <span class="nav-text">使用pymouse模拟鼠标点击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pykeyboard%E6%A8%A1%E6%8B%9F%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5"><span class="nav-number">2.4.</span> <span class="nav-text">使用pykeyboard模拟键盘输入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%90%8E%E5%8F%B0%E5%AE%9A%E6%97%B6%E8%87%AA%E5%90%AF"><span class="nav-number">3.</span> <span class="nav-text">脚本后台定时自启</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Windows系统上定时启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8"><span class="nav-number">3.2.</span> <span class="nav-text">Linux系统上定时启动</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

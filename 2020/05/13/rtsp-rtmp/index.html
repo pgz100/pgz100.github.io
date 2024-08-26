@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈RTSP和RTMP流媒体协议">
+<meta property="og:url" content="https://panzhe.cn/2020/05/13/rtsp-rtmp/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-13T15:19:58.000Z">
+<meta property="article:modified_time" content="2020-05-13T15:29:54.606Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="流媒体协议">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://panzhe.cn/2020/05/13/rtsp-rtmp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>浅谈RTSP和RTMP流媒体协议 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2020/05/13/rtsp-rtmp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈RTSP和RTMP流媒体协议
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-13 23:19:58 / 修改时间：23:29:54" itemprop="dateCreated datePublished" datetime="2020-05-13T23:19:58+08:00">2020-05-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">网络通信相关</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+            <div class="post-description">本文主要简单介绍RTSP和RTMP这两种流媒体协议，并对比它们两者的优缺点。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="流媒体协议一览"><a href="#流媒体协议一览" class="headerlink" title="流媒体协议一览"></a>流媒体协议一览</h1><p>流媒体协议是服务器与客户端之间通信遵循的规定，当前网络上主要的流媒体协议如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>推出机构</th>
+<th>传输层协议</th>
+<th>客户端</th>
+<th>目前使用领域</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RTSP+RTP</td>
+<td>IETF</td>
+<td>UDP</td>
+<td>VLC, WMP</td>
+<td>IPTV</td>
+</tr>
+<tr>
+<td>RTMP</td>
+<td>Adobe Inc.</td>
+<td>TCP</td>
+<td>Flash</td>
+<td>互联网直播</td>
+</tr>
+<tr>
+<td>RTMFP</td>
+<td>Adobe Inc.</td>
+<td>UDP</td>
+<td>Flash</td>
+<td>互联网直播</td>
+</tr>
+<tr>
+<td>MMS</td>
+<td>Microsoft Inc.</td>
+<td>TCP&#x2F;UDP</td>
+<td>WMP</td>
+<td>互联网直播+点播</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>WWW+IETF</td>
+<td>TCP</td>
+<td>Flash</td>
+<td>互联网点播</td>
+</tr>
+</tbody></table>
+<h1 id="RTMP协议简介"><a href="#RTMP协议简介" class="headerlink" title="RTMP协议简介"></a>RTMP协议简介</h1><p>RTMP，全称Real Time Messaging Protocol，实时消息传输协议，是TCP&#x2F;IP协议体系中的一个应用层协议，该协议基于TCP传输，包括RTMP基本协议及RTMPT&#x2F;RTMPS&#x2F;RTMPE等多种变种。RTMP是一种设计用来进行实时数据通信的网络协议，主要用来在Flash&#x2F;AIR平台和支持RTMP协议的流媒体&#x2F;交互服务器之间进行音视频和数据通信。支持该协议的软件包括Adobe Media Server&#x2F;Ultrant Media Server&#x2F;red5等。RTMP与HTTP一样，都属于TCP&#x2F;IP四层模型的应用层。</p>
+<h1 id="RTP-RTCP协议简介"><a href="#RTP-RTCP协议简介" class="headerlink" title="RTP&#x2F;RTCP协议简介"></a>RTP&#x2F;RTCP协议简介</h1><p>RTP：实时传输协议；RTCP：实时传输控制协议。</p>
+<p>RTP被定义为传输音频、视频、模拟数据等实时数据的传输协议，与传统的注重的高可靠的数据传输的运输层协议相比，它更加侧重的数据传输的实时性。此协议提供的服务包括数据顺序号、时间标记、传输控制等。</p>
+<p>RTP通常与传输控制协议RTCP一起工作，RTP只负责实时数据的传输，RTCP负责对RTP的通信和会话进行带外管理（如流量控制、拥塞控制、会话源管理等）。</p>
+<p>RTP位于传输层之上，应用层之下，默认是基于UDP传输数据。具体传输流程：实时语音、视频数据经过模数转换和压缩编码处理后，先送给RTP封装成为RTP数据单元，RTP数据单元被封装为UDP数据报，然后再向下递交给IP封装为IP数据包。</p>
+<p>RTP分组只包含RTP数据，而控制是由配套协议RTCP提供。</p>
+<h1 id="RTSP协议简介"><a href="#RTSP协议简介" class="headerlink" title="RTSP协议简介"></a>RTSP协议简介</h1><p>RTSP，全称Real Time Streaming Protocol，实时流传输协议，是TCP&#x2F;IP协议体系中的一个应用层协议，该协议定义了一对多应用程序如何有效地通过IP网络传送多媒体数据。</p>
+<p>RTSP在体系结构上位于RTP&#x2F;RTCP之上，它使用UDP完成数据传输。</p>
+<p>HTTP与RTSP相比，HTTP传送HTML，而RTSP传送的是多媒体数据。HTTP请求由客户机发出，服务器作出响应；而使用RTSP时，客户机和服务器都可以发出请求，所以RTSP可以是双向的。</p>
+<h1 id="RTMP和RTSP对比"><a href="#RTMP和RTSP对比" class="headerlink" title="RTMP和RTSP对比"></a>RTMP和RTSP对比</h1><p><strong>RTMP，实时消息传输协议</strong></p>
+<ul>
+<li>是应用层协议</li>
+<li>是流媒体协议</li>
+<li>基于TCP协议传输</li>
+<li>是Adobe的私有协议，未完全公开。</li>
+<li>依赖flash player作为播放器</li>
+<li>一般传输flv，f4v格式流</li>
+<li>一般在TCP1个通道上传输命令和数据</li>
+</ul>
+<p><strong>综合评价：</strong></p>
+<ol>
+<li>由于是基于TCP协议传输，所以RTMP不会丢包，但会有积累延迟：当网络状态差时，服务器会将包缓存起来，导致累积的延迟；待网络状况好了，就一起发给客户端。这个的对策就是，当客户端的缓冲区很大，就断开重连。</li>
+<li>由于互联网环境相对较差，采用RTMP保证了视频的传输质量，但是其传输延迟相对较高，传输效率相对较低。</li>
+</ol>
+<p><strong>RTSP，实时流传输协议</strong></p>
+<ul>
+<li>是应用层协议</li>
+<li>是流媒体协议</li>
+<li>是共有协议，有专门机构做维护。</li>
+<li>基于UDP协议传输</li>
+<li>一般传输ts，mp4格式流</li>
+<li>一般需要2~3个通道上传输，命令和数据通道分离。</li>
+</ul>
+<p><strong>综合评价：</strong></p>
+<ol>
+<li>RTSP+RTP经常用于IPTV领域。因为其采用UDP传输视音频，支持组播，效率较高。但其缺点是网络不好的情况下可能会丢包，影响视频观看质量。</li>
+<li>由于互联网网络环境的不稳定性，RTSP+RTP很少用于互联网视音频传输。互联网视频服务通常采用TCP作为其流媒体的传输层协议，因而像RTMP，MMS，HTTP这类的协议广泛用于互联网视音频服务之中，这类协议不会发生丢包，因而保证了视频的质量，但是传输的效率会相对低一些。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE/" rel="tag"># 流媒体协议</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/04/behind-prod/" rel="prev" title="《幕后产品：打造突破式产品思维》之精华提炼">
+      <i class="fa fa-chevron-left"></i> 《幕后产品：打造突破式产品思维》之精华提炼
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/04/powershell/" rel="next" title="更改Windows系统PowerShell的界面配色">
+      更改Windows系统PowerShell的界面配色 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE%E4%B8%80%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">流媒体协议一览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTMP%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">RTMP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTP-RTCP%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">RTP&#x2F;RTCP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTSP%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">4.</span> <span class="nav-text">RTSP协议简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTMP%E5%92%8CRTSP%E5%AF%B9%E6%AF%94"><span class="nav-number">5.</span> <span class="nav-text">RTMP和RTSP对比</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="金者"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">132k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:01</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
