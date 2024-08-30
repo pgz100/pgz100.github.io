@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://panzhe.cn/2018/11/05/ss-bbr-vps/5.png">
 <meta property="og:image" content="https://panzhe.cn/2018/11/05/ss-bbr-vps/6.png">
 <meta property="article:published_time" content="2018-11-05T02:13:56.000Z">
-<meta property="article:modified_time" content="2020-02-06T08:36:41.855Z">
+<meta property="article:modified_time" content="2024-08-30T07:35:59.424Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="搬瓦工">
 <meta property="article:tag" content="shadowsocks">
@@ -148,11 +148,6 @@
     <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -209,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-06 16:36:41" itemprop="dateModified" datetime="2020-02-06T16:36:41+08:00">2020-02-06</time>
+                <time title="修改时间：2024-08-30 15:35:59" itemprop="dateModified" datetime="2024-08-30T15:35:59+08:00">2024-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,27 +243,25 @@
 
       
         <h2 id="使用搬瓦工VPS搭建Shadowsocks服务"><a href="#使用搬瓦工VPS搭建Shadowsocks服务" class="headerlink" title="使用搬瓦工VPS搭建Shadowsocks服务"></a>使用搬瓦工VPS搭建Shadowsocks服务</h2><p>在搬瓦工上搭建Shadowsocks服务的教程请参考<a target="_blank" rel="noopener" href="https://www.wervps.com/we/2252.html">这里</a>（之前有个大神写的博客，里面介绍的很详细，不过据说被hexie了，已经打不开了）。下面我主要说一些注意事项，以备参考，避免踩坑。</p>
-<h2 id="购买VPS时的注意事项"><a href="#购买VPS时的注意事项" class="headerlink" title="购买VPS时的注意事项"></a>购买VPS时的注意事项</h2><h3 id="1-选择购买哪种VPS？"><a href="#1-选择购买哪种VPS？" class="headerlink" title="1. 选择购买哪种VPS？"></a>1. 选择购买哪种VPS？</h3><blockquote>
-<p>如果只是用于科学上网，那么不需要购买太高配置的VPS，19.99美元&#x2F;年的完全够用，1年100多块钱，算是很划算的了。</p>
-</blockquote>
+<h2 id="购买VPS时的注意事项"><a href="#购买VPS时的注意事项" class="headerlink" title="购买VPS时的注意事项"></a>购买VPS时的注意事项</h2><h3 id="选择购买哪种VPS？"><a href="#选择购买哪种VPS？" class="headerlink" title="选择购买哪种VPS？"></a>选择购买哪种VPS？</h3><p>如果只是用于科学上网，那么不需要购买太高配置的VPS，19.99美元&#x2F;年的完全够用，1年100多块钱，算是很划算的了。</p>
 <p><img src="/2018/11/05/ss-bbr-vps/1.png"></p>
-<h3 id="2-选择KVM-or-OpenVZ-？"><a href="#2-选择KVM-or-OpenVZ-？" class="headerlink" title="2. 选择KVM or OpenVZ ？"></a>2. 选择KVM or OpenVZ ？</h3><blockquote>
-<p>KVM和OpenVZ是两种不同的VPS虚拟技术。</p>
+<h3 id="选择KVM-or-OpenVZ-？"><a href="#选择KVM-or-OpenVZ-？" class="headerlink" title="选择KVM or OpenVZ ？"></a>选择KVM or OpenVZ ？</h3><p>KVM和OpenVZ是两种不同的VPS虚拟技术。</p>
 <ul>
-<li>OpenVZ是基于Linux内核和作业系统的操作系统级虚拟化技术。OpenVZ允许物理服务器运行多个操作系统，被称虚拟专用服务器（VPS，Virtual Private Server）或虚拟环境（VE, Virtual Environment）。</li>
-<li>KVM是嵌入在Linux操作系统标准内核中的一个虚拟化模块，它能够将一个Linux标准内核转换成为一个VMM，嵌有KVM模块的Linux标准内核可以支持通过kvm tools来进行加载的GuestOS。所以在这样的操作系统平台下，计算机物理硬件层上直接就是VMM虚拟化层，而没有独立出来的HostOS操作系统层。</li>
+<li><p>OpenVZ是基于Linux内核和作业系统的操作系统级虚拟化技术。OpenVZ允许物理服务器运行多个操作系统，被称虚拟专用服务器（VPS，Virtual Private Server）或虚拟环境（VE, Virtual Environment）。</p>
+</li>
+<li><p>KVM是嵌入在Linux操作系统标准内核中的一个虚拟化模块，它能够将一个Linux标准内核转换成为一个VMM，嵌有KVM模块的Linux标准内核可以支持通过kvm tools来进行加载的GuestOS。所以在这样的操作系统平台下，计算机物理硬件层上直接就是VMM虚拟化层，而没有独立出来的HostOS操作系统层。</p>
+</li>
 </ul>
 <p>从下图搬瓦工官网给出的这两者之间的优点对比可以看出，KVM能够支持BBR，所以如果选择OpenVZ的话，是无法使用BBR的，只有KVM架构的VPS才能开启BBR。</p>
 <ul>
-<li>BBR是Google社区开发的一个开源TCP拥塞控制算法，在<strong>Linux 4.9及以上的内核版本中支持</strong>。</li>
-<li>BBR主要是用于提升上传速度，所以如果在服务端配置BBR的话，提升的是服务端的上传速度，也就是提升了客户端的下载速度。</li>
+<li><p>BBR是Google社区开发的一个开源TCP拥塞控制算法，在<strong>Linux 4.9及以上的内核版本中支持</strong>。</p>
+</li>
+<li><p>BBR主要是用于提升上传速度，所以如果在服务端配置BBR的话，提升的是服务端的上传速度，也就是提升了客户端的下载速度。</p>
+</li>
 </ul>
 <p><strong>综上，建议选择KVM虚拟技术，便于开启BBR加速。</strong></p>
-</blockquote>
 <p><img src="/2018/11/05/ss-bbr-vps/2.png"></p>
-<h3 id="3-选择机房位置"><a href="#3-选择机房位置" class="headerlink" title="3. 选择机房位置"></a>3. 选择机房位置</h3><blockquote>
-<p>在产品配置页，会看到有一项要选择VPS所在的机房位置，一般来说，离我们近一点的机房会相对稳定一些，其实都差不多，这里推荐选择<strong>Los Angeles DC2 QNET</strong>。</p>
-</blockquote>
+<h3 id="选择机房位置"><a href="#选择机房位置" class="headerlink" title="选择机房位置"></a>选择机房位置</h3><p>在产品配置页，会看到有一项要选择VPS所在的机房位置，一般来说，离我们近一点的机房会相对稳定一些，其实都差不多，这里推荐选择<strong>Los Angeles DC2 QNET</strong>。</p>
 <p><img src="/2018/11/05/ss-bbr-vps/3.png"></p>
 <h2 id="部署Shadowsocks服务时的注意事项"><a href="#部署Shadowsocks服务时的注意事项" class="headerlink" title="部署Shadowsocks服务时的注意事项"></a>部署Shadowsocks服务时的注意事项</h2><p>在网上的一些论坛看到，有些人说用ShadowsocksR（简称SSR）容易被墙，用Shadowsocks（简称SS）要稳一些，所以建议大家使用SS。</p>
 <ul>
@@ -276,64 +269,59 @@
 <li>在Linux系统上安装和使用Shadowsocks请参考<a target="_blank" rel="noopener" href="https://blog.huihut.com/2017/08/25/LinuxInstallConfigShadowsocksClient/">这里</a>，写的也是非常详细，而且还介绍了开机自启的配置方法。</li>
 </ul>
 <h3 id="建议在使用Shadowsocks时，使用浏览器代理"><a href="#建议在使用Shadowsocks时，使用浏览器代理" class="headerlink" title="建议在使用Shadowsocks时，使用浏览器代理"></a>建议在使用Shadowsocks时，使用浏览器代理</h3><ul>
-<li><p>在Windows系统上使用Shadowsocks，启用系统代理时，有时会发现仍不能科学上网。</p>
-<blockquote>
-<p>这是因为Shadowsocks-Win版本对系统代理支持的不好，所以建议<strong>使用浏览器代理</strong>的方式。</p>
-</blockquote>
-<p>​										<img src="/2018/11/05/ss-bbr-vps/4.png"> </p>
-<blockquote>
+<li><p>在Windows系统上使用Shadowsocks，启用系统代理时，有时会发现仍不能科学上网。这是因为Shadowsocks-Win版本对系统代理支持的不好，所以建议<strong>使用浏览器代理</strong>的方式。</p>
+<p><img src="/2018/11/05/ss-bbr-vps/4.png"> </p>
 <p>具体配置方法请参考<a target="_blank" rel="noopener" href="https://blog.huihut.com/2017/08/25/LinuxInstallConfigShadowsocksClient/">这篇文章的“浏览器代理”章节</a> 。</p>
-</blockquote>
 <p><img src="/2018/11/05/ss-bbr-vps/7.png"></p>
 </li>
 <li><p>在Linux系统上运行命令安装Shadowsocks以后，可能会发现在etc目录下，并没有shadowsocks.json，但是有一个shadowsocks目录，里面有个config.json文件。那么具体应该怎么来配置呢？其实以下两种方式都是可行的。</p>
-<ul>
-<li>像文章中描述的那样，自建一个shadowsocks.json文件，然后添加配置信息。</li>
-<li>直接修改config.json文件，添加配置信息。</li>
-</ul>
+<p>（1）像文章中描述的那样，自建一个shadowsocks.json文件，然后添加配置信息。</p>
+<p>（2）直接修改config.json文件，添加配置信息。</p>
 <p><strong>只要确保一点</strong>：在后面使用ssllocal -c 命令启动shadowsocks程序时，后面接的路径与你修改的json配置文件的路径一致即可。</p>
 </li>
 <li><p>目前 SwitchyOmega 插件只支持 <strong>Google Chrome 或基于 Chromium 的浏览器</strong> 以及 <strong>Mozilla Firefox 或基于 Mozilla 的浏览器</strong> ，当然国产浏览器说的什么自主研究的极速内核（如：360极速浏览器）大多都是使用的 Chromium 内核，所以也能安装使用。</p>
 <p>但是据说国产浏览器会对浏览器访问的网页进行监控，科学上网久了，会存在被墙（封IP）的风险，所以<strong>建议使用Chrome或Firefox浏览器</strong>。</p>
 </li>
 </ul>
-<h3 id="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"><a href="#Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网" class="headerlink" title="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"></a>Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网</h3><h4 id="1-安装polipo"><a href="#1-安装polipo" class="headerlink" title="1. 安装polipo"></a>1. 安装polipo</h4><p>Polipo是一个轻量级的跨平台代理服务器，可以实现HTTP和SOCKS代理。为了最小化延迟，Polipo管线化多个资源请求，在同一个TCP&#x2F;IP连接上多路复用。所以我们使用<strong>polipo将http代理转换为socks5代理</strong>。从而使终端命令行程序（如：wget）可以进行科学上网。</p>
+<h3 id="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"><a href="#Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网" class="headerlink" title="Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网"></a>Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网</h3><h4 id="安装polipo"><a href="#安装polipo" class="headerlink" title="安装polipo"></a>安装polipo</h4><p>Polipo是一个轻量级的跨平台代理服务器，可以实现HTTP和SOCKS代理。为了最小化延迟，Polipo管线化多个资源请求，在同一个TCP&#x2F;IP连接上多路复用。所以我们使用<strong>polipo将http代理转换为socks5代理</strong>。从而使终端命令行程序（如：wget）可以进行科学上网。</p>
 <p>通过apt安装polipo</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install polipo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> apt-get install polipo</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="2-配置polipo"><a href="#2-配置polipo" class="headerlink" title="2. 配置polipo"></a>2. 配置polipo</h4><p>打开 &#x2F;etc&#x2F;polipo&#x2F;config 文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo vi /etc/polipo/config</span><br></pre></td></tr></table></figure>
+<h4 id="配置polipo"><a href="#配置polipo" class="headerlink" title="配置polipo"></a>配置polipo</h4><p>打开 &#x2F;etc&#x2F;polipo&#x2F;config 文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> vi /etc/polipo/config</span></span><br></pre></td></tr></table></figure>
 
 <p>作如下修改，主要是设置socksParentProxy 和 socksProxyType的字段值。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># This file only needs to list configuration variables that deviate</span><br><span class="line"># from the default values.  See /usr/share/doc/polipo/examples/config.sample</span><br><span class="line"># and &quot;polipo -v&quot; for variables you can tweak and further information.</span><br><span class="line"></span><br><span class="line">logSyslog = true</span><br><span class="line">logFile = /var/log/polipo/polipo.log</span><br><span class="line">socksParentProxy = &quot;localhost:1080&quot;</span><br><span class="line">socksProxyType = socks5</span><br><span class="line">loglevel = 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">This file only needs to list configuration variables that deviate</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">from the default values.  See /usr/share/doc/polipo/examples/config.sample</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">and <span class="string">&quot;polipo -v&quot;</span> <span class="keyword">for</span> variables you can tweak and further information.</span></span><br><span class="line"></span><br><span class="line">logSyslog = true</span><br><span class="line">logFile = /var/log/polipo/polipo.log</span><br><span class="line">socksParentProxy = &quot;localhost:1080&quot;</span><br><span class="line">socksProxyType = socks5</span><br><span class="line">loglevel = 4</span><br></pre></td></tr></table></figure>
 
 <p>重启polipo</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ service polipo restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">service polipo restart</span></span><br></pre></td></tr></table></figure>
 
 <p>设置别名，便于在终端上使用SS代理。</p>
 <p>打开用户主目录下的.bashrc文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd ~/</span><br><span class="line">$ vi .bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> ~/</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vi .bashrc</span></span><br></pre></td></tr></table></figure>
 
 <p>在 .bashrc文件最后面增加下面几行：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alias goproxy=&quot;export http_proxy=http://localhost:8123 https_proxy=http://localhost:8123;echo &#x27;complete proxy settings&#x27;&quot;</span><br><span class="line">alias disproxy=&quot;unset http_proxy https_proxy;echo &#x27;unset proxy&#x27;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">alias goproxy=&quot;export http_proxy=http://localhost:8123 https_proxy=http://localhost:8123;echo &#x27;complete proxy settings&#x27;&quot;</span><br><span class="line">alias disproxy=&quot;unset http_proxy https_proxy;echo &#x27;unset proxy&#x27;&quot;</span><br></pre></td></tr></table></figure>
 
 <p>保存退出，重启终端Terminal。</p>
-<h4 id="3-测试验证"><a href="#3-测试验证" class="headerlink" title="3. 测试验证"></a>3. 测试验证</h4><p>重启终端Terminal之后，输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ wget www.google.com.hk</span><br></pre></td></tr></table></figure>
+<h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><p>重启终端Terminal之后，输入以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">goproxy</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wget www.google.com.hk</span></span><br></pre></td></tr></table></figure>
 
 <p>若显示以下类似结果，则表示Shadowsocks在终端Terminal上配置成功。</p>
 <p><img src="/2018/11/05/ss-bbr-vps/5.png"></p>
 <p>如果想要关闭SS代理，则直接在终端执行 <code>disproxy</code>命令即可。</p>
-<h3 id="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"><a href="#Windows环境下，如何让MinGW使用Shadowsocks进行科学上网" class="headerlink" title="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"></a>Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</h3><h4 id="1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录："><a href="#1-打开Git-Bash，即MinGW，输入以下命令，进入用户目录：" class="headerlink" title="1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录："></a>1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd ~/</span><br></pre></td></tr></table></figure>
+<h3 id="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"><a href="#Windows环境下，如何让MinGW使用Shadowsocks进行科学上网" class="headerlink" title="Windows环境下，如何让MinGW使用Shadowsocks进行科学上网"></a>Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</h3><p>打开Git Bash，即MinGW，输入以下命令，进入用户目录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> ~/</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="2-创建-bash-profile-文件，并打开它。"><a href="#2-创建-bash-profile-文件，并打开它。" class="headerlink" title="2. 创建 .bash_profile 文件，并打开它。"></a>2. 创建 .bash_profile 文件，并打开它。</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ vi .bash_profile</span><br></pre></td></tr></table></figure>
+<p>创建 .bash_profile 文件，并打开。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vi .bash_profile</span></span><br></pre></td></tr></table></figure>
 
 <p>添加以下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line"># add alias</span><br><span class="line">alias goproxy=&quot;export http_proxy=127.0.0.1:1080 https_proxy=127.0.0.1:1080; echo &#x27;complete proxy settings&#x27;&quot;</span><br><span class="line">alias disproxy=&quot;unset http_proxy https_proxy; echo &#x27;unset proxy&#x27;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">! /bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">add <span class="built_in">alias</span></span></span><br><span class="line">alias goproxy=&quot;export http_proxy=127.0.0.1:1080 https_proxy=127.0.0.1:1080; echo &#x27;complete proxy settings&#x27;&quot;</span><br><span class="line">alias disproxy=&quot;unset http_proxy https_proxy; echo &#x27;unset proxy&#x27;&quot;</span><br></pre></td></tr></table></figure>
 
-<p>保存退出，重启MinGW。</p>
-<h4 id="3-测试验证-1"><a href="#3-测试验证-1" class="headerlink" title="3. 测试验证"></a>3. 测试验证</h4><p>重启MinGW之后，输入以下命令，由于我安装的MinGW里面没有wget，所以使用 curl 来测试验证。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ goproxy</span><br><span class="line">$ curl www.google.com.hk</span><br></pre></td></tr></table></figure>
+<p>保存退出，重启MinGW，输入以下命令。</p>
+<p><em>由于我安装的MinGW里面没有wget，所以使用 curl 来测试验证。</em></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">goproxy</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl www.google.com.hk</span></span><br></pre></td></tr></table></figure>
 
 <p>若显示以下类似结果，即有内容输出，则表示Shadowsocks在MinGW上配置成功。</p>
 <p><img src="/2018/11/05/ss-bbr-vps/6.png"></p>
@@ -423,7 +411,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%90%AC%E7%93%A6%E5%B7%A5VPS%E6%90%AD%E5%BB%BAShadowsocks%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">使用搬瓦工VPS搭建Shadowsocks服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0VPS%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.</span> <span class="nav-text">购买VPS时的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E8%B4%AD%E4%B9%B0%E5%93%AA%E7%A7%8DVPS%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">1. 选择购买哪种VPS？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%89%E6%8B%A9KVM-or-OpenVZ-%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">2. 选择KVM or OpenVZ ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%89%E6%8B%A9%E6%9C%BA%E6%88%BF%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">3. 选择机房位置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Shadowsocks%E6%9C%8D%E5%8A%A1%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">部署Shadowsocks服务时的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE%E5%9C%A8%E4%BD%BF%E7%94%A8Shadowsocks%E6%97%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%A3%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">建议在使用Shadowsocks时，使用浏览器代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9%E7%BB%88%E7%AB%AFTerminal%E4%BD%BF%E7%94%A8Shadowsocks%E8%BF%9B%E8%A1%8C%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">3.2.</span> <span class="nav-text">Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85polipo"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 安装polipo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEpolipo"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 配置polipo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. 测试验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9MinGW%E4%BD%BF%E7%94%A8Shadowsocks%E8%BF%9B%E8%A1%8C%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">3.3.</span> <span class="nav-text">Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%89%93%E5%BC%80Git-Bash%EF%BC%8C%E5%8D%B3MinGW%EF%BC%8C%E8%BE%93%E5%85%A5%E4%BB%A5%E4%B8%8B%E5%91%BD%E4%BB%A4%EF%BC%8C%E8%BF%9B%E5%85%A5%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%EF%BC%9A"><span class="nav-number">3.3.1.</span> <span class="nav-text">1. 打开Git Bash，即MinGW，输入以下命令，进入用户目录：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA-bash-profile-%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B9%B6%E6%89%93%E5%BC%80%E5%AE%83%E3%80%82"><span class="nav-number">3.3.2.</span> <span class="nav-text">2. 创建 .bash_profile 文件，并打开它。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81-1"><span class="nav-number">3.3.3.</span> <span class="nav-text">3. 测试验证</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%90%AC%E7%93%A6%E5%B7%A5VPS%E6%90%AD%E5%BB%BAShadowsocks%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">使用搬瓦工VPS搭建Shadowsocks服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0VPS%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.</span> <span class="nav-text">购买VPS时的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E8%B4%AD%E4%B9%B0%E5%93%AA%E7%A7%8DVPS%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">选择购买哪种VPS？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9KVM-or-OpenVZ-%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">选择KVM or OpenVZ ？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%9C%BA%E6%88%BF%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">选择机房位置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Shadowsocks%E6%9C%8D%E5%8A%A1%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">部署Shadowsocks服务时的注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE%E5%9C%A8%E4%BD%BF%E7%94%A8Shadowsocks%E6%97%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%A3%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">建议在使用Shadowsocks时，使用浏览器代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9%E7%BB%88%E7%AB%AFTerminal%E4%BD%BF%E7%94%A8Shadowsocks%E8%BF%9B%E8%A1%8C%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">3.2.</span> <span class="nav-text">Linux环境下，如何让终端Terminal使用Shadowsocks进行科学上网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85polipo"><span class="nav-number">3.2.1.</span> <span class="nav-text">安装polipo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEpolipo"><span class="nav-number">3.2.2.</span> <span class="nav-text">配置polipo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="nav-number">3.2.3.</span> <span class="nav-text">测试验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9MinGW%E4%BD%BF%E7%94%A8Shadowsocks%E8%BF%9B%E8%A1%8C%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">3.3.</span> <span class="nav-text">Windows环境下，如何让MinGW使用Shadowsocks进行科学上网</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -488,8 +476,6 @@
         
 
         
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">皖ICP备2024059725号-1 </a>
-  </div>
 <div class="copyright">
   
   &copy; 2018 – 
@@ -502,7 +488,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

@@ -61,7 +61,7 @@
 <meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/29.png">
 <meta property="og:image" content="https://panzhe.cn/2022/11/15/wky-nas/30.png">
 <meta property="article:published_time" content="2022-11-15T09:30:25.000Z">
-<meta property="article:modified_time" content="2022-11-17T03:37:29.656Z">
+<meta property="article:modified_time" content="2024-08-30T07:55:51.863Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="armbian">
 <meta property="article:tag" content="NAS">
@@ -173,11 +173,6 @@
     <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -234,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-17 11:37:29" itemprop="dateModified" datetime="2022-11-17T11:37:29+08:00">2022-11-17</time>
+                <time title="修改时间：2024-08-30 15:55:51" itemprop="dateModified" datetime="2024-08-30T15:55:51+08:00">2024-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,16 +268,12 @@
 
       
         <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><ul>
-<li><p>目前网络上有很多关于使用玩客云搭建NAS系统的文章，其中我觉得写的比较详细的是知乎上的这一篇<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1334222614072287232">《玩客云刷机armbian系列》</a>，我有很多是参考他的内容。</p>
-</li>
-<li><p>本文主要对我自己搭建的过程做一个详细和全面的介绍，供大家参考。</p>
-</li>
-<li><p>标题写“低成本”，至于为什么是低成本，主要是有两个方面原因。一方面是本身硬件成本不高，主要由玩客云和存储硬盘组成，玩客云从闲鱼上买只要50元左右，硬盘可以用闲置的移动硬盘；另一方面是玩客云的功耗很低，只有3~5w，即使是外接移动硬盘，连续运行一年的电费也不会超过50元。</p>
-</li>
-<li><p><strong>玩客云的硬件配置</strong>：CPU采用的是晶晨的S805，单核主频1.5GHz，这个CPU的最大优点就是功耗低，发热量小。内存RAM采用的是海力士，512MB*2，共1GB DDR3内存。闪存ROM是三星的8GB。网口芯片采用的是螃蟹的RTL6211F千兆网口。外观上采用铝合金工艺，前面板有一颗七彩灯，整体颜值较高。</p>
-<p><img src="/2022/11/15/wky-nas/1.jpg"></p>
-</li>
+<li>目前网络上有很多关于使用玩客云搭建NAS系统的文章，其中我觉得写的比较详细的是知乎上的这一篇<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1334222614072287232">《玩客云刷机armbian系列》</a>，我有很多是参考他的内容。</li>
+<li>本文主要对我自己搭建的过程做一个详细和全面的介绍，供大家参考。</li>
+<li>标题写“低成本”，至于为什么是低成本，主要是有两个方面原因。一方面是本身硬件成本不高，主要由玩客云和存储硬盘组成，玩客云从闲鱼上买只要50元左右，硬盘可以用闲置的移动硬盘；另一方面是玩客云的功耗很低，只有3~5w，即使是外接移动硬盘，连续运行一年的电费也不会超过50元。</li>
+<li><strong>玩客云的硬件配置</strong>：CPU采用的是晶晨的S805，单核主频1.5GHz，这个CPU的最大优点就是功耗低，发热量小。内存RAM采用的是海力士，512MB*2，共1GB DDR3内存。闪存ROM是三星的8GB。网口芯片采用的是螃蟹的RTL6211F千兆网口。外观上采用铝合金工艺，前面板有一颗七彩灯，整体颜值较高。</li>
 </ul>
+<p><img src="/2022/11/15/wky-nas/1.jpg"></p>
 <h2 id="玩客云拆机"><a href="#玩客云拆机" class="headerlink" title="玩客云拆机"></a>玩客云拆机</h2><h3 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h3><p>因为刷机需要先拆机才能刷，所以需要借助有些工具来拆机。需准备的工具内容如下：</p>
 <p>（1）双公头的USB线</p>
 <p>（2）一把镊子或一根短接线</p>
@@ -312,10 +303,19 @@
 <p>（2）双击并安装Amlogic.USB.Burning.Tool。</p>
 <h3 id="刷入Armbian系统"><a href="#刷入Armbian系统" class="headerlink" title="刷入Armbian系统"></a>刷入Armbian系统</h3><blockquote>
 <p>什么是 Armbian ？</p>
-<p>Armbian是其他项目可以信赖的单板计算机（SBC）的基本操作系统平台，它拥有以下几个特点：</p>
-<p>1、轻量级基于Debian或Ubuntu的Linux发行版，专门用于ARM开发板；</p>
-<p>2、每个系统均由Armbian Build Tools进行编译，组装和优化；<br>3、它具有强大的构建和软件开发工具，可以进行自定义构建；<br>4、充满活力的社区。<br>Armbian其实就是Linux的一个发行版本，专门用于ARM开发板的小型系统。</p>
 </blockquote>
+<p>Armbian是其他项目可以信赖的单板计算机（SBC）的基本操作系统平台，它拥有以下几个特点：</p>
+<ul>
+<li><p>轻量级基于Debian或Ubuntu的Linux发行版，专门用于ARM开发板；</p>
+</li>
+<li><p>每个系统均由Armbian Build Tools进行编译，组装和优化；</p>
+</li>
+<li><p>它具有强大的构建和软件开发工具，可以进行自定义构建； </p>
+</li>
+<li><p>充满活力的社区。</p>
+</li>
+</ul>
+<p><strong>Armbian其实就是Linux的一个发行版本，专门用于ARM开发板的小型系统。</strong></p>
 <h4 id="用双公头的USB线把电脑和主板连起来"><a href="#用双公头的USB线把电脑和主板连起来" class="headerlink" title="用双公头的USB线把电脑和主板连起来"></a>用双公头的USB线把电脑和主板连起来</h4><p>（1）打开刚才已安装好的USB_Burning_Tool。</p>
 <p><img src="/2022/11/15/wky-nas/10.png"></p>
 <p>（2）将USB线的一头插到电脑的USB口上，另一头插到主板的USB口上，注意是靠近HDMI接口的那个USB口。</p>
@@ -345,10 +345,10 @@
 <p>（2）打开putty通讯工具，用户名为root，初始登录密码是1234。登录成功之后，会提示你创建一个新密码。新密码设置完成后，就会正式进入到Armbian系统了。</p>
 <p><img src="/2022/11/15/wky-nas/15.jpg"></p>
 <p>（3）修改系统时区</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm -rf /etc/localtime</span><br><span class="line">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line">echo Etc/UTC &gt; /etc/timezone</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rm -rf /etc/localtime</span><br><span class="line">ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br><span class="line">echo Etc/UTC &gt; /etc/timezone</span><br></pre></td></tr></table></figure>
 
 <p>（4）更换为国内源，下载速度更快</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 备份原文件</span><br><span class="line">cp /etc/apt/sources.list.d/armbian.list /etc/apt/sources.list.d/armbian.list.bak</span><br><span class="line"># 更改为清华源(以下是一条命令，需一次性复制完整)</span><br><span class="line">sudo tee /etc/apt/sources.list.d/armbian.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/armbian/ stretch main stretch-utils stretch-desktop</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 备份原文件</span><br><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"># 更改为中科大源(以下是一条命令，需一次性复制完整)</span><br><span class="line">sudo tee /etc/apt/sources.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-updates main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-backports main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 更新软件列表和软件</span><br><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br><span class="line"></span><br><span class="line"># 重启玩客云</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">备份原文件</span></span><br><span class="line">cp /etc/apt/sources.list.d/armbian.list /etc/apt/sources.list.d/armbian.list.bak</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更改为清华源(以下是一条命令，需一次性复制完整)</span></span><br><span class="line">sudo tee /etc/apt/sources.list.d/armbian.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/armbian/ stretch main stretch-utils stretch-desktop</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">备份原文件</span></span><br><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更改为中科大源(以下是一条命令，需一次性复制完整)</span></span><br><span class="line">sudo tee /etc/apt/sources.list &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-updates main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian stretch-backports main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更新软件列表和软件</span></span><br><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重启玩客云</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
 
 <p><strong>到这里，Armbian系统就安装好了，玩客云刷机成功。</strong></p>
 <hr>
@@ -365,31 +365,38 @@
 </li>
 </ul>
 <p>所以现在需要安装nginx、mysql、PHP，可以通过安装宝塔来一键可视化安装这些包，也可以通过挨个手动安装。我是采用的后者，因为装宝塔一直装不成功，各种版本的宝塔都试了，安装过程中出现了各种问题，后来一怒之下，弃之。如果感兴趣的，想安装宝塔的，可访问 <a target="_blank" rel="noopener" href="https://www.bt.cn/btcode.html">宝塔linux面板命令大全 - 宝塔面板</a>，查阅相关内容。</p>
-<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt-get -y install nginx</span><br></pre></td></tr></table></figure>
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt-get -y install nginx</span><br></pre></td></tr></table></figure>
 
 <p>安装完成后，使用电脑或手机浏览器访问 玩客云IP ，例如我的 192.168.2.194。如果显示了Welcome to nginx! 则表示nginx安装完成！</p>
 <p><img src="/2022/11/15/wky-nas/16.jpg"></p>
-<h3 id="安装php及其常用组件"><a href="#安装php及其常用组件" class="headerlink" title="安装php及其常用组件"></a>安装php及其常用组件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt install -y php php-fpm php7.0-mysql php7.0-gd php7.0-curl php7.0-mbstring</span><br></pre></td></tr></table></figure>
+<h3 id="安装php及其常用组件"><a href="#安装php及其常用组件" class="headerlink" title="安装php及其常用组件"></a>安装php及其常用组件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt install -y php php-fpm php7.0-mysql php7.0-gd php7.0-curl php7.0-mbstring</span><br></pre></td></tr></table></figure>
 
 <p>同样，可以通过命令<code>php -v</code>查看php的版本号。</p>
 <h3 id="安装mysql-（可选，kodexplorer不依赖它）"><a href="#安装mysql-（可选，kodexplorer不依赖它）" class="headerlink" title="安装mysql （可选，kodexplorer不依赖它）"></a>安装mysql （可选，kodexplorer不依赖它）</h3><p>刚开始我是打算通过命令<code>apt install -y mysql-server</code>来安装mysql，但系统一直提示找不到相应的软件包，所以后来改用了MariaDB。</p>
 <p>MariaDB数据库管理系统是MySQL的一个分支，是由MySQL之父Michael开发的。开发这个分支的原因之一是：甲骨文公司收购了MySQL后，有将MySQL闭源的潜在风险，因此社区采用分支的方式来避开这个风险，所以mariadb就是mysql的替代品。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt install -y mariadb-server</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt install -y mariadb-server</span><br></pre></td></tr></table></figure>
 
 <p>然后可以通过命令<code>mysql -V</code>查看mysql的版本号。</p>
 <h3 id="配置nginx环境"><a href="#配置nginx环境" class="headerlink" title="配置nginx环境"></a>配置nginx环境</h3><p>这里使用到一个系统自带的文本编辑器nano，就像windows里的记事本，它比vi&#x2F;vim要简单得多。想深入了解的同学可以使用<code>nano --help</code> 或 <code>man nano</code> 命令查看。</p>
 <p><strong>这里简单说下基本用法：</strong></p>
-<blockquote>
-<p>方向键上下左右，用于调整光标位置</p>
-<p>ctrl + x 退出</p>
-<p>ctrl + o 写入(保存)</p>
-<p>ctrl + w 搜索</p>
-<p>ctrl + c 游标位置(显示光标所在的行列)</p>
-<p>ctrl + &#x2F; 跳转到指定 行、列</p>
-<p>ctrl + g 帮助</p>
-</blockquote>
+<ul>
+<li><p>方向键上下左右，用于调整光标位置</p>
+</li>
+<li><p>ctrl + x 退出</p>
+</li>
+<li><p>ctrl + o 写入(保存)</p>
+</li>
+<li><p>ctrl + w 搜索</p>
+</li>
+<li><p>ctrl + c 游标位置(显示光标所在的行列)</p>
+</li>
+<li><p>ctrl + &#x2F; 跳转到指定 行、列</p>
+</li>
+<li><p>ctrl + g 帮助</p>
+</li>
+</ul>
 <p>接着我们对nginx配置文件做简单修改，输入命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano -c /etc/nginx/sites-enabled/default</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nano -c /etc/nginx/sites-enabled/default</span><br></pre></td></tr></table></figure>
 
 <p>在第44行的最后面加上index.php，如下图所示。</p>
 <p><img src="/2022/11/15/wky-nas/17.png"></p>
@@ -405,34 +412,45 @@
 <p>按 <code>ctrl + o</code> 写入并保存，再按 <code>ctrl + x</code> 退出。</p>
 <p><img src="/2022/11/15/wky-nas/20.jpg"></p>
 <p>先检查下修改后的nginx配置文件是否正确。输入<code>nginx -t</code> 命令，如果返回 successful ，则表示配置文件无错误，否则说明配置文件有错误。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nginx -t -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nginx -t -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
 
 <p>确认nginx配置文件正确后，重启nginx服务。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
 
 <p>接着创建一个测试文件，输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &quot;&lt;?php phpinfo(); ?&gt;&quot;&gt;/var/www/html/info.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;&lt;?php phpinfo(); ?&gt;&quot;&gt;/var/www/html/info.php</span><br></pre></td></tr></table></figure>
 
 <p>然后使用电脑或手机浏览器访问 “玩客云IP&#x2F;info.php”，比如：192.168.2.194&#x2F;info.php。如果出现以下内容，表示nginx配置的没有问题。</p>
 <p><img src="/2022/11/15/wky-nas/21.png"></p>
 <h3 id="配置mysql-mariadb（可选，若无需安装mysql，则跳过）"><a href="#配置mysql-mariadb（可选，若无需安装mysql，则跳过）" class="headerlink" title="配置mysql&#x2F;mariadb（可选，若无需安装mysql，则跳过）"></a>配置mysql&#x2F;mariadb（可选，若无需安装mysql，则跳过）</h3><h4 id="使用配置向导"><a href="#使用配置向导" class="headerlink" title="使用配置向导"></a>使用配置向导</h4><p>输入命令 <code>mysql_secure_installation</code> 进行配置。</p>
 <p><img src="/2022/11/15/wky-nas/22.jpg"></p>
 <p>此时会出现一些交互事项：</p>
-<blockquote>
-<p>Enter current password for root (enter for none):  初次运次无密码，直接回车。</p>
-<p>Set root password? [Y&#x2F;n]  输入Y，这里的 root 是指mysql的用户名。</p>
-<p>New password:  设置 root 用户的密码。</p>
-<p>Re-enter new password:  再输入一次你设置的密码。</p>
-<p>Remove anonymous users? [Y&#x2F;n]  是否删除匿名用户，直接回车。<br>Disallow root login remotely? [Y&#x2F;n]  是否禁止root远程登录，输入n。<br>Remove test database and access to it? [Y&#x2F;n]  是否删除test数据库，直接回车。<br>Reload privilege tables now? [Y&#x2F;n]  是否重新加载权限表，直接回车。</p>
-</blockquote>
+<ul>
+<li><p>Enter current password for root (enter for none):  初次运次无密码，直接回车。</p>
+</li>
+<li><p>Set root password? [Y&#x2F;n]  输入Y，这里的 root 是指mysql的用户名。</p>
+</li>
+<li><p>New password:  设置 root 用户的密码。</p>
+</li>
+<li><p>Re-enter new password:  再输入一次你设置的密码。</p>
+</li>
+<li><p>Remove anonymous users? [Y&#x2F;n]  是否删除匿名用户，直接回车。</p>
+</li>
+<li><p>Disallow root login remotely? [Y&#x2F;n]  是否禁止root远程登录，输入n。</p>
+</li>
+<li><p>Remove test database and access to it? [Y&#x2F;n]  是否删除test数据库，直接回车。</p>
+</li>
+<li><p>Reload privilege tables now? [Y&#x2F;n]  是否重新加载权限表，直接回车。</p>
+</li>
+</ul>
 <h4 id="配置mariadb远程访问权限"><a href="#配置mariadb远程访问权限" class="headerlink" title="配置mariadb远程访问权限"></a>配置mariadb远程访问权限</h4><p>（1）开启数据库远程访问，输入刚才设置的root用户的密码来登录。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
 
 <p>（2）接着依次输入以下指令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt; use mysql;</span><br><span class="line"></span><br><span class="line">mysql&gt;GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;123456&#x27; WITH GRANT OPTION;</span><br><span class="line"></span><br><span class="line">mysql&gt;update user set plugin = &#x27;mysql_native_password&#x27; where user = &#x27;root&#x27;;</span><br><span class="line"></span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"></span><br><span class="line">mysql&gt; exit;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">mysql&gt; </span><span class="language-bash">use mysql;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">mysql&gt;</span><span class="language-bash">GRANT ALL PRIVILEGES ON *.* TO <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="string">&#x27;123456&#x27;</span> WITH GRANT OPTION;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">mysql&gt;</span><span class="language-bash">update user <span class="built_in">set</span> plugin = <span class="string">&#x27;mysql_native_password&#x27;</span> <span class="built_in">where</span> user = <span class="string">&#x27;root&#x27;</span>;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">mysql&gt; </span><span class="language-bash">flush privileges;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">mysql&gt; </span><span class="language-bash"><span class="built_in">exit</span>;</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/11/15/wky-nas/23.jpg"></p>
-<h4 id="修改MariaDB配置文件，允许远程访问"><a href="#修改MariaDB配置文件，允许远程访问" class="headerlink" title="修改MariaDB配置文件，允许远程访问"></a>修改MariaDB配置文件，允许远程访问</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano /etc/mysql/mariadb.conf.d/50-server.cnf</span><br></pre></td></tr></table></figure>
+<h4 id="修改MariaDB配置文件，允许远程访问"><a href="#修改MariaDB配置文件，允许远程访问" class="headerlink" title="修改MariaDB配置文件，允许远程访问"></a>修改MariaDB配置文件，允许远程访问</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nano /etc/mysql/mariadb.conf.d/50-server.cnf</span><br></pre></td></tr></table></figure>
 
 <p>将bind-address &#x3D; 127.0.0.1 改为 bind-address &#x3D; 0.0.0.0，然后ctrl + o 保存，ctrl + x 退出。</p>
 <p><strong>至此，WEB环境搭建完成。</strong></p>
@@ -441,50 +459,48 @@
 <h3 id="kod-explorer简介"><a href="#kod-explorer简介" class="headerlink" title="kod explorer简介"></a>kod explorer简介</h3><p>kod explorer是可道云的早期产品，<strong>无需数据库就可以运行</strong>，适用于个人用户或小型团队和企业。它本质上是一个在线的文件管理器，可以用来管理指定文件夹的文件，和File Browser有点类似，可以理解成是一个在线的“我的电脑”。通过kod explorer看到的文件跟我们通过WINSCP或者SSH看到的文件是一样的，说白了就是<strong>kod explorer的文件目录结构与磁盘中存储的文件目录结构是一样的，因而比较适合那些对文件管理有强烈需求的用户。</strong></p>
 <h3 id="kodbox简介"><a href="#kodbox简介" class="headerlink" title="kodbox简介"></a>kodbox简介</h3><p>kodbox 是在 kod explorer 基础上进行了系统重构的全新产品。为满足系统更强性能、更安全、更多特性的拓展需求，Kodbox 对底层架构、存储方式、权限机制等进行了重构，同时继承并升级了 kod explorer 优秀前端体验。KodBox 更多针对企业级的应用需求，可支撑高并发、更多用户数、更高协作和安全要求。</p>
 <p>同时，<strong>kodbox是需要数据库支持的</strong>，它会将你上传的文件分成一个一个的小文件进行存储。在kodbox里面看到的是完整的文件，而通过WINSCP或SSH看到的则是一个一个的小文件，无法正常读取。同样的，通过WINSCP或者FTP上传的文件也不能被kodbox识别，所以kodbox的安全性会更高，更适合用来分享文件，但是不适合做文件的管理，因为kodbox在磁盘中存储的文件是按照日期分类存储的，与kodbox看到的文件目录结构完全不一致。</p>
-<blockquote>
-<p>我搭建可道云私有化环境，主要是用来对我个人家庭的日常文件，如图片、视频等，进行文件的管理和维护，所以我选用了kod explorer作为家用的私有云存储系统。</p>
-</blockquote>
-<p>下面将分别介绍 kod explorer 和 kodbox 的具体安装过程，我们可根据自身需求，<strong>选择其中一个来安装和使用。</strong></p>
+<p><em>我搭建可道云私有化环境，主要是用来对我个人家庭的日常文件，如图片、视频等，进行文件的管理和维护，所以我选用了 kod explorer 作为家用的私有云存储系统。</em></p>
+<p>下面将分别介绍 kod explorer 和 kodbox 的具体安装过程。<strong>我们可根据自身需求，选择其中一个来安装和使用。</strong></p>
 <h3 id="安装kod-explorer"><a href="#安装kod-explorer" class="headerlink" title="安装kod explorer"></a>安装kod explorer</h3><p>（1）用命令wget获取kodexplorer安装包或前往<a target="_blank" rel="noopener" href="https://kodcloud.com/download/">可道云官网</a>自行下载。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodexplorer4.49.zip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodexplorer4.49.zip</span><br></pre></td></tr></table></figure>
 
 <p>（2）解压kodexplorer到&#x2F;var&#x2F;www&#x2F;html&#x2F;kode目录下，并赋予kode目录读写权限。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodexplorer4.49.zip </span><br><span class="line">chmod -R 777 /var/www/html/kode/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodexplorer4.49.zip </span><br><span class="line">chmod -R 777 /var/www/html/kode/</span><br></pre></td></tr></table></figure>
 
 <p>（3）使用手机或电脑浏览器访问：玩客云IP&#x2F;kode，例如我的是：192.168.2.194&#x2F;kode，根据系统提示新建管理员密码，即可进入系统。</p>
 <p><img src="/2022/11/15/wky-nas/32.jpg"></p>
 <p>（4）最后可前往可道云官网下载移动端APP，在手机上访问可道云。注意需要配置下服务器站点，如：192.168.2.194&#x2F;kodb，才能正常访问，且要保证手机与玩客云连接的是同一个路由器。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">安卓APP下载地址：https://static.kodcloud.com/update/client/app/kodexplorer/com.kodcloud.explorer.apk</span><br><span class="line">苹果APP获取方法：打开App Store，搜索 kodexplorer 即可。</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">安卓APP下载地址：https://static.kodcloud.com/update/client/app/kodexplorer/com.kodcloud.explorer.apk</span><br><span class="line">苹果APP获取方法：打开App Store，搜索 kodexplorer 即可。</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/11/15/wky-nas/33.jpg"></p>
 <h4 id="修改kod-explorer的默认存储位置"><a href="#修改kod-explorer的默认存储位置" class="headerlink" title="修改kod explorer的默认存储位置"></a>修改kod explorer的默认存储位置</h4><p>kod explorer登录进去之后的默认存储位置（主文件夹）是在玩客云的内部存储，所以我们上传文件时默认上传到了玩客云的内部存储。由于玩客云的内部存储空间小，且存放着系统文件，可谓一寸空间一寸金。因此，将默认存储位置修改到外部存储设备就显得十分有必要了。</p>
 <p>（1）准备好外接存储设备</p>
 <p>外接存储设备必须是ext4格式的，否则将会挂载失败。如果外接存储设备不是ext4格式，则需要进行格式转化，具体步骤如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看你的U盘序号，通常是/dev/sda或/dev/sdb之类的</span><br><span class="line">fdisk -l </span><br><span class="line"># 格式化为ext4分区</span><br><span class="line">mkfs.ext4 /dev/sda1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看你的U盘序号，通常是/dev/sda或/dev/sdb之类的</span></span><br><span class="line">fdisk -l </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">格式化为ext4分区</span></span><br><span class="line">mkfs.ext4 /dev/sda1</span><br></pre></td></tr></table></figure>
 
 <p>然后将U盘挂载到系统上，并将kod explorer现有数据迁移到U盘</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 建立挂载点，netdisk为挂载点名称，可以自定义</span><br><span class="line">mkdir /var/www/netdisk</span><br><span class="line"># 挂载U盘</span><br><span class="line">mount -t ext4 /dev/sda1 /var/www/netdisk</span><br><span class="line"># 迁移数据</span><br><span class="line">cp -r /var/www/html/kode/data /var/www/netdisk/</span><br><span class="line"># 赋予挂载目录读写权限</span><br><span class="line">chmod -R 777 /var/www/netdisk/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">建立挂载点，netdisk为挂载点名称，可以自定义</span></span><br><span class="line">mkdir /var/www/netdisk</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">挂载U盘</span></span><br><span class="line">mount -t ext4 /dev/sda1 /var/www/netdisk</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">迁移数据</span></span><br><span class="line">cp -r /var/www/html/kode/data /var/www/netdisk/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">赋予挂载目录读写权限</span></span><br><span class="line">chmod -R 777 /var/www/netdisk/</span><br></pre></td></tr></table></figure>
 
 <p>（2）修改默认存储位置</p>
 <p>在&#x2F;var&#x2F;www&#x2F;html&#x2F;kode&#x2F;config目录下新建一个define.php文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nano -c /var/www/html/kode/config/define.php</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nano -c /var/www/html/kode/config/define.php</span><br></pre></td></tr></table></figure>
 
 <p>并输入如下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">define(&#x27;DATA_PATH&#x27;,&#x27;/var/www/netdisk/data/&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DATA_PATH&#x27;</span>,<span class="string">&#x27;/var/www/netdisk/data/&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>保存文件后，重新登录kod explorer，会发现默认存储位置或主文件夹已经变成了修改后的路径了。</p>
 <p><img src="/2022/11/15/wky-nas/31.png"></p>
 <h3 id="安装kodbox"><a href="#安装kodbox" class="headerlink" title="安装kodbox"></a>安装kodbox</h3><p>（1）用命令wget获取可道云KodBox安装包或前往<a target="_blank" rel="noopener" href="https://kodcloud.com/download/">可道云官网</a>自行下载。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodbox.1.35.zip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://static.kodcloud.com/update/download/kodbox.1.35.zip</span><br></pre></td></tr></table></figure>
 
 <p>（2）解压kodbox到&#x2F;var&#x2F;www&#x2F;html&#x2F;kodb目录下，并赋予kodb目录读写权限。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodbox.1.35.zip </span><br><span class="line">chmod -R 777 /var/www/html/kodb/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">unzip -d /var/www/html/kodb kodbox.1.35.zip </span><br><span class="line">chmod -R 777 /var/www/html/kodb/</span><br></pre></td></tr></table></figure>
 
 <p>（3）为了提升系统访问速度，我们采用redis系统缓存，所以先安装下redis-server及php-redis组件。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt-get install -y php-redis</span><br><span class="line">apt-get install -y redis-server</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt-get install -y php-redis</span><br><span class="line">apt-get install -y redis-server</span><br></pre></td></tr></table></figure>
 
 <p>（4）重启 php7.0-fpm</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service php7.0-fpm restart</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">service php7.0-fpm restart</span><br></pre></td></tr></table></figure>
 
 <p>（5）使用手机或电脑浏览器访问：玩客云IP&#x2F;kodb，例如我的是：192.168.2.194&#x2F;kodb，会出现安装向导。</p>
 <p><strong>环境检测：</strong> 由于玩客云s805不是64位CPU，所以只能支持32位，所以在环境检测中选择跳过。</p>
@@ -499,10 +515,10 @@
 <p><strong>到这里，利用玩客云来搭建家用轻NAS系统的操作就全部完成了。</strong></p>
 <h2 id="遇到的问题及解决方案"><a href="#遇到的问题及解决方案" class="headerlink" title="遇到的问题及解决方案"></a>遇到的问题及解决方案</h2><h3 id="使用putty时报错：tput-unknown-terminal-“xterm”"><a href="#使用putty时报错：tput-unknown-terminal-“xterm”" class="headerlink" title="使用putty时报错：tput: unknown terminal “xterm”"></a>使用putty时报错：tput: unknown terminal “xterm”</h3><p><strong>问题描述：</strong> 在使用putty过程中，报错 tput: unknown terminal “xterm”，此时按后退键和上下左右键都会出现乱码。</p>
 <p><strong>解决方案：</strong> 输入以下命令，重装<strong>ncurses-base</strong>即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt reinstall ncurses-base</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt reinstall ncurses-base</span><br></pre></td></tr></table></figure>
 
 <h3 id="安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies"><a href="#安装mysql或mariadb时报错：The-following-packages-have-unmet-dependencies" class="headerlink" title="安装mysql或mariadb时报错：The following packages have unmet dependencies"></a>安装mysql或mariadb时报错：The following packages have unmet dependencies</h3><p><strong>问题描述：</strong> 输入命令<code>apt-get install mysql-server</code>安装mysql时，出现以下错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> mysql-server : Depends: default-mysql-server but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> mysql-server : Depends: default-mysql-server but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
 
 <p>被告知需要安装依赖包：default-mysql-server，然后输入命令<code>apt-get install default-mysql-server</code>安装这个依赖包，但又出现以下错误：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> default-mysql-server : Depends: mariadb-server-10.1 but it is not going to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
@@ -521,23 +537,23 @@
 <p>（1）首先我们去debian官网下载<a target="_blank" rel="noopener" href="https://packages.debian.org/stretch/perl-base">perl-base 5.24.1软件包</a>，由于玩客云的硬件架构师armhf的，所以选择下载 armhf 的软件包。</p>
 <p><img src="/2022/11/15/wky-nas/28.png"></p>
 <p>点击“armhf”，进入到另一个页面，选择亚洲节点进行下载，也可输入如下命令，直接获取软件包到玩客云上。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.ustc.edu.cn/debian/pool/main/p/perl/perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://mirrors.ustc.edu.cn/debian/pool/main/p/perl/perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
 
 <p>（2）通过dpkg来安装deb包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i perl-base_5.24.1-3+deb9u7_armhf.deb</span><br></pre></td></tr></table></figure>
 
 <p>（3）修复相关依赖：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">apt --fix-broken install</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt --fix-broken install</span><br></pre></td></tr></table></figure>
 
 <p>此时输入命令<code>perl -v</code>查看perl版本，发现perl版本变成了5.24.1，然后再次输入安装mysql或mariadb的命令，就可以成功安装了。</p>
 <h3 id="使用SD卡刷机后，如何恢复SD卡的原始存储空间"><a href="#使用SD卡刷机后，如何恢复SD卡的原始存储空间" class="headerlink" title="使用SD卡刷机后，如何恢复SD卡的原始存储空间"></a>使用SD卡刷机后，如何恢复SD卡的原始存储空间</h3><p><strong>问题描述：</strong> 有些玩客云刷机教程采用的是SD卡刷机，首先是利用 BalenaEtcher 刻录工具将armbian系统刻录到SD卡中，作为系统启动盘。我尝试过一次，感觉这种方式刷机比较慢，大概等了半个多小时才刷好，所以后来还是采用了拆机短接的方式刷的。那么如何将之前作为系统启动盘的SD卡恢复回去，继续作为普通的文件存储U盘使用呢？</p>
 <p><strong>解决方案：</strong> 利用diskpart将SD卡中的数据清空，然后再进行格式化，就可以了。具体操作步骤如下：</p>
 <p>（1）打开windows命令行，输入diskpart命令。<br>（2）在diskpart里面，输入list disk命令，查看当前系统挂载的磁盘（包括SATA、U盘、SD卡等），如下图所示。</p>
 <p><img src="/2022/11/15/wky-nas/29.png"></p>
-<p>（3）找到要恢复的磁盘，比如我要恢复的是磁盘1，则输入命令select disk 1</p>
+<p>（3）找到要恢复的磁盘，比如我要恢复的是磁盘1，则输入命令<code>select disk 1</code></p>
 <p>（4）再输入命令clean，就可以将4中所选的磁盘数据清空了，再次输入list disk可以看到磁盘的可用已经和大小一样了。此时已经完成了SD卡的恢复，接下来我们将SD卡格式化。</p>
 <p>（5）依次输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建卷</span><br><span class="line">create partition primary</span><br><span class="line"># 查看创建的卷</span><br><span class="line">list partition</span><br><span class="line"># 选中磁盘1</span><br><span class="line">select partition 1</span><br><span class="line"># 格式化磁盘1，即SD卡</span><br><span class="line">format quick</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建卷</span></span><br><span class="line">create partition primary</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看创建的卷</span></span><br><span class="line">list partition</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">选中磁盘1</span></span><br><span class="line">select partition 1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">格式化磁盘1，即SD卡</span></span><br><span class="line">format quick</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/11/15/wky-nas/30.png"></p>
 
@@ -689,8 +705,6 @@
         
 
         
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">皖ICP备2024059725号-1 </a>
-  </div>
 <div class="copyright">
   
   &copy; 2018 – 
@@ -703,7 +717,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

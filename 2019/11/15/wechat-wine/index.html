@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://panzhe.cn/2019/11/15/wechat-wine/1.png">
 <meta property="og:image" content="https://panzhe.cn/2019/11/15/wechat-wine/2.png">
 <meta property="article:published_time" content="2019-11-15T08:03:28.000Z">
-<meta property="article:modified_time" content="2024-08-26T08:21:16.429Z">
+<meta property="article:modified_time" content="2024-08-30T07:50:34.574Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="ubuntu">
 <meta property="article:tag" content="微信">
@@ -143,11 +143,6 @@
     <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -204,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-26 16:21:16" itemprop="dateModified" datetime="2024-08-26T16:21:16+08:00">2024-08-26</time>
+                <time title="修改时间：2024-08-30 15:50:34" itemprop="dateModified" datetime="2024-08-30T15:50:34+08:00">2024-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,15 +239,12 @@
       
         <p>一提到在linux系统上使用微信，大家可能第一反应就是用微信网页版。我刚开始也是这么想的，但现实是残酷的。当我尝试使用微信网页版登录时，发现已无法正常登录。在网上搜了下，得知微信网页版后续将会关闭。</p>
 <p>下面是我从网上搜到的<strong>关于微信网页版受限</strong>的资料，仅供参考。</p>
-<blockquote>
 <p><strong>一、第一次开始限制</strong></p>
-<p>在2017年9月份开始，腾讯已经 开始限制新注册的微信号禁止登录网页版微信，老的微信号则不受影响，可以自行验证。用新注册的微信号登录微信网页版，会提示：</p>
-</blockquote>
+<p>在2017年9月份开始，腾讯已经开始限制新注册的微信号禁止登录网页版微信，老的微信号则不受影响，可以自行验证。用新注册的微信号登录微信网页版，会提示：</p>
 <p><img src="/2019/11/15/wechat-wine/1.png"></p>
-<blockquote>
 <p><strong>二、第二次完全屏蔽与限制</strong><br>而从2019年7月份开始，腾讯疑似彻底关闭了网页版微信登录入口，通过<a target="_blank" rel="noopener" href="https://wx.qq.com/">https://wx.qq.com</a>  或 <a target="_blank" rel="noopener" href="https://wx2.qq.com/">https://wx2.qq.com</a>  登录网页版的微信都会有如下类似提示信息，不管是新注册的微信号，还是老的微信号都是如此。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;error&gt;&lt;ret&gt;1203&lt;/ret&gt;&lt;message&gt;为了你的帐号安全，此微信号不能登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。Windows微信下载地址：https://pc.weixin.qq.com  Mac微信下载地址：https://mac.weixin.qq.com&lt;/message&gt;&lt;/error&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">error</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">ret</span>&gt;</span>1203<span class="tag">&lt;/<span class="name">ret</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">message</span>&gt;</span>为了你的帐号安全，此微信号不能登录网页微信。你可以使用Windows微信或Mac微信在电脑端登录。</span><br><span class="line">      Windows微信下载地址：https://pc.weixin.qq.com</span><br><span class="line">      Mac微信下载地址：https://mac.weixin.qq.com</span><br><span class="line">   <span class="tag">&lt;/<span class="name">message</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">error</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>既然微信网页版这条路不通，那我们就再尝试其它的路子吧。</p>
 <p>于是紧接着想到了用<a target="_blank" rel="noopener" href="https://github.com/geeeeeeeeek/electronic-wechat/releases">electronic-wechat</a>，<code>electronic-wechat</code>是托管在 github 中的一款第三方开源微信客户端，但它也是基于微信网页版API封装的一个客户端。既然现在微信网页版已经不能用了，那么<code>electronic-wechat</code>也就不能再正常使用了。</p>
 <p>至此，上述两条路都不通，那么还有没有其它的路呢？</p>
@@ -260,13 +252,13 @@
 <h2 id="关于Wine"><a href="#关于Wine" class="headerlink" title="关于Wine"></a>关于Wine</h2><p><strong>Wine</strong>是一个在x86、x86-64的类UNIX系统下运行微软Windows程序的”兼容层”。Wine可以运行在Linux、Mac、FreeBSD和Solaris上，在Wine中运行的Windows程序，就如同运行原生Linux程序一样，不会有模拟器那样的性能问题。<strong>Wine</strong>是”Wine Is Not an Emulator”的递归缩写，所以<strong>它并不是模拟器</strong>，而是用兼容模式调用DLLs以运行Windows程序。</p>
 <p>接下来我们就开始安装和使用它吧。</p>
 <h2 id="安装Wine"><a href="#安装Wine" class="headerlink" title="安装Wine"></a>安装Wine</h2><p>1、创建一个Wine目录，如：放在<code>/opt</code>目录下，并给予777权限。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd /opt</span><br><span class="line">$ sudo mkdir Wine</span><br><span class="line">$ sudo chmod 777 Wine</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /opt</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> Wine</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 Wine</span></span><br></pre></td></tr></table></figure>
 
 <p>2、进入Wine目录，clone项目<code>deepin-wine</code>到本地。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu.git</span></span><br></pre></td></tr></table></figure>
 
 <p>3、安装Wine</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd deepin-wine-for-ubuntu</span><br><span class="line">$ sudo ./install.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> deepin-wine-for-ubuntu</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> ./install.sh</span></span><br></pre></td></tr></table></figure>
 
 <p>至此，我们完成了Wine的安装，接下来安装微信。</p>
 <h2 id="安装微信"><a href="#安装微信" class="headerlink" title="安装微信"></a>安装微信</h2><h3 id="下载deepin发布的微信软件包"><a href="#下载deepin发布的微信软件包" class="headerlink" title="下载deepin发布的微信软件包"></a>下载deepin发布的微信软件包</h3><p>这里有两种下载方式：</p>
@@ -275,7 +267,7 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">链接：https://pan.baidu.com/s/15FtAPH4P8JQagLTDMcEGdw </span><br><span class="line">提取码：9mzx</span><br></pre></td></tr></table></figure>
 
 <h3 id="用dpkg安装微信软件包"><a href="#用dpkg安装微信软件包" class="headerlink" title="用dpkg安装微信软件包"></a>用dpkg安装微信软件包</h3><p>将上面下载到的wechat安装包（<code>deepin.com.wechat_2.6.8.65deepin0_i386.deb</code>）copy到刚才创建的Wine目录下，然后执行如下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i deepin.com.wechat_2.6.8.65deepin0_i386.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i deepin.com.wechat_2.6.8.65deepin0_i386.deb</span><br></pre></td></tr></table></figure>
 
 <p><span id = "inline-blue">至此，微信安装完成。</span> 此时可以在系统应用列表中看到<strong>微信图标</strong>，单击运行即可。</p>
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="系统是非中文语言环境，会出现微信登录后显示乱码"><a href="#系统是非中文语言环境，会出现微信登录后显示乱码" class="headerlink" title="系统是非中文语言环境，会出现微信登录后显示乱码"></a>系统是非中文语言环境，会出现微信登录后显示乱码</h3><p><strong>解决方法：</strong>在<code>/opt/deepinwine/tools/run.sh</code>中添加LC_ALL&#x3D;”zh_CN.UTF-8”，重启微信。由于我的ubuntu系统语言是中文的，所以在安装时没有遇到这种问题。</p>
@@ -283,7 +275,7 @@
 <p>搜狗输入法属于Fcitx框架，我们只需重启Fcitx服务就可以了，如下图所示：</p>
 <p><img src="/2019/11/15/wechat-wine/2.png"></p>
 <p>如果重启Fcitx服务后，发现仍然无法输入中文，就重启下系统，然后再登录微信，会发现可以正常输入中文了。</p>
-<p><strong>参考链接：</strong></p>
+<p>参考链接：</p>
 <p><a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu">https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/73033900">https://zhuanlan.zhihu.com/p/73033900</a></p>
 
@@ -436,8 +428,6 @@
         
 
         
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">皖ICP备2024059725号-1 </a>
-  </div>
 <div class="copyright">
   
   &copy; 2018 – 
@@ -450,7 +440,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

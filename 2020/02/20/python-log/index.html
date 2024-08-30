@@ -28,7 +28,7 @@
 <meta property="og:description" content="主要介绍如何使用logging模块进行日志打印和按天生成日志文件。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-20T03:11:59.000Z">
-<meta property="article:modified_time" content="2024-08-26T08:20:08.685Z">
+<meta property="article:modified_time" content="2024-08-30T07:24:24.802Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="日志">
@@ -139,11 +139,6 @@
     <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -200,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-26 16:20:08" itemprop="dateModified" datetime="2024-08-26T16:20:08+08:00">2024-08-26</time>
+                <time title="修改时间：2024-08-30 15:24:24" itemprop="dateModified" datetime="2024-08-30T15:24:24+08:00">2024-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,10 +234,8 @@
 
       
         <h1 id="logging模块简介"><a href="#logging模块简介" class="headerlink" title="logging模块简介"></a>logging模块简介</h1><p>logging模块是Python内置的标准模块，主要用于输出运行日志，可以设置输出日志的等级、日志保存路径、日志文件回滚等；相比print，具备如下优点：</p>
-<ol>
-<li>可以通过设置不同的日志等级，在release版本中只输出重要信息，而不必显示大量的调试信息；</li>
-<li>print将所有信息都输出到标准输出中，严重影响开发者从标准输出中查看其它数据；logging则可以由开发者决定将信息输出到什么地方，以及怎么输出；</li>
-</ol>
+<p>1、可以通过设置不同的日志等级，在release版本中只输出重要信息，而不必显示大量的调试信息；</p>
+<p>2、print将所有信息都输出到标准输出中，严重影响开发者从标准输出中查看其它数据；logging则可以由开发者决定将信息输出到什么地方，以及怎么输出；</p>
 <h1 id="logging模块使用"><a href="#logging模块使用" class="headerlink" title="logging模块使用"></a>logging模块使用</h1><h2 id="logging的日志等级"><a href="#logging的日志等级" class="headerlink" title="logging的日志等级"></a>logging的日志等级</h2><p>在Python3.7中，logging模块将日志等级设为以下几类：</p>
 <ul>
 <li>logging.CRITICAL：特别糟糕的事情，如内存耗尽、磁盘空间为空 </li>
@@ -257,16 +250,16 @@
 <li>设置了日志等级之后，调用<strong>比设置等级低的日志函数</strong>，其日志内容不会输出到日志文件中。</li>
 <li>默认情况下python的logging模块会将日志打印到了标准输出中，且只显示大于等于WARNING级别的日志，这说明python将默认的日志级别设置为WARNING。</li>
 </ul>
-<h2 id="将日志输出到控制台"><a href="#将日志输出到控制台" class="headerlink" title="将日志输出到控制台"></a>将日志输出到控制台</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import logging</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level = logging.INFO,format = &#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;)</span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">logger.info(&quot;Start print log&quot;)</span><br><span class="line">logger.debug(&quot;Do something&quot;)</span><br><span class="line">logger.warning(&quot;Something maybe fail.&quot;)</span><br><span class="line">logger.info(&quot;Finish&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="将日志输出到控制台"><a href="#将日志输出到控制台" class="headerlink" title="将日志输出到控制台"></a>将日志输出到控制台</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level = logging.INFO,<span class="built_in">format</span> = <span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">logger.info(<span class="string">&quot;Start print log&quot;</span>)</span><br><span class="line">logger.debug(<span class="string">&quot;Do something&quot;</span>)</span><br><span class="line">logger.warning(<span class="string">&quot;Something maybe fail.&quot;</span>)</span><br><span class="line">logger.info(<span class="string">&quot;Finish&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>运行后，控制台输出以下内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:20:21,187 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
 
 <h2 id="将日志写入指定文件"><a href="#将日志写入指定文件" class="headerlink" title="将日志写入指定文件"></a>将日志写入指定文件</h2><p>导入logging模块，创建一个FileHandler，并对输出消息的格式进行设置，将其添加到logger，然后将日志写入到指定的文件中。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">handler = logging.FileHandler(<span class="string">&quot;log.txt&quot;</span>)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">logger.info(<span class="string">&quot;Start print log&quot;</span>)</span><br><span class="line">logger.debug(<span class="string">&quot;Do something&quot;</span>)</span><br><span class="line">logger.warning(<span class="string">&quot;Something maybe fail.&quot;</span>)</span><br><span class="line">logger.info(<span class="string">&quot;Finish&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>log.txt中的日志内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Start print log</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - WARNING - Something maybe fail.</span><br><span class="line">2020-02-20 11:23:39,875 - __main__ - INFO - Finish</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>关于logging.Formatter的参数说明：</p>
@@ -289,68 +282,90 @@
 
 <p>这样我们就可以在控制台上看到与文件中一样的日志内容。</p>
 <p>从上面的代码中，可以发现，logging有一个日志处理的主对象（如：上面代码中的 logger ），其他的处理方式都是通过addHandler函数添加进去的。</p>
-<h2 id="logging中常用的Handler"><a href="#logging中常用的Handler" class="headerlink" title="logging中常用的Handler"></a>logging中常用的Handler</h2><h3 id="StreamHandler"><a href="#StreamHandler" class="headerlink" title="StreamHandler"></a>StreamHandler</h3><p>函数原型</p>
+<h2 id="logging中常用的Handler"><a href="#logging中常用的Handler" class="headerlink" title="logging中常用的Handler"></a>logging中常用的Handler</h2><h3 id="StreamHandler"><a href="#StreamHandler" class="headerlink" title="StreamHandler"></a>StreamHandler</h3><blockquote>
+<p>函数原型</p>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.StreamHandler(stream=None)</span><br></pre></td></tr></table></figure>
 
+<blockquote>
 <p>函数说明</p>
-<blockquote>
+</blockquote>
 <p>日志信息会输出到指定的stream中，可以是sys.stderr，sys.stdout或者文件。</p>
-</blockquote>
-<p>参数说明</p>
 <blockquote>
-<p>如果stream参数为空，则默认输出到sys.stderr。</p>
+<p>参数说明</p>
 </blockquote>
-<h3 id="FileHandler"><a href="#FileHandler" class="headerlink" title="FileHandler"></a>FileHandler</h3><p>函数原型</p>
+<p>如果stream参数为空，则默认输出到sys.stderr。</p>
+<h3 id="FileHandler"><a href="#FileHandler" class="headerlink" title="FileHandler"></a>FileHandler</h3><blockquote>
+<p>函数原型</p>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.FileHandler(filename, mode=&#x27;a&#x27;, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
 
-<p>函数说明</p>
 <blockquote>
-<p>继承自StreamHandler，功能是将日志信息输出到磁盘文件上。</p>
+<p>函数说明</p>
 </blockquote>
+<p>继承自StreamHandler，功能是将日志信息输出到磁盘文件上。</p>
+<blockquote>
 <p>参数说明</p>
+</blockquote>
 <ul>
 <li><p>mode参数默认为append；</p>
 </li>
 <li><p>若delay参数为true时，文件直到emit方法被执行才会打开。默认情况下，日志文件可以无限增大。</p>
 </li>
 </ul>
-<h3 id="WatchedFileHandler"><a href="#WatchedFileHandler" class="headerlink" title="WatchedFileHandler"></a>WatchedFileHandler</h3><p>函数原型</p>
+<h3 id="WatchedFileHandler"><a href="#WatchedFileHandler" class="headerlink" title="WatchedFileHandler"></a>WatchedFileHandler</h3><blockquote>
+<p>函数原型</p>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.WatchedFileHandler(filename, mode=&#x27;a&#x27;, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
 
+<blockquote>
 <p>函数说明</p>
+</blockquote>
 <ul>
 <li>位于logging.handlers模块中。</li>
 <li>该函数用于监视文件的状态。如果文件被改变了，那么就关闭当前流，重新打开文件，创建一个新的流。</li>
 <li>newsyslog或者logrotate的使用会导致文件改变。</li>
 <li>这个函数是专门为linux&#x2F;unix系统设计的，因为在windows系统上，正在被打开的文件是不会被改变的。</li>
 </ul>
-<p>参数说明</p>
 <blockquote>
-<p>该函数参数和FileHandler相同。</p>
+<p>参数说明</p>
 </blockquote>
-<h3 id="RotatingFileHandler"><a href="#RotatingFileHandler" class="headerlink" title="RotatingFileHandler"></a>RotatingFileHandler</h3><p>函数原型</p>
+<p>该函数参数和FileHandler相同。</p>
+<h3 id="RotatingFileHandler"><a href="#RotatingFileHandler" class="headerlink" title="RotatingFileHandler"></a>RotatingFileHandler</h3><blockquote>
+<p>函数原型</p>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.RotatingFileHandler(filename, mode=&#x27;a&#x27;, maxBytes=0, backupCount=0, encoding=None, delay=False)</span><br></pre></td></tr></table></figure>
 
+<blockquote>
 <p>函数说明</p>
+</blockquote>
 <ul>
 <li>位于logging.handlers模块。</li>
 <li>支持<strong>循环生成日志文件</strong>。</li>
 </ul>
+<blockquote>
 <p>参数说明</p>
+</blockquote>
 <ul>
 <li>filename: 自定义日志文件的路径以及文件名。</li>
 <li>参数maxBytes和backupCount允许日志文件在达到maxBytes时rollover，即当文件大小达到或者超过maxBytes时，就会新建一个日志文件。上述这两个参数，其中任何一个为0时，rollover都不会发生，也就是文件没有maxBytes限制。</li>
 <li>backupCount参数是指备份数目，也就是日志最多能保留多少个文件。其文件命名则会在filename后面加上.0到.n的后缀，比如filename参数填error.log，当error.log大小达到maxBytes字节后，会自动再新建一个文件，并命名叫error.log.1，当error.log.1大小达到maxBytes字节后，会再新建一个文件error.log.2，以此类推下去。</li>
 </ul>
-<h3 id="TimedRotatingFileHandler"><a href="#TimedRotatingFileHandler" class="headerlink" title="TimedRotatingFileHandler"></a>TimedRotatingFileHandler</h3><p>函数原型</p>
+<h3 id="TimedRotatingFileHandler"><a href="#TimedRotatingFileHandler" class="headerlink" title="TimedRotatingFileHandler"></a>TimedRotatingFileHandler</h3><blockquote>
+<p>函数原型</p>
+</blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class logging.handlers.TimedRotatingFileHandler(filename, when=&#x27;h&#x27;, interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)</span><br></pre></td></tr></table></figure>
 
+<blockquote>
 <p>函数说明</p>
+</blockquote>
 <ul>
 <li>位于logging.handlers模块。</li>
 <li>支持定时生成新日志文件。</li>
 </ul>
+<blockquote>
 <p>参数说明</p>
+</blockquote>
 <ul>
 <li><p>filename：日志文件名的前缀prefix。</p>
 </li>
@@ -365,13 +380,11 @@
 </li>
 </ul>
 <p>除了上述这些参数之外，TimedRotatingFileHandler还有一个比较重要的成员变量 <strong>suffix</strong> 。</p>
-<blockquote>
-<p>suffix是指日志文件名的后缀，suffix中通常带有格式化的时间字符串，filename和suffix由“.”连接构成文件名。</p>
+<p><code>suffix</code>是指日志文件名的后缀，<code>suffix</code>中通常带有格式化的时间字符串，<code>filename</code>和<code>suffix</code>由“.”连接构成文件名。</p>
 <p>例如：filename&#x3D;”runtime”， suffix&#x3D;”%Y-%m-%d.log”，那么生成的文件名就是 runtime.2020-02-20.log</p>
-</blockquote>
 <h2 id="按天保存单独的日志文件"><a href="#按天保存单独的日志文件" class="headerlink" title="按天保存单独的日志文件"></a>按天保存单独的日志文件</h2><p>通常我们在运行中大型python程序时，日志最好是使用按天保存的方式，这样查看起来会很方便，也不会因为日志内容积累太多而不好打开。</p>
-<p>说到按周期保存文件，我们很容易会想到使用TimedRotatingFileHandler函数来实现。没错，就是它。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import os</span><br><span class="line">import logging</span><br><span class="line">from logging.handlers import TimedRotatingFileHandler</span><br><span class="line"></span><br><span class="line"># 当前文件所在目录（绝对路径）</span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[0]</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">formatter = logging.Formatter(&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;)</span><br><span class="line"></span><br><span class="line"># 在当前文件所在目录下，新建logs目录，用来存放log文件</span><br><span class="line">log_path = os.path.join(rootDir,&#x27;logs&#x27;)</span><br><span class="line">if not os.path.exists(log_path):</span><br><span class="line">	os.makedirs(log_path)</span><br><span class="line">filename = os.path.join(log_path,&#x27;test&#x27;)</span><br><span class="line">handler = TimedRotatingFileHandler(filename, when=&#x27;midnight&#x27;, interval=1)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">handler.suffix = &quot;%Y-%m-%d_%H-%M-%S.log&quot;</span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"># 测试代码</span><br><span class="line">logger.info(&quot;Start print log&quot;)</span><br><span class="line">logger.debug(&quot;Do something&quot;)</span><br><span class="line">logger.warning(&quot;Something maybe fail.&quot;)</span><br><span class="line">logger.info(&quot;Finish&quot;)</span><br></pre></td></tr></table></figure>
+<p>说到按周期保存文件，我们很容易会想到使用<code>TimedRotatingFileHandler</code>函数来实现。没错，就是它。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> logging.handlers <span class="keyword">import</span> TimedRotatingFileHandler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前文件所在目录（绝对路径）</span></span><br><span class="line">rootDir = os.path.split(os.path.realpath(__file__))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(level = logging.INFO)</span><br><span class="line"></span><br><span class="line">formatter = logging.Formatter(<span class="string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在当前文件所在目录下，新建logs目录，用来存放log文件</span></span><br><span class="line">log_path = os.path.join(rootDir,<span class="string">&#x27;logs&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(log_path):</span><br><span class="line">	os.makedirs(log_path)</span><br><span class="line">filename = os.path.join(log_path,<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line">handler = TimedRotatingFileHandler(filename, when=<span class="string">&#x27;midnight&#x27;</span>, interval=<span class="number">1</span>)</span><br><span class="line">handler.setFormatter(formatter)</span><br><span class="line">handler.setLevel(logging.INFO)</span><br><span class="line">handler.suffix = <span class="string">&quot;%Y-%m-%d_%H-%M-%S.log&quot;</span></span><br><span class="line">logger.addHandler(handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试代码</span></span><br><span class="line">logger.info(<span class="string">&quot;Start print log&quot;</span>)</span><br><span class="line">logger.debug(<span class="string">&quot;Do something&quot;</span>)</span><br><span class="line">logger.warning(<span class="string">&quot;Something maybe fail.&quot;</span>)</span><br><span class="line">logger.info(<span class="string">&quot;Finish&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>运行这段代码之后，会发现在该python文件所在目录下创建了一个logs目录，并在logs目录里面创建了一个log文件。</p>
 <p><strong>重要说明：</strong></p>
@@ -379,15 +392,14 @@
 <p>那为什么会有这么一个奇怪的要求呢？</p>
 <p>这个就要看看TimedRotatingFileHandler源码（源码位于：Python37\Lib\logging\handlers.py）在时间计算这块是怎么实现的了。</p>
 <p>贴上TimedRotatingFileHandler类的 init 函数的部分代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">self.extMatch = re.compile(self.extMatch, re.ASCII)</span><br><span class="line">    self.interval = self.interval * interval # multiply by units requested</span><br><span class="line">    if os.path.exists(filename):</span><br><span class="line">        t = os.stat(filename)[ST_MTIME]</span><br><span class="line">    else:</span><br><span class="line">        t = int(time.time())</span><br><span class="line">    self.rolloverAt = self.computeRollover(t) # 计算何时分割日志</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">self</span>.extMatch = re.<span class="built_in">compile</span>(<span class="variable language_">self</span>.extMatch, re.ASCII)</span><br><span class="line">    <span class="variable language_">self</span>.interval = <span class="variable language_">self</span>.interval * interval <span class="comment"># multiply by units requested</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(filename):</span><br><span class="line">        t = os.stat(filename)[ST_MTIME]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        t = <span class="built_in">int</span>(time.time())</span><br><span class="line">    <span class="variable language_">self</span>.rolloverAt = <span class="variable language_">self</span>.computeRollover(t) <span class="comment"># 计算何时分割日志</span></span><br></pre></td></tr></table></figure>
 
 <p>从上面代码可以发现，TimedRotatingFileHandler是根据当前文件的修改时间或当前时间戳来判断是否需要把日志分割开来，而每次初始化TimedRotatingFileHandler这个类，时间就会重新计算一次。</p>
 <p>所以，如果项目是持续运行的，那么这个类只会初始化一次，这时通过传入参数when&#x3D;’D’ 是可以正常按天来分割日志的。而只要python脚本一重启，那这个时间就会重新算，日志分割时间也就会推迟了。</p>
 <p>然后我们再阅读下computeRollover函数源码，发现如果传参when&#x3D;’midnight’，那么它会计算当前时间到凌晨零点的秒数，然后每次写日志时都会判断有没有过凌晨，一旦过了凌晨就会自动分割日志。</p>
+<hr>
 <p>到这里，关于python logging模块的内容就介绍完了。总的来说，logging模块用起来还是相当方便的，功能也比较强大，值得我们好好深入学习和使用。</p>
-<blockquote>
 <p>参考链接：</p>
-</blockquote>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dahu-daqing/p/7040764.html">python logging模块</a></p>
 </li>
@@ -545,8 +557,6 @@
         
 
         
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">皖ICP备2024059725号-1 </a>
-  </div>
 <div class="copyright">
   
   &copy; 2018 – 
@@ -559,7 +569,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

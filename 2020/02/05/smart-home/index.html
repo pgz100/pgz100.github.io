@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://panzhe.cn/2020/02/05/smart-home/8.jpg">
 <meta property="og:image" content="https://panzhe.cn/2020/02/05/smart-home/9.jpg">
 <meta property="article:published_time" content="2020-02-05T03:22:59.000Z">
-<meta property="article:modified_time" content="2021-04-22T15:55:13.341Z">
+<meta property="article:modified_time" content="2024-08-30T07:32:06.133Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="mosquitto">
 <meta property="article:tag" content="domoticz">
@@ -150,11 +150,6 @@
     <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
 
   </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
   </ul>
 </nav>
 
@@ -211,7 +206,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-22 23:55:13" itemprop="dateModified" datetime="2021-04-22T23:55:13+08:00">2021-04-22</time>
+                <time title="修改时间：2024-08-30 15:32:06" itemprop="dateModified" datetime="2024-08-30T15:32:06+08:00">2024-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,10 +252,10 @@
 <h1 id="更改ubuntu系统安装源"><a href="#更改ubuntu系统安装源" class="headerlink" title="更改ubuntu系统安装源"></a>更改ubuntu系统安装源</h1><p>由于ubuntu系统默认使用的是国外安装源，在下载安装包过程中速度可能会比较慢，所以建议将其更改为国内安装源。</p>
 <p>1、修改&#x2F;etc&#x2F;apt&#x2F;sources.list文件，建议将现有的sources.list备份下。</p>
 <p>将sources.list文件内容替换如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"> </span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
 
 <p>2、更新软件包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
 
 <h1 id="mosquitto环境搭建"><a href="#mosquitto环境搭建" class="headerlink" title="mosquitto环境搭建"></a>mosquitto环境搭建</h1><p>搭建mosquitto环境通常有两种方式，一种是通过mosquitto源码安装部署，一种是通过docker容器化部署，下面将分别介绍这两种搭建方式。</p>
 <h2 id="通过下载源码安装部署"><a href="#通过下载源码安装部署" class="headerlink" title="通过下载源码安装部署"></a>通过下载源码安装部署</h2><h3 id="下载和安装mosquitto"><a href="#下载和安装mosquitto" class="headerlink" title="下载和安装mosquitto"></a>下载和安装mosquitto</h3><p>1、如果你是在Linux系统上安装Mosquitto，建议大家使用源码安装，最新的源码可从<a target="_blank" rel="noopener" href="http://mosquitto.org/files/source/">http://mosquitto.org/files/source/</a> 获取。我这里下载的是当前最新版本：mosquitto-1.6.8。</p>
@@ -270,13 +265,11 @@
 <p>5、安装完毕后，会发现系统命令行里有mosquitto、mosquitto_passwd、mosquitto_pub和mosquitto_sub四个工具，分别用于启动代理服务、管理密码、发布消息和订阅消息。</p>
 <p><img src="/2020/02/05/smart-home/1.jpg"></p>
 <h3 id="mosquitto用户配置和权限管理"><a href="#mosquitto用户配置和权限管理" class="headerlink" title="mosquitto用户配置和权限管理"></a>mosquitto用户配置和权限管理</h3><p>mosquitto支持匿名登陆和用户名登陆，在正式使用时，建议使用用户名登陆，以保证系统整体安全性。</p>
-<blockquote>
 <p>mosquitto中可以添加多个用户，只有使用用户名和密码登陆服务器才允许用户进行订阅与发布操作。可以说用户机制是mosquitto重要的安全机制，增强服务器的安全性。</p>
-</blockquote>
-<p>用户与权限配置需要修改3处地方：</p>
+<p><strong>用户与权限配置有3处需要修改：</strong></p>
 <p>1、mosquitto中最最最重要的配置文件mosquitto.conf<br>2、pwfile.example (保存用户名与密码)<br>3、aclfile.example (保存权限配置)</p>
 <h4 id="用户配置"><a href="#用户配置" class="headerlink" title="用户配置"></a>用户配置</h4><p>cd到&#x2F;etc&#x2F;mosquitto目录下，找到mosquitto.conf.example文件，将其cp一份，名称设为<code>mosquitto.conf</code>，并打开该文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd /etc/mosquitto</span><br><span class="line">$ cp mosquitto.conf.example mosquitto.conf</span><br><span class="line">$ vim mosquitto.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> /etc/mosquitto</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cp</span> mosquitto.conf.example mosquitto.conf</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vim mosquitto.conf</span></span><br></pre></td></tr></table></figure>
 
 <p>1、找到allow_anonymous字段，这个字段的作用是：是否开启匿名用户登录，默认为true。打开此项配置（将前面的 # 号去掉）之后将其值改为false。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">allow_anonymous false</span><br></pre></td></tr></table></figure>
@@ -288,12 +281,10 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">user root</span><br></pre></td></tr></table></figure>
 
 <p>4、创建用户名和密码，此处我们来创建两个用户：admin 和 mosquitto_test。先创建admin用户，在命令行窗口输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ mosquitto_passwd -c /etc/mosquitto/pwfile.example admin</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">mosquitto_passwd -c /etc/mosquitto/pwfile.example admin</span></span><br></pre></td></tr></table></figure>
 
 <p>会提示需连续输入两次密码，创建成功。</p>
-<blockquote>
-<p>命令解释： -c 是指创建一个用户，&#x2F;etc&#x2F;mosquitto&#x2F;pwfile.example 是将用户创建到 pwfile.example 文件中，admin 是用户名。</p>
-</blockquote>
+<p><em>命令解释： -c 是指创建一个用户，&#x2F;etc&#x2F;mosquitto&#x2F;pwfile.example 是将用户创建到 pwfile.example 文件中，admin 是用户名。</em></p>
 <p>再创建mosquitto_test用户，输入以下命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mosquitto_passwd /etc/mosquitto/pwfile.example mosquitto_test</span><br></pre></td></tr></table></figure>
 
@@ -302,18 +293,18 @@
 <p>至此，两个用户创建成功，用户信息都保存在 pwfile.example 文件中。</p>
 <p><img src="/2020/02/05/smart-home/2.png"></p>
 <p><strong>mosquitto_passwd命令的基本用法：</strong></p>
-<p>mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</p>
-<blockquote>
-<p>用法：mosquitto_passwd -c passwordfile username</p>
-</blockquote>
-<p>mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</p>
-<blockquote>
-<p>用法：mosquitto_passwd -b passwordfile username password</p>
-</blockquote>
-<p>mosquitto_passwd -D：删除一个用户。</p>
-<blockquote>
-<p>用法：mosquitto_passwd -D passwordfile username</p>
-</blockquote>
+<ul>
+<li>mosquitto_passwd -c：每次都只会生成只包含一个用户的文件。</li>
+</ul>
+<p><em>用法：mosquitto_passwd -c passwordfile username</em></p>
+<ul>
+<li>mosquitto_passwd -b：必须在控制台输入明文的密码，且每次只是在pwfile.example中新增一个用户，并不会覆盖之前已生成的用户。</li>
+</ul>
+<p><em>用法：mosquitto_passwd -b passwordfile username password</em></p>
+<ul>
+<li>mosquitto_passwd -D：删除一个用户。</li>
+</ul>
+<p><em>用法：mosquitto_passwd -D passwordfile username</em></p>
 <p>此时所有客户端连接 mosquitto 服务都需要输入用户名和密码。</p>
 <h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><p>Mosquitto 权限是根据 topic 控制的，类似目录管理。你可以设定每个用户的订阅&#x2F;发布权限，也可以设定每个用户可访问的topic范围，从而达到权限控制的目的。</p>
 <p>1、给刚刚我们创建的两个用户配置不同的权限（假定已经创建了admin 和 mosquitto_test这两个用户）</p>
@@ -336,17 +327,15 @@
 <h3 id="mosquitto启动和停止"><a href="#mosquitto启动和停止" class="headerlink" title="mosquitto启动和停止"></a>mosquitto启动和停止</h3><p>mosquitto默认使用的端口是1883。如果希望修改端口，则需修改mosquitto.conf文件中的 port 字段值。</p>
 <p><img src="/2020/02/05/smart-home/3.png"></p>
 <p>一切准备就绪后，启动mosquitto：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf    ##前台运行</span><br><span class="line">或</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d ##后台运行</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf      ##前台运行</span><br><span class="line">或</span><br><span class="line">mosquitto -c /etc/mosquitto/mosquitto.conf -d   ##后台运行</span><br></pre></td></tr></table></figure>
 
 <p>停止mosquitto：使用kill命令强制终止即可。</p>
-<blockquote>
-<p>以上内容的参考链接：</p>
-</blockquote>
+<p>参考链接：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Paul-watermelon/p/10400758.html">https://www.cnblogs.com/Paul-watermelon/p/10400758.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/saryli/p/9820532.html">https://www.cnblogs.com/saryli/p/9820532.html</a></li>
 </ul>
-<h2 id="通过docker容器化部署"><a href="#通过docker容器化部署" class="headerlink" title="通过docker容器化部署"></a>通过docker容器化部署</h2><p><strong>注：</strong>应事先在机器上安装好docker环境，且保证docker已经正常启动。</p>
+<h2 id="通过docker容器化部署"><a href="#通过docker容器化部署" class="headerlink" title="通过docker容器化部署"></a>通过docker容器化部署</h2><p><em>注：应事先在机器上安装好docker环境，且保证docker已经正常启动。</em></p>
 <h3 id="查询镜像"><a href="#查询镜像" class="headerlink" title="查询镜像"></a>查询镜像</h3> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker search mosquitto</span><br></pre></td></tr></table></figure>
 
 <p>选择STARS数最多的 eclipse-mosquitto</p>
@@ -368,7 +357,7 @@
 <h4 id="初始化mosquitto配置文件"><a href="#初始化mosquitto配置文件" class="headerlink" title="初始化mosquitto配置文件"></a>初始化mosquitto配置文件</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi /mosquitto/config/mosquitto.conf</span><br></pre></td></tr></table></figure>
 
 <p>在配置文件中输入以下内容</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">persistence true</span><br><span class="line">persistence_location /mosquitto/data</span><br><span class="line"># 设置log路径</span><br><span class="line">log_dest file /mosquitto/log/mosquitto.log</span><br><span class="line"></span><br><span class="line"># 设置log类型</span><br><span class="line">#log_type error</span><br><span class="line">#log_type warning</span><br><span class="line">#log_type notice</span><br><span class="line">#log_type information</span><br><span class="line">log_type all</span><br><span class="line"></span><br><span class="line"># 是否保存客户端的连接和断开连接的信息到日志</span><br><span class="line">connection_messages true</span><br><span class="line"></span><br><span class="line"># 是否设置日志时间戳</span><br><span class="line">log_timestamp true</span><br><span class="line"></span><br><span class="line"># 设置时间戳格式</span><br><span class="line">log_timestamp_format %Y-%m-%dT%H:%M:%S</span><br><span class="line"></span><br><span class="line"># 是否开启匿名模式</span><br><span class="line">allow_anonymous false</span><br><span class="line"></span><br><span class="line"># 指定用户密码文件</span><br><span class="line">password_file /mosquitto/config/pwfile.conf</span><br><span class="line"></span><br><span class="line"># 指定权限管理文件</span><br><span class="line">acl_file /mosquitto/config/aclfile.conf</span><br><span class="line"></span><br><span class="line"># 设置启用websocket协议</span><br><span class="line">listener 61614</span><br><span class="line">protocol websockets</span><br><span class="line"></span><br><span class="line"># For MQTT v5 clients, it is possible to have the server send a &quot;server</span><br><span class="line"># keepalive&quot; value that will override the keepalive value set by the client.</span><br><span class="line"># This is intended to be used as a mechanism to say that the server will</span><br><span class="line"># disconnect the client earlier than it anticipated, and that the client should</span><br><span class="line"># use the new keepalive value. The max_keepalive option allows you to specify</span><br><span class="line"># that clients may only connect with keepalive less than or equal to this</span><br><span class="line"># value, otherwise they will be sent a server keepalive telling them to use</span><br><span class="line"># max_keepalive. This only applies to MQTT v5 clients. The maximum value</span><br><span class="line"># allowable is 65535. Do not set below 10.</span><br><span class="line">#max_keepalive 65535</span><br><span class="line"></span><br><span class="line"># Set the keepalive interval for this bridge connection, in seconds.</span><br><span class="line">#keepalive_interval 60</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">persistence true</span><br><span class="line">persistence_location /mosquitto/data</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置<span class="built_in">log</span>路径</span></span><br><span class="line">log_dest file /mosquitto/log/mosquitto.log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置<span class="built_in">log</span>类型</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">log_type error</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">log_type warning</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">log_type notice</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">log_type information</span></span><br><span class="line">log_type all</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">是否保存客户端的连接和断开连接的信息到日志</span></span><br><span class="line">connection_messages true</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">是否设置日志时间戳</span></span><br><span class="line">log_timestamp true</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置时间戳格式</span></span><br><span class="line">log_timestamp_format %Y-%m-%dT%H:%M:%S</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">是否开启匿名模式</span></span><br><span class="line">allow_anonymous false</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定用户密码文件</span></span><br><span class="line">password_file /mosquitto/config/pwfile.conf</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定权限管理文件</span></span><br><span class="line">acl_file /mosquitto/config/aclfile.conf</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置启用websocket协议</span></span><br><span class="line">listener 61614</span><br><span class="line">protocol websockets</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">For MQTT v5 clients, it is possible to have the server send a <span class="string">&quot;server</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">keepalive&quot;</span> value that will override the keepalive value <span class="built_in">set</span> by the client.</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">This is intended to be used as a mechanism to say that the server will</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">disconnect the client earlier than it anticipated, and that the client should</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">use the new keepalive value. The max_keepalive option allows you to specify</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">that clients may only connect with keepalive less than or equal to this</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">value, otherwise they will be sent a server keepalive telling them to use</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">max_keepalive. This only applies to MQTT v5 clients. The maximum value</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">allowable is 65535. Do not <span class="built_in">set</span> below 10.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">max_keepalive 65535</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Set the keepalive interval <span class="keyword">for</span> this bridge connection, <span class="keyword">in</span> seconds.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">keepalive_interval 60</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="添加目录权限"><a href="#添加目录权限" class="headerlink" title="添加目录权限"></a>添加目录权限</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod -R 755 /mosquitto</span><br><span class="line">chmode -R 777 /mosquitto/log #日志目录要最大权限</span><br></pre></td></tr></table></figure>
 
@@ -398,66 +387,75 @@
 <p>安装domoticz通常有两种方式：一种是直接通过命令行安装，一种是下载源码后，编译源码来安装。网上大多数安装教程介绍的是通过命令行来安装，参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/why19940926/article/details/88372645%EF%BC%8C%E4%B8%8B%E9%9D%A2%E9%87%8D%E7%82%B9%E4%BB%8B%E7%BB%8D%E9%80%9A%E8%BF%87%E7%BC%96%E8%AF%91%E6%BA%90%E7%A0%81%E6%9D%A5%E5%AE%89%E8%A3%85domoticz%E3%80%82">https://blog.csdn.net/why19940926/article/details/88372645，下面重点介绍通过编译源码来安装domoticz。</a></p>
 <h2 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h2><p>假定你已经更改了ubuntu系统安装源，并已经更新了系统软件包。</p>
 <p>当前最新稳定版是v4.10717，但有人说最新版不是很稳定，推荐使用v3.8153。</p>
-<blockquote>
 <p>参考链接：<a target="_blank" rel="noopener" href="https://www.domoticz.cn/forum/viewtopic.php?f=4&t=2">https://www.domoticz.cn/forum/viewtopic.php?f=4&amp;t=2</a></p>
-</blockquote>
 <p>为保险起见，这里使用了某人推荐的v3.8153版本（v3.0系列的最后一个稳定版本），下载地址如下：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/domoticz/domoticz/tree/3.8153">https://github.com/domoticz/domoticz/tree/3.8153</a></p>
 <h2 id="安装相关依赖库和工具"><a href="#安装相关依赖库和工具" class="headerlink" title="安装相关依赖库和工具"></a>安装相关依赖库和工具</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">apt-get install build-essential nano cmake git libboost-dev libboost-thread-dev libboost-system-dev</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">apt-get install libsqlite3-dev curl libcurl4-openssl-dev libssl-dev libusb-dev zlib1g-dev python3-dev</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cmake -DCMAKE_BUILD_TYPE=Release .</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cmake -DCMAKE_BUILD_TYPE=Release .</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>说明：</strong>在低配电脑上进行编译可能需要10-15分钟。如果你的电脑拥有多核CPU，可以通过给<code>make</code>命令增加’-j’标识来使用更多核心，这样会快很多。四核CPU可以使用<code>make -j4</code>代替<code>make</code>。</p>
 <h2 id="启动domoticz"><a href="#启动domoticz" class="headerlink" title="启动domoticz"></a>启动domoticz</h2><p>cd到domoticz源码根目录下，输入以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ./domoticz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">./domoticz</span></span><br></pre></td></tr></table></figure>
 
 <p>然后在浏览器中输入IP:8080即可访问domoticz的Web控制界面，会发现Web前端的版本号是v3.5876，而本次下载的domoticz源码版本号是v3.8153，注意不要把这两者弄混淆了。</p>
 <p><img src="/2020/02/05/smart-home/7.jpg"></p>
 <p><strong>说明：</strong>domoticz默认使用的端口是8080，如果需要更改端口号，可在启动domoticz时，使用参数 <code>-www</code> 来指定端口号，如：<code>./domoticz -www 8090</code></p>
 <p>还可通过命令<code>./domoticz -h</code>来查看详细用法。</p>
-<blockquote>
-<p>以上内容的参考链接：</p>
-</blockquote>
+<p>参考链接：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.domoticz.cn/wiki/Linux">https://www.domoticz.cn/wiki/Linux</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.domoticz.cn/wiki/Install.txt">https://www.domoticz.cn/wiki/Install.txt</a></li>
 </ul>
 <h1 id="搭建过程中的常用工具"><a href="#搭建过程中的常用工具" class="headerlink" title="搭建过程中的常用工具"></a>搭建过程中的常用工具</h1><h2 id="查看系统端口被占用情况"><a href="#查看系统端口被占用情况" class="headerlink" title="查看系统端口被占用情况"></a>查看系统端口被占用情况</h2><p>使用netstat命令查看端口占用情况：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ apt-get install net-tools ##安装netstat</span><br><span class="line">$ netstat -nultp            ##查看所有tcp、udp的端口使用情况</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">apt-get install net-tools <span class="comment">##安装netstat</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">netstat -nultp            <span class="comment">##查看所有tcp、udp的端口使用情况</span></span></span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>各参数说明：</p>
+<p>参数说明：</p>
 <ul>
-<li>-t (tcp) 仅显示tcp相关选项 </li>
-<li>-u (udp)仅显示udp相关选项 </li>
-<li>-n 拒绝显示别名，能显示数字的全部转化为数字 </li>
-<li>-l 仅列出在Listen(监听)的服务状态 </li>
-<li>-p 显示建立相关链接的程序名</li>
+<li><p>-t (tcp) 仅显示tcp相关选项 </p>
+</li>
+<li><p>-u (udp)仅显示udp相关选项 </p>
+</li>
+<li><p>-n 拒绝显示别名，能显示数字的全部转化为数字 </p>
+</li>
+<li><p>-l 仅列出在Listen(监听)的服务状态 </p>
+</li>
+<li><p>-p 显示建立相关链接的程序名</p>
+</li>
 </ul>
-</blockquote>
 <p>例如查看 8000 端口的情况，使用以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ netstat -nultp | grep 8000</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">netstat -nultp | grep 8000</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="如何对正在运行的docker容器增加端口映射"><a href="#如何对正在运行的docker容器增加端口映射" class="headerlink" title="如何对正在运行的docker容器增加端口映射"></a>如何对正在运行的docker容器增加端口映射</h2><p>通常在docker run创建并运行容器的时候，可以通过-p指定端口映射规则。但是，我们经常会遇到刚开始忘记设置端口映射或者设置错了需要修改。当docker start运行容器后并没有提供一个-p选项或设置，让你来修改指定端口映射规则。那么这种情况我们该怎么处理呢？</p>
-<blockquote>
-<p>方法一：删掉当前的容器，重新创建一个新容器（加上新的端口映射）。</p>
-</blockquote>
-<p>优缺点：优点是简单快捷，在测试环境使用较多。缺点是如果是数据库镜像，那重新建一个又要重新配置一次，就比较麻烦了。</p>
-<blockquote>
-<p>方法二：修改容器配置文件，重启docker服务。</p>
-</blockquote>
-<p>优缺点：优点是没有副作用，操作简单。缺点是需要重启整个docker服务，如果在同一个宿主机上运行着多个容器服务的话，就会影响其他容器服务。</p>
-<p>具体方法如下：</p>
-<p>1、利用<code>docker ps</code>命令查看当前容器的<strong>CONTAINER ID</strong>，一般只会显示出该ID的一部分内容。</p>
+<p><strong>方法一：</strong>删掉当前的容器，重新创建一个新容器（加上新的端口映射）。</p>
+<ul>
+<li>优点：简单快捷，在测试环境使用较多。</li>
+<li>缺点：如果是数据库镜像，那重新建一个又要重新配置一次，就比较麻烦了。</li>
+</ul>
+<p><strong>方法二：</strong>修改容器配置文件，重启docker服务。</p>
+<ul>
+<li><p>优点：没有副作用，操作简单。</p>
+</li>
+<li><p>缺点：需要重启整个docker服务，如果在同一个宿主机上运行着多个容器服务的话，就会影响其他容器服务。</p>
+</li>
+<li><p>具体方法如下：</p>
+</li>
+</ul>
+<ol>
+<li>利用<code>docker ps</code>命令查看当前容器的<strong>CONTAINER ID</strong>，一般只会显示出该ID的一部分内容。</li>
+</ol>
 <p><img src="/2020/02/05/smart-home/8.jpg"></p>
-<p>2、打开hostconfig.json文件，文件路径是：&#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;<em>[<strong>CONTAINER ID</strong>]</em>&#x2F;hostconfig.json。</p>
+<ol start="2">
+<li>打开hostconfig.json文件，文件路径是：&#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;<em>[<strong>CONTAINER ID</strong>]</em>&#x2F;hostconfig.json。</li>
+</ol>
 <p><img src="/2020/02/05/smart-home/9.jpg"></p>
 <p>该json文件中有一个节点是PortBindings，这里面包含所有的映射端口内容，只需在这里面新增相应的端口映射即可。例如：1883&#x2F;tcp对应的是容器内部的1883端口，HostPort对应的是映射到宿主机的端口1883。按需新增&#x2F;修改端口后，使用命令<code>systemctl restart docker</code>重启docker服务，再启动相应容器就可以了。</p>
-<blockquote>
-<p>方法三：利用docker commit构建一个新镜像，再创建一个新容器。</p>
-</blockquote>
-<p>优缺点：优点是不会影响宿主机上的其他容器，缺点是管理起来显得比较混乱，总体来说没有第二种方法那么直观。</p>
+<p><strong>方法三：</strong>利用docker commit构建一个新镜像，再创建一个新容器。</p>
+<ul>
+<li>优点：不会影响宿主机上的其他容器。</li>
+<li>缺点：管理起来显得比较混乱，总体来说没有第二种方法那么直观。</li>
+</ul>
 
     </div>
 
@@ -608,8 +606,6 @@
         
 
         
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">皖ICP备2024059725号-1 </a>
-  </div>
 <div class="copyright">
   
   &copy; 2018 – 
@@ -622,7 +618,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">138k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
