@@ -1,3 +1,4 @@
+https://panzhe.cn/2025/01/13/ipmi-idrac/
 https://panzhe.cn/2024/12/19/vbox/
 https://panzhe.cn/2024/11/07/disk-alloc/
 https://panzhe.cn/2024/10/22/facefusion/
@@ -50,6 +51,8 @@ https://panzhe.cn/tags/Hexo/
 https://panzhe.cn/tags/NexT/
 https://panzhe.cn/tags/Win10/
 https://panzhe.cn/tags/gitlab/
+https://panzhe.cn/tags/IPMI/
+https://panzhe.cn/tags/iDRAC/
 https://panzhe.cn/tags/ubuntu/
 https://panzhe.cn/tags/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/
 https://panzhe.cn/tags/systemd/
