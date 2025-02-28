@@ -28,7 +28,7 @@
 <meta property="og:description" content="介绍如何在本地部署GPT-SoVITS服务，采用容器化部署的方式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-10-22T10:11:13.000Z">
-<meta property="article:modified_time" content="2024-10-22T10:13:46.414Z">
+<meta property="article:modified_time" content="2025-02-28T08:16:17.309Z">
 <meta property="article:author" content="金者">
 <meta property="article:tag" content="声音克隆">
 <meta name="twitter:card" content="summary">
@@ -214,10 +214,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-10-22 18:11:13 / 修改时间：18:13:46" itemprop="dateCreated datePublished" datetime="2024-10-22T18:11:13+08:00">2024-10-22</time>
+              <time title="创建时间：2024-10-22 18:11:13" itemprop="dateCreated datePublished" datetime="2024-10-22T18:11:13+08:00">2024-10-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-28 16:16:17" itemprop="dateModified" datetime="2025-02-28T16:16:17+08:00">2025-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -234,14 +240,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
             <div class="post-description">介绍如何在本地部署GPT-SoVITS服务，采用容器化部署的方式。</div>
 
@@ -256,16 +262,25 @@
       
         <h2 id="1、从codewithgpu拉取sovits镜像"><a href="#1、从codewithgpu拉取sovits镜像" class="headerlink" title="1、从codewithgpu拉取sovits镜像"></a>1、从codewithgpu拉取sovits镜像</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker pull registry.cn-beijing.aliyuncs.com/codewithgpu2/rvc-boss-gpt-sovits:gpM1WfbTsA</span><br></pre></td></tr></table></figure>
 
-<h2 id="2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源"><a href="#2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源" class="headerlink" title="2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源"></a>2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源</h2><p>配置生产仓库</p>
+<h2 id="2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源"><a href="#2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源" class="headerlink" title="2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源"></a>2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源</h2><h4 id="ubuntu系统安装方法"><a href="#ubuntu系统安装方法" class="headerlink" title="ubuntu系统安装方法"></a>ubuntu系统安装方法</h4><p>（1）配置仓库</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \</span><br><span class="line">  &amp;&amp; curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \</span><br><span class="line">    sed &#x27;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&#x27; | \</span><br><span class="line">    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</span><br></pre></td></tr></table></figure>
 
-<p>更新软件源</p>
+<p>（2）更新软件源</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
 
-<p>安装 NVIDIA 容器工具包</p>
+<p>（3）安装 NVIDIA 容器工具包</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt-get install -y nvidia-container-toolkit</span><br></pre></td></tr></table></figure>
 
-<p>重启docker</p>
+<p>（4）重启docker</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="centos系统安装方法"><a href="#centos系统安装方法" class="headerlink" title="centos系统安装方法"></a>centos系统安装方法</h4><p>（1）配置仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">distribution=$(. /etc/os-release;echo $ID$VERSION_ID)</span><br><span class="line">curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo</span><br></pre></td></tr></table></figure>
+
+<p>（2）安装 NVIDIA 容器工具包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y nvidia-container-toolkit</span><br></pre></td></tr></table></figure>
+
+<p>（3）重启docker</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
 
 <h2 id="3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小"><a href="#3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小" class="headerlink" title="3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小"></a>3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小</h2><h3 id="以非持久化存储方式创建"><a href="#以非持久化存储方式创建" class="headerlink" title="以非持久化存储方式创建"></a>以非持久化存储方式创建</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -id --name=sovits --gpus all -p 9874:9874 -p 9873:9873 -p 9872:9872 -p 9871:9871 --shm-size 7g registry.cn-beijing.aliyuncs.com/codewithgpu2/rvc-boss-gpt-sovits:gpM1WfbTsA</span><br></pre></td></tr></table></figure>
@@ -277,6 +292,8 @@
 <h1 id="查看GPU使用情况"><a href="#查看GPU使用情况" class="headerlink" title="查看GPU使用情况"></a>查看GPU使用情况</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">watch -n 1 nvidia-smi</span><br></pre></td></tr></table></figure>
 
 <p>-n 1代表每隔1秒刷新一次，ctrl+c退出。</p>
+<h1 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h1><p>1、执行<code>docker run</code>创建sovits容器时，报错：<code>docker:Error response from daemon: could not select device driver &quot;&quot; with capabilities: [[gpu]].</code></p>
+<p>原因：未安装<code>nvidia-container-toolkit</code>。</p>
 
     </div>
 
@@ -360,7 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%BB%8Ecodewithgpu%E6%8B%89%E5%8F%96sovits%E9%95%9C%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">1、从codewithgpu拉取sovits镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85nvidia-container-toolkit%EF%BC%8C%E8%AE%A9docker%E5%AE%B9%E5%99%A8%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8GPU%E8%B5%84%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%88%9B%E5%BB%BAsovits%E5%AE%B9%E5%99%A8%EF%BC%8C%E8%AE%BE%E7%BD%AE%E5%90%AF%E5%8A%A8GPU%EF%BC%8C%E8%AE%BE%E7%BD%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7%E3%80%81%E4%BB%A5%E5%8F%8A%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="nav-number">3.</span> <span class="nav-text">3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E9%9D%9E%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">以非持久化存储方式创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%EF%BC%88volume%E6%8C%82%E8%BD%BD%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">以持久化存储方式创建（volume挂载）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%90%AF%E5%8A%A8gpt-sovits%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">4、启动gpt-sovits服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BGPU%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5"><span class="nav-number"></span> <span class="nav-text">查看GPU使用情况</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E4%BB%8Ecodewithgpu%E6%8B%89%E5%8F%96sovits%E9%95%9C%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">1、从codewithgpu拉取sovits镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85nvidia-container-toolkit%EF%BC%8C%E8%AE%A9docker%E5%AE%B9%E5%99%A8%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8GPU%E8%B5%84%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">2、安装nvidia-container-toolkit，让docker容器可以使用GPU资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ubuntu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95"><span class="nav-number">2.0.1.</span> <span class="nav-text">ubuntu系统安装方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#centos%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95"><span class="nav-number">2.0.2.</span> <span class="nav-text">centos系统安装方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%88%9B%E5%BB%BAsovits%E5%AE%B9%E5%99%A8%EF%BC%8C%E8%AE%BE%E7%BD%AE%E5%90%AF%E5%8A%A8GPU%EF%BC%8C%E8%AE%BE%E7%BD%AE%E7%AB%AF%E5%8F%A3%E5%8F%B7%E3%80%81%E4%BB%A5%E5%8F%8A%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="nav-number">3.</span> <span class="nav-text">3、创建sovits容器，设置启动GPU，设置端口号、以及共享内存大小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E9%9D%9E%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">以非持久化存储方式创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%EF%BC%88volume%E6%8C%82%E8%BD%BD%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">以持久化存储方式创建（volume挂载）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%90%AF%E5%8A%A8gpt-sovits%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">4、启动gpt-sovits服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BGPU%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5"><span class="nav-number"></span> <span class="nav-text">查看GPU使用情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FAQ"><span class="nav-number"></span> <span class="nav-text">FAQ</span></a></div>
       </div>
       <!--/noindex-->
 
