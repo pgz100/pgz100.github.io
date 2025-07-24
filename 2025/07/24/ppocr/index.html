@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"panzhe.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="本文主要介绍如何部署PaddleOCR，以及文本检测和文本识别模型微调和使用方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaddleOCR安装部署及模型微调">
+<meta property="og:url" content="https://panzhe.cn/2025/07/24/ppocr/index.html">
+<meta property="og:site_name" content="金者的博客">
+<meta property="og:description" content="本文主要介绍如何部署PaddleOCR，以及文本检测和文本识别模型微调和使用方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-24T06:12:46.000Z">
+<meta property="article:modified_time" content="2025-07-24T06:24:19.452Z">
+<meta property="article:author" content="金者">
+<meta property="article:tag" content="PaddleOCR">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://panzhe.cn/2025/07/24/ppocr/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PaddleOCR安装部署及模型微调 | 金者的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">金者的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Thinking, Reading and Writing</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章列表<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>文章分类<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-toolbox">
+
+    <a href="/toolbox/" rel="section"><i class="fa fa-toolbox fa-fw"></i>好用工具</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/pgz100" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://panzhe.cn/2025/07/24/ppocr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="金者">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="金者的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PaddleOCR安装部署及模型微调
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-07-24 14:12:46 / 修改时间：14:24:19" itemprop="dateCreated datePublished" datetime="2025-07-24T14:12:46+08:00">2025-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">人工智能</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+            <div class="post-description">本文主要介绍如何部署PaddleOCR，以及文本检测和文本识别模型微调和使用方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-安装PaddlePaddle"><a href="#1-安装PaddlePaddle" class="headerlink" title="1. 安装PaddlePaddle"></a>1. 安装PaddlePaddle</h2><p>请参考下述命令，使用飞桨框架官方 Docker 镜像，创建一个名为 <code>paddle</code> 的容器，并将当前工作目录映射到容器内的 <code>/paddle</code> 目录：</p>
+<p>（1）拉取预安装 PaddlePaddle 的镜像：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9</span><br></pre></td></tr></table></figure>
+
+<p>（2）用镜像构建并进入Docker容器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run --gpus all --shm-size=8g --network=host --name paddle -it -v <span class="variable">$PWD</span>:/paddle ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>或先创建一个后台容器，再进入该容器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -<span class="built_in">id</span> --gpus all --shm-size=8g --network=host --name paddle -v <span class="variable">$PWD</span>:/paddle ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it paddle /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>若您在安装后发现无法安装PyYAML,可通过如下命令修复：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m pip install --ignore-installed PyYAML</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用以下命令可以验证 PaddlePaddle 是否安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -c <span class="string">&quot;import paddle; print(paddle.__version__)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果已安装成功，将输出以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3.1.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-安装paddleocr"><a href="#2-安装paddleocr" class="headerlink" title="2. 安装paddleocr"></a>2. 安装paddleocr</h2><p>首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。</p>
+<p>建议安装的 CUDA 和 cuDNN 版本与环境中存在的 Python 包版本保持一致，以避免不同版本的库共存导致的潜在问题。可以通过如下方式可以查看 CUDA 和 cuDNN 相关 Python 包的版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># CUDA 相关 Python 包版本</span></span><br><span class="line">pip list | grep nvidia-cuda</span><br><span class="line"><span class="comment"># cuDNN 相关 Python 包版本</span></span><br><span class="line">pip list | grep nvidia-cudnn</span><br></pre></td></tr></table></figure>
+
+<p>如果只希望使用 PaddleOCR 的推理功能，请参考 <strong>安装推理包</strong>；如果还希望进行模型训练、导出等，请参考 <strong>安装训练依赖</strong>。在同一环境中安装推理包和训练依赖是允许的，无需进行环境隔离。</p>
+<h3 id="2-1-安装推理包"><a href="#2-1-安装推理包" class="headerlink" title="2.1 安装推理包"></a>2.1 安装推理包</h3><p>从 PyPI 安装最新版本 PaddleOCR 推理包：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m pip install paddleocr</span><br></pre></td></tr></table></figure>
+
+<p>或者从源码安装（默认为开发分支）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m pip install <span class="string">&quot;git+https://github.com/PaddlePaddle/PaddleOCR.git&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-安装训练依赖"><a href="#2-2-安装训练依赖" class="headerlink" title="2.2 安装训练依赖"></a>2.2 安装训练依赖</h3><p>要进行模型训练、导出等，需要首先将仓库克隆到本地：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 推荐方式</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/PaddlePaddle/PaddleOCR</span><br><span class="line"></span><br><span class="line"><span class="comment"># （可选）切换到指定分支</span></span><br><span class="line">git checkout release/3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：</span></span><br><span class="line">git <span class="built_in">clone</span> https://gitee.com/paddlepaddle/PaddleOCR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注：码云托管代码可能无法实时同步本 GitHub 项目更新，存在3~5天延时，请优先使用推荐方式。</span></span><br></pre></td></tr></table></figure>
+
+<p>执行如下命令安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-开发集成-部署"><a href="#3-开发集成-部署" class="headerlink" title="3. 开发集成&#x2F;部署"></a>3. 开发集成&#x2F;部署</h2><p>如果通用 OCR 产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成&#x2F;部署。</p>
+<p>您可以将通用 OCR 产线直接应用在您的Python项目中，此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：</p>
+<p>（1）高性能推理：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleOCR 提供高性能推理功能，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能推理流程请参考<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html">高性能推理</a>。</p>
+<p>（2）服务化部署：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。详细的产线服务化部署流程请参考<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html">服务化部署</a>。</p>
+<h3 id="3-1-高性能推理"><a href="#3-1-高性能推理" class="headerlink" title="3.1 高性能推理"></a>3.1 高性能推理</h3><p>在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。PaddleOCR 提供高性能推理能力，让用户无需关注复杂的配置和底层细节，一键提升模型的推理速度。具体而言，PaddleOCR 的高性能推理功能能够：</p>
+<ul>
+<li>结合先验知识自动选择合适的推理后端（Paddle Inference、OpenVINO、ONNX Runtime、TensorRT等），并配置加速策略（如增大推理线程数、设置 FP16 精度推理）；</li>
+<li>根据需要自动将飞桨静态图模型转换为 ONNX 格式，以使用更优的推理后端实现加速。</li>
+</ul>
+<h4 id="3-1-1-安装Paddle2ONNX插件"><a href="#3-1-1-安装Paddle2ONNX插件" class="headerlink" title="3.1.1 安装Paddle2ONNX插件"></a>3.1.1 安装Paddle2ONNX插件</h4><p>PaddleX 的 Paddle2ONNX 插件提供了将飞桨静态图模型转化到 ONNX 格式模型的能力，底层使用 <a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/Paddle2ONNX">Paddle2ONNX</a>。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --install paddle2onnx</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-2-安装高性能推理依赖"><a href="#3-1-2-安装高性能推理依赖" class="headerlink" title="3.1.2 安装高性能推理依赖"></a>3.1.2 安装高性能推理依赖</h4><p>高性能推理插件支持处理 <strong>飞桨静态图（<code>.pdmodel</code>、 <code>.json</code>）</strong>、<strong>ONNX（<code>.onnx</code>）</strong>、<strong>华为 OM（<code>.om</code>）</strong> 等多种模型格式。对于 ONNX 模型，可以使用 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/paddle2onnx.html">Paddle2ONNX 插件</a> 转换得到。如果模型目录中存在多种格式的模型，PaddleX 会根据需要自动选择，并可能进行自动模型转换。</p>
+<p>通过 PaddleOCR CLI 安装高性能推理所需依赖：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddleocr install_hpi_deps &#123;设备类型&#125;</span><br></pre></td></tr></table></figure>
+
+<p>支持的设备类型包括：</p>
+<ul>
+<li><code>cpu</code>：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。</li>
+<li><code>gpu</code>：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。如果希望使用完整的高性能推理功能，还需要确保环境中安装有符合要求的 TensorRT。</li>
+</ul>
+<p>同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/install">WSL</a> 环境中安装。</p>
+<p><strong>推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。</strong> 各设备类型对应的镜像如下：</p>
+<ul>
+<li><code>cpu</code>：<code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0</code></li>
+<li><code>gpu</code>：<ul>
+<li><strong>CUDA 11.8</strong>：<code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6</code></li>
+</ul>
+</li>
+</ul>
+<p>应确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6，请参考 <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html">TensorRT 文档</a> 安装 TensorRT。示例如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载 TensorRT tar 文件</span></span><br><span class="line">wget https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/secure/8.6.1/tars/TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz</span><br><span class="line"><span class="comment"># 解压 TensorRT tar 文件</span></span><br><span class="line">tar xvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz</span><br><span class="line"><span class="comment"># 安装 TensorRT wheel 包</span></span><br><span class="line">python -m pip install TensorRT-8.6.1.6/python/tensorrt-8.6.1-cp310-none-linux_x86_64.whl</span><br><span class="line"><span class="comment"># 添加 TensorRT 的 `lib` 目录的绝对路径到 LD_LIBRARY_PATH 中</span></span><br><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="comment"># 编辑.bashrc配置文件，添加以下内容：</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="string">&quot;<span class="variable">$LD_LIBRARY_PATH</span>:/paddle/TensorRT-8.6.1.6/lib&quot;</span></span><br><span class="line"><span class="comment"># 保存文件后，运行以下命令使配置生效：</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-2-执行高性能推理"><a href="#3-1-2-执行高性能推理" class="headerlink" title="3.1.2 执行高性能推理"></a>3.1.2 执行高性能推理</h4><p>对于 PaddleOCR CLI，指定 <code>--enable_hpi</code> 为 <code>True</code> 即可执行高性能推理。例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddleocr ocr --enable_hpi True ...</span><br></pre></td></tr></table></figure>
+
+<p>对于 PaddleOCR Python API，在初始化产线对象或者模块对象时，设置 <code>enable_hpi</code> 为 <code>True</code> 即可在调用推理方法时执行高性能推理。例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PaddleOCR</span><br><span class="line">pipeline = PaddleOCR(enable_hpi=<span class="literal">True</span>)</span><br><span class="line">result = pipeline.predict(...)</span><br></pre></td></tr></table></figure>
+
+<p>对于 PaddleX CLI，指定<code>--use_hpip</code>开启高性能推理。例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --serve --pipeline OCR --use_hpip --port 8081</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --serve --pipeline /paddle/PaddleOCR.yaml --use_hpip --port 8081</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-1-3-相关说明"><a href="#3-1-3-相关说明" class="headerlink" title="3.1.3 相关说明"></a>3.1.3 相关说明</h4><ol>
+<li>对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。</li>
+<li>目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。</li>
+<li>在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html">获取 ONNX 模型</a>。</li>
+<li>PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/paddleocr_and_paddlex.html#3-%E4%BD%BF%E7%94%A8-paddlex-%E4%BA%A7%E7%BA%BF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">使用 PaddleX 产线配置文件</a> 和 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22">PaddleX 高性能推理指南</a> 了解如何调整高性能推理配置。</li>
+</ol>
+<h3 id="3-2-服务化部署"><a href="#3-2-服务化部署" class="headerlink" title="3.2 服务化部署"></a>3.2 服务化部署</h3><h4 id="3-2-1-安装依赖"><a href="#3-2-1-安装依赖" class="headerlink" title="3.2.1 安装依赖"></a>3.2.1 安装依赖</h4><p>执行如下命令，通过 PaddleX CLI 安装 PaddleX 服务化部署插件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --install serving</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-2-运行服务器"><a href="#3-2-2-运行服务器" class="headerlink" title="3.2.2 运行服务器"></a>3.2.2 运行服务器</h4><p>通过 PaddleX CLI 运行服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --serve --pipeline &#123;PaddleX 产线注册名或产线配置文件路径&#125; [&#123;其他命令行选项&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>以通用 OCR 产线为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddlex --serve --pipeline OCR</span><br></pre></td></tr></table></figure>
+
+<p>可以看到类似以下展示的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INFO:     Started server process [63108]</span><br><span class="line">INFO:     Waiting for application startup.</span><br><span class="line">INFO:     Application startup complete.</span><br><span class="line">INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+
+<p>如需调整配置（如模型路径、batch size、部署设备等），可指定 <code>--pipeline</code> 为自定义配置文件。请参考 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/paddleocr_and_paddlex.html">PaddleOCR 与 PaddleX</a> 了解 PaddleOCR 产线与 PaddleX 产线注册名的对应关系，以及 PaddleX 产线配置文件的获取与修改方式。</p>
+<p>与服务化部署相关的命令行选项如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>--pipeline</code></td>
+<td align="left">PaddleX 产线注册名或产线配置文件路径。</td>
+</tr>
+<tr>
+<td align="left"><code>--device</code></td>
+<td align="left">产线部署设备。默认情况下，当 GPU 可用时，将使用 GPU；否则使用 CPU。</td>
+</tr>
+<tr>
+<td align="left"><code>--host</code></td>
+<td align="left">服务器绑定的主机名或 IP 地址。默认为 <code>0.0.0.0</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>--port</code></td>
+<td align="left">服务器监听的端口号。默认为 <code>8080</code>。</td>
+</tr>
+<tr>
+<td align="left"><code>--use_hpip</code></td>
+<td align="left">如果指定，则使用高性能推理。请参考高性能推理文档了解更多信息。</td>
+</tr>
+<tr>
+<td align="left"><code>--hpi_config</code></td>
+<td align="left">高性能推理配置。请参考高性能推理文档了解更多信息。</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-3-调用服务"><a href="#3-2-3-调用服务" class="headerlink" title="3.2.3 调用服务"></a>3.2.3 调用服务</h4><p>PaddleOCR 产线使用教程中的 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html#3">“开发集成&#x2F;部署”</a>部分提供了服务的 API 参考与多语言调用示例。</p>
+<h2 id="4-二次开发"><a href="#4-二次开发" class="headerlink" title="4. 二次开发"></a>4. 二次开发</h2><p>如果 通用OCR 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<strong>您自己拥有的特定领域或应用场景的数据</strong>对现有模型进行进一步的<strong>微调</strong>，以提升 通用OCR 产线的在您的场景中的识别效果。</p>
+<h3 id="4-1-模型微调"><a href="#4-1-模型微调" class="headerlink" title="4.1 模型微调"></a>4.1 模型微调</h3><p>通用 OCR 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。</p>
+<table>
+<thead>
+<tr>
+<th align="left">情形</th>
+<th align="left">微调模块</th>
+<th align="left">微调参考链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">整图旋转矫正不准</td>
+<td align="left">文档图像方向分类模块</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
+</tr>
+<tr>
+<td align="left">图像扭曲矫正不准</td>
+<td align="left">文本图像矫正模块</td>
+<td align="left">暂不支持微调</td>
+</tr>
+<tr>
+<td align="left">文本行旋转矫正不准</td>
+<td align="left">文本行方向分类模块</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5">链接</a></td>
+</tr>
+<tr>
+<td align="left">文本漏检</td>
+<td align="left">文本检测模块</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_detection.html#_5">链接</a></td>
+</tr>
+<tr>
+<td align="left">文本内容不准</td>
+<td align="left">文本识别模块</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_recognition.html#_5">链接</a></td>
+</tr>
+</tbody></table>
+<h4 id="4-1-1-文本检测模型微调"><a href="#4-1-1-文本检测模型微调" class="headerlink" title="4.1.1 文本检测模型微调"></a>4.1.1 文本检测模型微调</h4><p>如果文本检测模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行模型微调。</p>
+<p>首先，您需要准备文本检测的数据集，可采用<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/latest/data_annotations/ocr_modules/text_detection_recognition.html">PPOCRLabel</a>标注工具，并参考<a target="_blank" rel="noopener" href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar">文本检测 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本检测 Demo 数据为例，在训练模型之前，请确保已经按照<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/installation.html">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
+<p>（1）准备数据集</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载示例数据集</span></span><br><span class="line">wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar</span><br><span class="line">tar -xf ocr_det_dataset_examples.tar</span><br></pre></td></tr></table></figure>
+
+<p>（2）下载预训练模型</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载 PP-OCRv5_server_det 预训练模型</span></span><br><span class="line">wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams</span><br></pre></td></tr></table></figure>
+
+<p>（3）修改<code>PP-OCRv5_server_det</code> 配置文件，进行模型训练</p>
+<p>PaddleOCR 对代码进行了模块化，训练 <code>PP-OCRv5_server_det</code> 检测模型时需要使用 <code>PP-OCRv5_server_det</code> 的<a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml">配置文件</a>，配置文件的位置：<code>PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml</code>，打开<code>PP-OCRv5_server_det.yml</code>文件，修改以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">save_model_dir:</span> <span class="string">./output/PP-OCRv5_server_det</span> <span class="comment">#训练后的模型权重存储路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">pretrained_model:</span> <span class="string">/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams</span> <span class="comment">#预训练模型路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">Train:</span></span><br><span class="line">  <span class="attr">dataset:</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="attr">data_dir:</span> <span class="string">/paddle/ocr_det_dataset_examples/</span> <span class="comment">#数据集根目录</span></span><br><span class="line">    <span class="attr">label_file_list:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/paddle/ocr_det_dataset_examples/train.txt</span> <span class="comment">#训练集标注文件</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">Eval:</span></span><br><span class="line">  <span class="attr">dataset:</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="attr">data_dir:</span> <span class="string">/paddle/ocr_det_dataset_examples/</span> <span class="comment">#数据集根目录</span></span><br><span class="line">    <span class="attr">label_file_list:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/paddle/ocr_det_dataset_examples/val.txt</span> <span class="comment">#验证集标注文件</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令进行模型训练：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#单卡训练</span></span><br><span class="line">python PaddleOCR/tools/train.py -c PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">#多卡训练，通过--gpus参数指定卡号</span></span><br><span class="line">python -m paddle.distributed.launch --gpus <span class="string">&#x27;0,1,2,3&#x27;</span> PaddleOCR/tools/train.py -c PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml</span><br></pre></td></tr></table></figure>
+
+<p>模型训练完成后，训练好的模型权重会保存在<code>./output/PP-OCRv5_server_det</code>目录下。</p>
+<p>（4）模型评估</p>
+<p>打开<code>PP-OCRv5_server_det.yml</code>文件，将<code>pretrained_model</code>的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为<code>&#123;path/to/weights&#125;/&#123;model_name&#125;</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">pretrained_model:</span> <span class="string">./output/PP-OCRv5_server_det/best_accuracy.pdparams</span> <span class="comment">#训练好的模型路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令进行模型评估：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python PaddleOCR/tools/eval.py -c PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml</span><br></pre></td></tr></table></figure>
+
+<p>（5）模型导出</p>
+<p>打开<code>PP-OCRv5_server_det.yml</code>文件，修改以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">save_inference_dir:</span> <span class="string">./PP-OCRv5_server_det_infer/</span> <span class="comment">#模型导出的存储目录</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令导出模型：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python PaddleOCR/tools/export_model.py -c PaddleOCR/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml</span><br></pre></td></tr></table></figure>
+
+<p>导出模型后，静态图模型会存放于当前目录的<code>./PP-OCRv5_server_det_infer/</code>中，在该目录下，您将看到如下文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./PP-OCRv5_server_det_infer/</span><br><span class="line">├── inference.json</span><br><span class="line">├── inference.pdiparams</span><br><span class="line">├── inference.yml</span><br></pre></td></tr></table></figure>
+
+<p>至此，文本检测模型微调完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。</p>
+<h4 id="4-1-2-文本识别模型微调"><a href="#4-1-2-文本识别模型微调" class="headerlink" title="4.1.2 文本识别模型微调"></a>4.1.2 文本识别模型微调</h4><p>如果文本识别模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行模型微调。</p>
+<p>首先，您需要准备文本识别的数据集，可采用<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/latest/data_annotations/ocr_modules/text_detection_recognition.html">PPOCRLabel</a>标注工具，并参考<a target="_blank" rel="noopener" href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar">文本识别 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据为例，在训练模型之前，请确保已经按照<a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/installation.html">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
+<p>（1）准备数据集</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载示例数据集</span></span><br><span class="line">wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar</span><br><span class="line">tar -xf ocr_rec_dataset_examples.tar</span><br></pre></td></tr></table></figure>
+
+<p>（2）下载预训练模型</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载 PP-OCRv5_server_rec 预训练模型</span></span><br><span class="line">wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams</span><br></pre></td></tr></table></figure>
+
+<p>（3）修改<code>PP-OCRv5_server_rec</code> 配置文件，进行模型训练</p>
+<p>PaddleOCR 对代码进行了模块化，训练 <code>PP-OCRv5_server_rec</code> 识别模型时需要使用 <code>PP-OCRv5_server_rec</code> 的<a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml">配置文件</a>，配置文件的位置：<code>PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml</code>，打开<code>PP-OCRv5_server_rec.yml</code>文件，修改以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">save_model_dir:</span> <span class="string">./output/PP-OCRv5_server_rec</span> <span class="comment">#训练后的模型权重存储路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">pretrained_model:</span> <span class="string">/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams</span> <span class="comment">#预训练模型路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">Train:</span></span><br><span class="line">  <span class="attr">dataset:</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="attr">data_dir:</span> <span class="string">/paddle/ocr_rec_dataset_examples/</span> <span class="comment">#数据集根目录</span></span><br><span class="line">    <span class="attr">label_file_list:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/paddle/ocr_rec_dataset_examples/train.txt</span> <span class="comment">#训练集标注文件</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">Eval:</span></span><br><span class="line">  <span class="attr">dataset:</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="attr">data_dir:</span> <span class="string">/paddle/ocr_rec_dataset_examples/</span> <span class="comment">#数据集根目录</span></span><br><span class="line">    <span class="attr">label_file_list:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/paddle/ocr_rec_dataset_examples/val.txt</span> <span class="comment">#验证集标注文件</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令进行模型训练：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#单卡训练</span></span><br><span class="line">python PaddleOCR/tools/train.py -c PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml</span><br><span class="line"></span><br><span class="line"><span class="comment">#多卡训练，通过--gpus参数指定卡号</span></span><br><span class="line">python -m paddle.distributed.launch --gpus <span class="string">&#x27;0,1,2,3&#x27;</span> PaddleOCR/tools/train.py -c PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml</span><br></pre></td></tr></table></figure>
+
+<p>模型训练完成后，训练好的模型权重会保存在<code>./output/PP-OCRv5_server_rec</code>目录下。</p>
+<p>（4）模型评估</p>
+<p>打开<code>PP-OCRv5_server_rec.yml</code>文件，将<code>pretrained_model</code>的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为<code>&#123;path/to/weights&#125;/&#123;model_name&#125;</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">pretrained_model:</span> <span class="string">./output/PP-OCRv5_server_rec/best_accuracy.pdparams</span> <span class="comment">#训练好的模型路径</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令进行模型评估：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python PaddleOCR/tools/eval.py -c PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml</span><br></pre></td></tr></table></figure>
+
+<p>（5）模型导出</p>
+<p>打开<code>PP-OCRv5_server_rec.yml</code>文件，修改以下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">Global:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">save_inference_dir:</span> <span class="string">./PP-OCRv5_server_rec_infer/</span> <span class="comment">#模型导出的存储目录</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令导出模型：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python PaddleOCR/tools/export_model.py -c PaddleOCR/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml</span><br></pre></td></tr></table></figure>
+
+<p>导出模型后，静态图模型会存放于当前目录的<code>./PP-OCRv5_server_rec_infer/</code>中，在该目录下，您将看到如下文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./PP-OCRv5_server_rec_infer/</span><br><span class="line">├── inference.json</span><br><span class="line">├── inference.pdiparams</span><br><span class="line">├── inference.yml</span><br></pre></td></tr></table></figure>
+
+<p>至此，文本识别模型微调完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。</p>
+<h3 id="4-2-模型应用"><a href="#4-2-模型应用" class="headerlink" title="4.2 模型应用"></a>4.2 模型应用</h3><p>当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过参数指定本地模型保存路径的方式，或者通过自定义产线配置文件的方式，使用微调后的模型权重。</p>
+<h4 id="4-2-1-通过参数指定本地模型路径"><a href="#4-2-1-通过参数指定本地模型路径" class="headerlink" title="4.2.1 通过参数指定本地模型路径"></a>4.2.1 通过参数指定本地模型路径</h4><p>在初始化产线对象时，通过参数指定本地模型路径。以文本检测模型微调后的权重的使用方法为例，示例如下：</p>
+<p>命令行方式:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过 --text_detection_model_dir 指定本地模型路径</span></span><br><span class="line">paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称</span></span><br><span class="line">paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path</span><br></pre></td></tr></table></figure>
+
+<p>脚本方式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PaddleOCR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过 text_detection_model_dir 指定本地模型路径</span></span><br><span class="line">pipeline = PaddleOCR(text_detection_model_dir=<span class="string">&quot;./your_det_model_path&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称</span></span><br><span class="line"><span class="comment"># pipeline = PaddleOCR(text_detection_model_name=&quot;PP-OCRv5_mobile_det&quot;, text_detection_model_dir=&quot;./your_v5_mobile_det_model_path&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2-2-通过配置文件指定本地模型路径"><a href="#4-2-2-通过配置文件指定本地模型路径" class="headerlink" title="4.2.2 通过配置文件指定本地模型路径"></a>4.2.2 通过配置文件指定本地模型路径</h4><p>1.获取产线配置文件</p>
+<p>可调用 PaddleOCR 中 通用 OCR 产线对象的 <code>export_paddlex_config_to_yaml</code> 方法，将当前产线配置导出为 YAML 文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PaddleOCR</span><br><span class="line"></span><br><span class="line">pipeline = PaddleOCR()</span><br><span class="line">pipeline.export_paddlex_config_to_yaml(<span class="string">&quot;PaddleOCR.yaml&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2.修改配置文件</p>
+<p>在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">......</span></span><br><span class="line"><span class="attr">SubModules:</span></span><br><span class="line">  <span class="attr">TextDetection:</span></span><br><span class="line">    <span class="attr">box_thresh:</span> <span class="number">0.6</span></span><br><span class="line">    <span class="attr">limit_side_len:</span> <span class="number">64</span></span><br><span class="line">    <span class="attr">limit_type:</span> <span class="string">min</span></span><br><span class="line">    <span class="attr">max_side_limit:</span> <span class="number">4000</span></span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span> <span class="comment"># 替换为微调后的文本测模型权重路径</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-OCRv5_server_det</span> <span class="comment"># 如果微调的模型名称与默认模型名称不同，请一并修改此处</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">text_detection</span></span><br><span class="line">    <span class="attr">thresh:</span> <span class="number">0.3</span></span><br><span class="line">    <span class="attr">unclip_ratio:</span> <span class="number">1.5</span></span><br><span class="line">  <span class="attr">TextLineOrientation:</span></span><br><span class="line">    <span class="attr">batch_size:</span> <span class="number">6</span></span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span>  <span class="comment"># 替换为微调后的文本行方向分类模型权重路径</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-LCNet_x1_0_textline_ori</span> <span class="comment"># 如果微调的模型名称与默认模型名称不同，请一并修改此处</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">textline_orientation</span></span><br><span class="line">  <span class="attr">TextRecognition:</span></span><br><span class="line">    <span class="attr">batch_size:</span> <span class="number">6</span></span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span> <span class="comment"># 替换为微调后的文本识模型权重路径</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-OCRv5_server_rec</span> <span class="comment"># 如果微调的模型名称与默认模型名称不同，请一并修改此处</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">text_recognition</span></span><br><span class="line">    <span class="attr">score_thresh:</span> <span class="number">0.0</span></span><br><span class="line"><span class="string">......</span></span><br></pre></td></tr></table></figure>
+
+<p>在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 <a target="_blank" rel="noopener" href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html">PaddleX模型产线使用概览</a> 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。</p>
+<p>3.在 CLI 中加载产线配置文件</p>
+<p>在修改完成配置文件后，通过命令行的 <code>--paddlex_config</code> 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">paddleocr ocr --paddlex_config PaddleOCR.yaml ...</span><br></pre></td></tr></table></figure>
+
+<p>4.在 Python API 中加载产线配置文件</p>
+<p>初始化产线对象时，可通过 <code>paddlex_config</code> 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PaddleOCR</span><br><span class="line"></span><br><span class="line">pipeline = PaddleOCR(paddlex_config=<span class="string">&quot;PaddleOCR.yaml&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PaddleOCR/" rel="tag"># PaddleOCR</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/07/24/ppocr-config/" rel="prev" title="PaddleOCR模型训练详解">
+      <i class="fa fa-chevron-left"></i> PaddleOCR模型训练详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/13/ipmi-idrac/" rel="next" title="通过IPMI 和 iDRAC 控制Dell服务器风扇转速">
+      通过IPMI 和 iDRAC 控制Dell服务器风扇转速 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85PaddlePaddle"><span class="nav-number">1.</span> <span class="nav-text">1. 安装PaddlePaddle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85paddleocr"><span class="nav-number">2.</span> <span class="nav-text">2. 安装paddleocr</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%AE%89%E8%A3%85%E6%8E%A8%E7%90%86%E5%8C%85"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 安装推理包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%AE%89%E8%A3%85%E8%AE%AD%E7%BB%83%E4%BE%9D%E8%B5%96"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 安装训练依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%80%E5%8F%91%E9%9B%86%E6%88%90-%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">3. 开发集成&#x2F;部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 高性能推理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-%E5%AE%89%E8%A3%85Paddle2ONNX%E6%8F%92%E4%BB%B6"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1 安装Paddle2ONNX插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E5%AE%89%E8%A3%85%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2 安装高性能推理依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E6%89%A7%E8%A1%8C%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.1.2 执行高性能推理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E7%9B%B8%E5%85%B3%E8%AF%B4%E6%98%8E"><span class="nav-number">3.1.4.</span> <span class="nav-text">3.1.3 相关说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%9C%8D%E5%8A%A1%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 服务化部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1 安装依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2 运行服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3 调用服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">4. 二次开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 模型微调</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-1-%E6%96%87%E6%9C%AC%E6%A3%80%E6%B5%8B%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="nav-number">4.1.1.</span> <span class="nav-text">4.1.1 文本检测模型微调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-2-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="nav-number">4.1.2.</span> <span class="nav-text">4.1.2 文本识别模型微调</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 模型应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-%E9%80%9A%E8%BF%87%E5%8F%82%E6%95%B0%E6%8C%87%E5%AE%9A%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B%E8%B7%AF%E5%BE%84"><span class="nav-number">4.2.1.</span> <span class="nav-text">4.2.1 通过参数指定本地模型路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-%E9%80%9A%E8%BF%87%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%8C%87%E5%AE%9A%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B%E8%B7%AF%E5%BE%84"><span class="nav-number">4.2.2.</span> <span class="nav-text">4.2.2 通过配置文件指定本地模型路径</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/">
+      <img class="site-author-image" itemprop="image" alt="金者"
+        src="/images/myavatar.jpg">
+	</a>
+  <p class="site-author-name" itemprop="name">金者</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pgz100" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pgz100" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:pgz100@126.com" title="E-Mail → mailto:pgz100@126.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      AI导航站-aihub.cn
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.aihub.cn/" title="https:&#x2F;&#x2F;www.aihub.cn" rel="noopener" target="_blank">AIHub专注分享全球最新优质AI产品</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">金者</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">162k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:28</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

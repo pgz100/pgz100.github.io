@@ -1,3 +1,5 @@
+https://panzhe.cn/2025/07/24/ppocr/
+https://panzhe.cn/2025/07/24/ppocr-config/
 https://panzhe.cn/2024/10/22/sovits/
 https://panzhe.cn/2025/01/13/ipmi-idrac/
 https://panzhe.cn/2024/12/19/vbox/
@@ -63,6 +65,7 @@ https://panzhe.cn/tags/nexus/
 https://panzhe.cn/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%8A%80%E6%9C%AF/
 https://panzhe.cn/tags/windows/
 https://panzhe.cn/tags/powershell/
+https://panzhe.cn/tags/PaddleOCR/
 https://panzhe.cn/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/
 https://panzhe.cn/tags/python/
 https://panzhe.cn/tags/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/
